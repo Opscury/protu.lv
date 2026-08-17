@@ -49,7 +49,7 @@ function App() {
       </p>
 
       <a className="contact" href="mailto:hello@protu.lv">
-        hello@protu.lv
+        viska.valdis@gmail.com
       </a>
 
       <p className="foot">Valdis Viška · Latvija</p>
