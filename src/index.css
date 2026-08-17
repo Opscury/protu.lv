@@ -1,0 +1,37 @@
+:root {
+  --bg: #0e0f13;
+  --text: #a3a8b8;
+  --text-strong: #f2f4f8;
+  --text-dim: #6b7080;
+  --border: #262a35;
+  --accent: #d4535f;
+
+  --sans: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  color-scheme: dark;
+  font-family: var(--sans);
+  line-height: 1.55;
+  color: var(--text);
+  background-color: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
