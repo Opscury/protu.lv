@@ -6,15 +6,19 @@ type Props = {
 
 function ProjectCard({ project }: Props) {
   return (
-    <article className="card">
-      <header className="card-head">
-        <h3 className="card-title">{project.title}</h3>
-        <p className="card-meta">
-          {project.role} · {project.period}
-        </p>
-      </header>
+    <article className="plaque">
+      <h3 className="plaque-title">{project.title}</h3>
 
-      <p className="card-body">{project.summary}</p>
+      <dl className="plaque-spec">
+        <dt className="sr-only">Loma</dt>
+        <dd>{project.role}</dd>
+        <dt className="sr-only">Vieta un gads</dt>
+        <dd>
+          {project.place} · {project.period}
+        </dd>
+      </dl>
+
+      <p className="plaque-body">{project.summary}</p>
 
       <ul className="tags">
         {project.tags.map((tag) => (
@@ -25,7 +29,7 @@ function ProjectCard({ project }: Props) {
       </ul>
 
       {project.links && project.links.length > 0 && (
-        <ul className="card-links">
+        <ul className="plaque-links">
           {project.links.map((link) => (
             <li key={link.href}>
               <a href={link.href} target="_blank" rel="noreferrer">

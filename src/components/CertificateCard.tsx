@@ -6,25 +6,27 @@ type Props = {
 
 function CertificateCard({ certificate }: Props) {
   return (
-    <article className="card">
-      <header className="card-head">
-        <h3 className="card-title">{certificate.title}</h3>
-        <p className="card-meta">
-          {certificate.issuer} · {certificate.issued}
-        </p>
-      </header>
+    <article className="plaque">
+      <h3 className="plaque-title">{certificate.title}</h3>
 
-      <p className="card-body">{certificate.summary}</p>
+      <dl className="plaque-spec">
+        <dt className="sr-only">Izsniedzējs</dt>
+        <dd>{certificate.issuer}</dd>
+        <dt className="sr-only">Gads</dt>
+        <dd>{certificate.issued}</dd>
+      </dl>
+
+      <p className="plaque-body">{certificate.summary}</p>
 
       {certificate.credentialUrl && (
-        <ul className="card-links">
+        <ul className="plaque-links">
           <li>
             <a
               href={certificate.credentialUrl}
               target="_blank"
               rel="noreferrer"
             >
-              Apskatīt sertifikātu
+              Pārbaudīt īstumu
             </a>
           </li>
         </ul>

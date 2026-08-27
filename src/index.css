@@ -1,23 +1,29 @@
 :root {
-  --bg: #0e0f13;
-  --text: #a3a8b8;
-  --text-strong: #f2f4f8;
-  --text-dim: #6b7080;
-  --border: #262a35;
-  --accent: #d4535f;
+  /* Galerija — VIZIUM ekspozīcijas pieeja: balta telpa, melni eksponāti,
+     krāsa nāk tikai no gaismas un projekcijām. */
+  --gallery: #f1f3f2;
+  --plaque: #ffffff;
+  --exhibit: #14171a;
+  --exhibit-soft: #59616b;
+  --rule: #d8dcdb;
+  --beam-a: #00a9c0;
+  --beam-b: #c4319b;
 
-  --sans: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  --display: 'Archivo', 'Segoe UI', sans-serif;
+  --body: 'Instrument Sans', 'Segoe UI', sans-serif;
+  --utility: 'Martian Mono', ui-monospace, 'Cascadia Code', monospace;
 
-  color-scheme: dark;
-  font-family: var(--sans);
-  line-height: 1.55;
-  color: var(--text);
-  background-color: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  --step: clamp(1rem, 0.6rem + 1.6vw, 1.5rem);
+
+  color-scheme: light;
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--exhibit);
+  background-color: var(--gallery);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 *,
@@ -26,12 +32,23 @@
   box-sizing: border-box;
 }
 
-html,
-body,
-#root {
-  height: 100%;
-}
-
 body {
   margin: 0;
+  min-height: 100svh;
+}
+
+:focus-visible {
+  outline: 2px solid var(--exhibit);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
