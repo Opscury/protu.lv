@@ -1,22 +1,24 @@
-import type { Certificate } from '../types'
+import type { Certificate, Lang } from '../types'
 
 type Props = {
   certificate: Certificate
+  lang: Lang
+  verifyLabel: string
 }
 
-function CertificateCard({ certificate }: Props) {
+function CertificateCard({ certificate, lang, verifyLabel }: Props) {
   return (
     <article className="plaque">
       <h3 className="plaque-title">{certificate.title}</h3>
 
       <dl className="plaque-spec">
-        <dt className="sr-only">Izsniedzējs</dt>
+        <dt className="sr-only">Issuer</dt>
         <dd>{certificate.issuer}</dd>
-        <dt className="sr-only">Gads</dt>
+        <dt className="sr-only">Year</dt>
         <dd>{certificate.issued}</dd>
       </dl>
 
-      <p className="plaque-body">{certificate.summary}</p>
+      <p className="plaque-body">{certificate.summary[lang]}</p>
 
       {certificate.credentialUrl && (
         <ul className="plaque-links">
@@ -26,7 +28,7 @@ function CertificateCard({ certificate }: Props) {
               target="_blank"
               rel="noreferrer"
             >
-              Pārbaudīt īstumu
+              {verifyLabel}
             </a>
           </li>
         </ul>

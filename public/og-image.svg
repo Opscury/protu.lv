@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Protu &#x2014; Valdis Vi&#x161;ka</title>
+  <desc id="description">Interactive-experience developer</desc>
+  <defs>
+    <radialGradient id="cyan" cx="0" cy="0" r="1" gradientTransform="translate(210 96) rotate(40) scale(680 550)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00a9c0" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#00a9c0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pink" cx="0" cy="0" r="1" gradientTransform="translate(1040 410) rotate(210) scale(680 550)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c4319b" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#c4319b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#f1f3f2"/>
+  <rect width="1200" height="630" fill="url(#cyan)"/>
+  <rect width="1200" height="630" fill="url(#pink)"/>
+  <path d="M72 74H1128" stroke="#14171a" stroke-opacity=".3"/>
+  <g transform="translate(72 22) scale(0.5417)">
+    <circle cx="24" cy="24" r="19" stroke="#14171a" stroke-width="4.2" fill="none"/>
+    <path d="M5 24A19 19 0 0 1 20.4 5.4" stroke="#00a9c0" stroke-width="4.2" stroke-linecap="round" fill="none"/>
+    <path d="M27.6 42.6A19 19 0 0 1 43 24" stroke="#c4319b" stroke-width="4.2" stroke-linecap="round" fill="none"/>
+    <circle cx="24" cy="24" r="5" fill="#14171a"/>
+  </g>
+  <text x="108" y="55" fill="#14171a" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="2">PROTU.LV</text>
+  <text x="72" y="300" fill="#14171a" font-family="Arial, sans-serif" font-size="142" font-weight="800" letter-spacing="-8">PROTU</text>
+  <text x="72" y="420" fill="#00a9c0" font-family="Arial, sans-serif" font-size="98" font-weight="800" letter-spacing="-5">INTERACTIVE</text>
+  <text x="76" y="510" fill="#14171a" font-family="Arial, sans-serif" font-size="26">VALDIS VI&#x160;KA &#xB7; UNITY &#xB7; C# &#xB7; REACT &#xB7; UX</text>
+</svg>

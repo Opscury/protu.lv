@@ -1,98 +1,60 @@
-import { useEffect, useState } from 'react'
-import type { CSSProperties } from 'react'
-import type { Skill } from '../types'
+import { ui } from '../data/ui'
+import type { Lang, Skill } from '../types'
 
 type Props = {
   skills: Skill[]
-  email: string
+  active: number
+  onChoose: (index: number) => void
+  lang: Lang
 }
 
-const CYCLE_MS = 2600
-
-function ExhibitHero({ skills, email }: Props) {
-  const [active, setActive] = useState(0)
-  const [handedOver, setHandedOver] = useState(false)
-
-  // Piesaistes cikls: rullē pats, līdz apmeklētājs pieskaras.
-  // Tad vadība paliek viņam.
-  useEffect(() => {
-    if (handedOver) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-    const id = window.setInterval(() => {
-      setActive((i) => (i + 1) % skills.length)
-    }, CYCLE_MS)
-
-    return () => window.clearInterval(id)
-  }, [handedOver, skills.length])
-
-  function choose(i: number) {
-    setActive(i)
-    setHandedOver(true)
-  }
-
+function ExhibitHero({ skills, active, onChoose, lang }: Props) {
   const current = skills[active]
+  const t = ui[lang]
 
   return (
-    <header
-      className="exhibit"
-      style={
-        {
-          '--beam-shift': `${active / (skills.length - 1)}`,
-        } as CSSProperties
-      }
-    >
-      <div className="beams" aria-hidden="true">
-        <span className="beam beam-a" />
-        <span className="beam beam-b" />
-      </div>
-
+    <header className="exhibit">
       <div className="exhibit-inner">
+        <p className="eyebrow">{t.eyebrow}</p>
         <h1 className="statement">
           <span className="statement-verb">Protu</span>
-          <span className="statement-object" key={current.id}>
-            {current.label}
-          </span>
+          <span className="statement-object" key={current.id}>{current.label}</span>
         </h1>
 
-        <div className="panel">
-          <p className="panel-hint" id="panel-hint">
-            Nospied, lai pabeigtu teikumu
-          </p>
+        {t.gloss && <p className="gloss">{t.gloss}</p>}
 
-          <div
-            className="panel-keys"
-            role="group"
-            aria-labelledby="panel-hint"
-          >
+        <div className="panel">
+          {/* Norāde dzīvo aria-label, nevis uz ekrāna: pogas jau
+              izskatās nospiežamas, bet ekrānlasītājam paskaidrojums
+              joprojām ir vajadzīgs. */}
+          <div className="panel-keys" role="group" aria-label={t.panelHint}>
             {skills.map((skill, i) => (
               <button
                 key={skill.id}
                 type="button"
                 className="key"
                 aria-pressed={i === active}
-                onClick={() => choose(i)}
+                onClick={() => onChoose(i)}
               >
                 {skill.label}
               </button>
             ))}
           </div>
 
-          <p className="panel-readout">{current.note}</p>
+          <p className="panel-readout">{current.note[lang]}</p>
         </div>
 
-        <p className="lead">
-          Veidoju interaktīvas lietas — no zinātnes centra eksponātiem
-          līdz mobilajām spēlēm un mājaslapām.
-        </p>
-        <p className="lead lead-en">
-          I build interactive things — science centre exhibits, mobile
-          games, websites.
-        </p>
+        <p className="hero-lead">{t.heroLead}</p>
 
-        <a className="mailto" href={`mailto:${email}`}>
-          {email}
-        </a>
+        <div className="hero-actions">
+          <a className="action action-primary" href="#darbi">
+            {t.workCta}
+          </a>
+          <a className="action action-secondary" href="#contact">
+            {t.emailCta}
+          </a>
+        </div>
+
       </div>
     </header>
   )

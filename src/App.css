@@ -21,7 +21,40 @@
 }
 
 .rail-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   color: var(--exhibit);
+}
+
+.logo-lockup {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.logo-word {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 118%;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--exhibit);
+}
+
+.logo-tld {
+  font-family: var(--utility);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--exhibit-soft);
+}
+
+.rail-end {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
 }
 
 .rail-meta {
@@ -29,64 +62,119 @@
   text-align: right;
 }
 
+/* ── Valodas slēdzis ────────────────────────────────── */
+
+.lang {
+  display: flex;
+  border: 1.5px solid var(--exhibit);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.lang-key {
+  padding: 0.3125rem 0.5rem;
+  border: 0;
+  background: transparent;
+  font-family: var(--utility);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--exhibit);
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.lang-key + .lang-key {
+  border-left: 1.5px solid var(--exhibit);
+}
+
+.lang-key:hover {
+  background: color-mix(in srgb, var(--exhibit) 10%, transparent);
+}
+
+.lang-key[aria-pressed='true'] {
+  background: var(--exhibit);
+  color: var(--plaque);
+}
+
 /* ── Eksponāts (hero) ───────────────────────────────── */
 
 .exhibit {
   position: relative;
-  isolation: isolate;
-  padding: clamp(3.5rem, 11vh, 7rem) 0 clamp(4rem, 12vh, 8rem);
-  overflow: clip;
+  padding: clamp(3.5rem, 9vh, 6rem) 0 clamp(3.75rem, 8vh, 5.5rem);
 }
 
 .exhibit-inner {
-  position: relative;
-  z-index: 1;
   max-width: 54rem;
 }
 
 /* Gaisma: divi projektoru stari. Kur tie pārklājas, krāsas
    sajaucas — tāpat kā zinātnes centra krāsu jaukšanas eksponātā.
-   Stari pārvietojas līdz ar izvēlēto pogu. */
+   Stari pārvietojas līdz ar izvēlēto pogu.
 
-.beams {
+   Slānis ir novietots lapas augšā un aizritinās kopā ar saturu.
+   Apakšu izgaisina maska, malas — pašas gradienta krāsas, tāpēc
+   nekur nav redzamas taisnas robežas. */
+
+.atmosphere {
   position: absolute;
-  inset: -25% -12% -15%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 150vh;
   z-index: 0;
   pointer-events: none;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 55%,
+    transparent 100%
+  );
+}
+
+.page {
+  position: relative;
+  z-index: 1;
 }
 
 .beam {
   position: absolute;
-  width: 46vw;
-  min-width: 20rem;
+  width: 62vw;
+  min-width: 26rem;
   aspect-ratio: 1;
   border-radius: 50%;
-  filter: blur(70px);
-  opacity: 0.5;
+  opacity: 0.42;
   mix-blend-mode: multiply;
-  transition: transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  filter: blur(40px);
+  transition: transform 1100ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: transform;
 }
 
 .beam-a {
-  top: 0;
-  left: -8%;
+  top: -22vh;
+  left: -16vw;
   background: radial-gradient(
-    circle,
+    circle closest-side,
     var(--beam-a) 0%,
-    transparent 68%
+    color-mix(in srgb, var(--beam-a) 45%, transparent) 42%,
+    transparent 76%
   );
-  transform: translateX(calc(var(--beam-shift, 0) * 26vw));
+  transform: translate3d(calc(var(--beam-shift, 0) * 22vw), 0, 0);
 }
 
 .beam-b {
-  top: 14%;
-  right: -12%;
+  top: -6vh;
+  right: -20vw;
   background: radial-gradient(
-    circle,
+    circle closest-side,
     var(--beam-b) 0%,
-    transparent 68%
+    color-mix(in srgb, var(--beam-b) 45%, transparent) 42%,
+    transparent 76%
   );
-  transform: translateX(calc(var(--beam-shift, 0) * -24vw));
+  transform: translate3d(calc(var(--beam-shift, 0) * -20vw), 0, 0);
 }
 
 /* ── Teikums ────────────────────────────────────────── */
@@ -96,7 +184,7 @@
   font-family: var(--display);
   font-weight: 800;
   font-stretch: 118%;
-  font-size: clamp(3rem, 12vw, 8.5rem);
+  font-size: clamp(3.25rem, 8.5vw, 6.75rem);
   line-height: 0.88;
   letter-spacing: -0.035em;
   text-transform: uppercase;
@@ -104,9 +192,7 @@
   flex-direction: column;
 }
 
-.statement-verb {
-  color: var(--exhibit);
-}
+.statement-verb { color: var(--exhibit); }
 
 .statement-object {
   color: var(--beam-a);
@@ -114,32 +200,141 @@
 }
 
 @keyframes swap {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 0.14em, 0);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  from { opacity: 0; transform: translate3d(0, 0.14em, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+.eyebrow,
+.case-label {
+  margin: 0 0 1rem;
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--exhibit-soft);
+}
+
+/* Skaidrs pārtraukums: augšā ir eksponāts, apakšā — piedāvājums. */
+.hero-lead {
+  max-width: 46ch;
+  margin: clamp(3.25rem, 6vw, 4.75rem) 0 0;
+  font-size: clamp(1.125rem, 1.9vw, 1.5rem);
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+.contact {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(2rem, 7vw, 7rem);
+  padding: clamp(3.5rem, 8vw, 6.5rem) 0;
+  border-top: 2px solid var(--exhibit);
+}
+
+.contact h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.contact-intro > p:last-child {
+  max-width: 30ch;
+  margin: 1.25rem 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+.contact-form { display: grid; gap: 1.25rem; }
+
+.contact-form label { display: grid; gap: 0.45rem; }
+
+.contact-form label > span {
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--exhibit-soft);
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--exhibit);
+  border-radius: 0;
+  background: var(--plaque);
+  padding: 0.875rem;
+  font: inherit;
+  color: var(--exhibit);
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus { outline: 2px solid var(--beam-a); outline-offset: 2px; }
+
+.contact-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.contact-actions p { margin: 0; max-width: 34ch; font-family: var(--utility); font-size: 0.5625rem; color: var(--exhibit-soft); }
+.contact-actions button { border: 0; cursor: pointer; }
+.contact-actions button:disabled { cursor: wait; opacity: 0.7; transform: none; }
+.contact-status { min-height: 1.5em; margin: -0.5rem 0 0; font-family: var(--utility); font-size: 0.6875rem; }
+.contact-status.succeeded { color: #087c47; }
+.contact-status.failed { color: #b42318; }
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.75rem 1rem;
+  font-family: var(--utility);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.action:hover { transform: translateY(-2px); }
+
+.action-primary {
+  background: var(--exhibit);
+  color: var(--plaque);
+}
+
+.action-secondary {
+  border: 1.5px solid var(--exhibit);
+  color: var(--exhibit);
+}
+
+.action-secondary:hover {
+  background: var(--plaque);
+}
+
+.gloss {
+  margin: 0.625rem 0 0;
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--exhibit-soft);
 }
 
 /* ── Vadības panelis ────────────────────────────────── */
 
+/* Vadības panelis pieķeras virsrakstam — tas ir viens elements,
+   nevis atsevišķa saskarnes kaste. */
 .panel {
-  margin-top: clamp(1.75rem, 4vw, 2.75rem);
-  padding-top: 1.25rem;
-  border-top: 2px solid var(--exhibit);
-  max-width: 44rem;
-}
-
-.panel-hint {
-  margin: 0 0 0.875rem;
-  font-family: var(--utility);
-  font-size: 0.625rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  color: var(--exhibit-soft);
+  margin-top: clamp(1.125rem, 2vw, 1.5rem);
+  padding: 0;
+  max-width: 45rem;
 }
 
 .panel-keys {
@@ -199,12 +394,6 @@
   text-wrap: balance;
 }
 
-.lead-en {
-  margin-top: 0.625rem;
-  font-size: 0.9375rem;
-  color: var(--exhibit-soft);
-}
-
 .mailto {
   display: inline-block;
   margin-top: 1.75rem;
@@ -226,7 +415,8 @@
 /* ── Galerijas ──────────────────────────────────────── */
 
 .gallery {
-  padding: clamp(3rem, 7vw, 5.5rem) 0;
+  position: relative;
+  padding: clamp(3.5rem, 8vw, 6.5rem) 0;
   border-top: 1px solid var(--rule);
 }
 
@@ -238,7 +428,41 @@
   --gallery-light: var(--beam-b);
 }
 
+/* Sekcijas fons. Malas izgaisina maska, tāpēc zīmējumam
+   nav redzamas robežas. */
+
+.backdrop {
+  position: absolute;
+  top: 50%;
+  right: -4vw;
+  width: clamp(20rem, 40vw, 34rem);
+  height: auto;
+  transform: translateY(-50%);
+  color: var(--gallery-light, var(--exhibit));
+  opacity: 0;
+  pointer-events: none;
+  mask-image: radial-gradient(
+    ellipse 62% 62% at 50% 50%,
+    #000 0%,
+    transparent 78%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 62% 62% at 50% 50%,
+    #000 0%,
+    transparent 78%
+  );
+  transition:
+    opacity 1200ms ease,
+    transform 1200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.gallery[data-visible='true'] .backdrop {
+  opacity: 0.16;
+  transform: translateY(-50%) rotate(-1.5deg);
+}
+
 .gallery-title {
+  position: relative;
   margin: 0 0 clamp(1.5rem, 3vw, 2.25rem);
   font-family: var(--display);
   font-weight: 700;
@@ -246,9 +470,64 @@
   font-size: clamp(1.5rem, 3.4vw, 2.25rem);
   letter-spacing: -0.02em;
   text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 600ms ease,
+    transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.gallery-note {
+  grid-column: 1 / -1;
+  max-width: 65ch;
+  margin: -0.75rem 0 0;
+  font-family: var(--utility);
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  color: var(--exhibit-soft);
+}
+
+.gallery[data-visible='true'] .gallery-title {
+  opacity: 1;
+  transform: none;
+}
+
+.gallery .plaque {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 700ms ease,
+    transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.gallery .case-study {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 700ms ease, transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.gallery[data-visible='true'] .plaque {
+  opacity: 1;
+  transform: none;
+}
+
+.gallery[data-visible='true'] .case-study { opacity: 1; transform: none; }
+
+/* Plāksnes parādās pēc kārtas, nevis visas reizē. */
+.gallery[data-visible='true'] .plaque:nth-child(2) {
+  transition-delay: 90ms;
+}
+
+.gallery[data-visible='true'] .plaque:nth-child(3) {
+  transition-delay: 180ms;
+}
+
+.gallery[data-visible='true'] .plaque:nth-child(4) {
+  transition-delay: 270ms;
 }
 
 .wall {
+  position: relative;
   display: grid;
   gap: 1.25rem;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
@@ -263,6 +542,135 @@
   border: 1px solid var(--rule);
   border-top: 4px solid var(--gallery-light, var(--exhibit));
 }
+
+.case-study {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(16rem, 0.9fr) minmax(0, 1.1fr);
+  background: var(--plaque);
+  border: 1px solid var(--rule);
+  border-top: 4px solid var(--gallery-light, var(--exhibit));
+}
+
+.case-media {
+  position: relative;
+  display: grid;
+  min-height: 25rem;
+  padding: 1rem;
+  place-items: center;
+  background: color-mix(in srgb, var(--gallery-light) 7%, var(--gallery));
+  color: var(--gallery-light);
+  overflow: hidden;
+}
+
+.image-carousel { position: relative; width: 100%; height: 100%; min-height: 23rem; }
+
+.image-carousel img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 23rem;
+  object-fit: cover;
+  filter: saturate(0.92) contrast(1.03);
+}
+
+.carousel-nav {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 24%;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 180ms ease, background 180ms ease;
+}
+
+.carousel-dots button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.carousel-nav-previous { left: 0; }
+.carousel-nav-next { right: 0; }
+
+.carousel-nav span {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 70%);
+  border-radius: 50%;
+  background: rgb(20 23 26 / 72%);
+  font-size: 1.375rem;
+  line-height: 1;
+}
+
+.image-carousel:hover .carousel-nav,
+.carousel-nav:focus-visible { opacity: 1; }
+
+.carousel-nav:hover { background: linear-gradient(90deg, rgb(20 23 26 / 25%), transparent); }
+.carousel-nav-next:hover { background: linear-gradient(270deg, rgb(20 23 26 / 25%), transparent); }
+
+.carousel-dots {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: flex;
+  gap: 0.375rem;
+  padding: 0.5rem;
+  background: rgb(20 23 26 / 76%);
+}
+
+.carousel-dots button { width: 0.5rem; height: 0.5rem; padding: 0; border: 1px solid white; border-radius: 50%; }
+.carousel-dots button[aria-current='true'] { background: white; }
+
+.case-content { padding: clamp(1.5rem, 4vw, 3rem); }
+.case-label { color: var(--gallery-light); }
+
+.case-summary {
+  margin: 1.5rem 0 0;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.case-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.case-detail-grid h4,
+.case-contribution h4 {
+  margin: 0;
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--exhibit-soft);
+}
+
+.case-detail-grid p,
+.case-contribution li {
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.case-detail-grid p { margin: 0.5rem 0 0; }
+.case-contribution { margin-top: 1.5rem; }
+.case-contribution ul { margin: 0.625rem 0 0; padding-left: 1.15rem; }
+.case-contribution li + li { margin-top: 0.45rem; }
 
 .plaque-title {
   margin: 0;
@@ -363,10 +771,11 @@
   text-transform: uppercase;
 }
 
-.colophon-line {
-  margin: 0;
-  max-width: 40ch;
+.colophon-name {
+  color: var(--exhibit);
 }
+
+.colophon-availability { display: block; margin-top: 0.3rem; }
 
 .colophon-mail {
   color: var(--exhibit);
@@ -381,6 +790,12 @@
 
 /* ── Kvalitātes grīda ───────────────────────────────── */
 
+@media (max-width: 34rem) {
+  .rail-meta {
+    display: none;
+  }
+}
+
 @media (max-width: 30rem) {
   .wall {
     grid-template-columns: 1fr;
@@ -393,19 +808,48 @@
   .rail {
     font-size: 0.5625rem;
   }
+
+  .case-detail-grid { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .statement-object,
   .beam,
-  .key {
+  .key,
+  .backdrop,
+  .gallery-title,
+  .gallery .plaque {
     animation: none;
     transition: none;
   }
+
+  .gallery .case-study { transition: none; opacity: 1; transform: none; }
+
+  .gallery .plaque,
+  .gallery-title {
+    opacity: 1;
+    transform: none;
+  }
+
+  .backdrop {
+    opacity: 0.16;
+  }
+}
+
+@media (max-width: 48rem) {
+  .backdrop {
+    display: none;
+  }
+
+  .case-study { grid-template-columns: 1fr; }
+  .case-media { min-height: 16rem; }
+  .image-carousel, .image-carousel img { min-height: 16rem; }
+  .contact { grid-template-columns: 1fr; gap: 2rem; }
 }
 
 @media (prefers-contrast: more) {
-  .beams {
+  .atmosphere,
+  .backdrop {
     display: none;
   }
 }
