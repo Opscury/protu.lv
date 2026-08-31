@@ -184,7 +184,8 @@
   font-family: var(--display);
   font-weight: 800;
   font-stretch: 118%;
-  font-size: clamp(3.25rem, 8.5vw, 6.75rem);
+  font-size: clamp(2.25rem, 9vw, 6.75rem);
+  hyphens: auto;
   line-height: 0.88;
   letter-spacing: -0.035em;
   text-transform: uppercase;
