@@ -1,3 +1,4 @@
+import Atmosphere from './Atmosphere'
 import { ui } from '../data/ui'
 import type { Lang, Skill } from '../types'
 
@@ -6,14 +7,16 @@ type Props = {
   active: number
   onChoose: (index: number) => void
   lang: Lang
+  shift: number
 }
 
-function ExhibitHero({ skills, active, onChoose, lang }: Props) {
+function ExhibitHero({ skills, active, onChoose, lang, shift }: Props) {
   const current = skills[active]
   const t = ui[lang]
 
   return (
     <header className="exhibit">
+      <Atmosphere shift={shift} />
       <div className="exhibit-inner">
         <p className="eyebrow">{t.eyebrow}</p>
         <h1 className="statement">

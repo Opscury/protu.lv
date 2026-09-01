@@ -107,6 +107,8 @@
 }
 
 .exhibit-inner {
+  position: relative;
+  z-index: 1;
   max-width: 54rem;
 }
 
@@ -114,30 +116,41 @@
    sajaucas — tāpat kā zinātnes centra krāsu jaukšanas eksponātā.
    Stari pārvietojas līdz ar izvēlēto pogu.
 
-   Slānis ir novietots lapas augšā un aizritinās kopā ar saturu.
-   Apakšu izgaisina maska, malas — pašas gradienta krāsas, tāpēc
-   nekur nav redzamas taisnas robežas. */
+   Slānis ir ligzdots .exhibit iekšienē un aizņem tieši tā izmēru —
+   nekad neizplūst zem varoņa sadaļas, lai cik gara būtu izvēlētā
+   valoda vai piezīme. Apakšu izgaisina maska, malas — pašas
+   gradienta krāsas, tāpēc nekur nav redzamas taisnas robežas. */
 
 .atmosphere {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 150vh;
+  bottom: 0;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 45%, transparent 92%);
   -webkit-mask-image: linear-gradient(
     to bottom,
-    #000 55%,
-    transparent 100%
+    #000 45%,
+    transparent 92%
   );
 }
 
 .page {
   position: relative;
   z-index: 1;
+}
+
+.atmosphere-photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 35%;
+  opacity: 0.85;
 }
 
 .beam {

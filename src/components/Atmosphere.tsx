@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import heroBg from '../assets/hero-bg.jpg'
 
 type Props = {
   /** 0–1: kur atrodas izvēlētā poga vadības panelī. */
@@ -6,8 +7,9 @@ type Props = {
 }
 
 /**
- * Gaismas slānis. Fiksēts pret skatlogu, tāpēc tam nav malu —
- * stari izgaist paši, nevis tiek nogriezti.
+ * Gaismas slānis. Ligzdots .exhibit iekšienē, tāpēc aizņem tieši
+ * varoņa sadaļas augstumu — nekad neizplūst zemāk. Platumā izlaužas
+ * līdz pilnam skatloga malai, neskatoties uz .page polsterējumu.
  */
 function Atmosphere({ shift }: Props) {
   return (
@@ -16,8 +18,10 @@ function Atmosphere({ shift }: Props) {
       aria-hidden="true"
       style={{ '--beam-shift': `${shift}` } as CSSProperties}
     >
-      <span className="beam beam-a" />
-      <span className="beam beam-b" />
+      <div
+        className="atmosphere-photo"
+        style={{ backgroundImage: `url(${heroBg})` }}
+      />
     </div>
   )
 }

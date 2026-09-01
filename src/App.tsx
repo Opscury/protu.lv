@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import Atmosphere from './components/Atmosphere'
 import CertificateCard from './components/CertificateCard'
 import ContactForm from './components/ContactForm'
 import ExhibitHero from './components/ExhibitHero'
@@ -75,8 +74,6 @@ function App() {
 
   return (
     <>
-      <Atmosphere shift={shift} />
-
       <div className="page">
         <div className="rail">
           <span className="rail-mark">
@@ -98,6 +95,7 @@ function App() {
           active={active}
           onChoose={choose}
           lang={lang}
+          shift={shift}
         />
 
         <main className="galleries">
