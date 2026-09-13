@@ -124,6 +124,26 @@ export const projects: Project[] = [
 
 export const certificates: Certificate[] = [
   {
+    id: 'meta-frontend',
+    title: 'Meta Front-End Developer',
+    issuer: 'Meta · Coursera',
+    issued: '2026',
+    summary: {
+      lv:
+        'Deviņu kursu programma: HTML un CSS padziļināti, ' +
+        'JavaScript programmēšana, versiju kontrole ar Git, ' +
+        'React no pamatiem līdz hooks, konteksta un testu rakstīšanai, ' +
+        'UX/UI principi un noslēguma projekts.',
+      en:
+        'A nine-course programme: HTML and CSS in depth, programming ' +
+        'with JavaScript, version control with Git, React from the ' +
+        'basics through hooks, context and testing, UX/UI principles ' +
+        'and a front-end capstone build.',
+    },
+    credentialUrl:
+      'https://coursera.org/share/7d9e174663e34cb190619a8da36cc664',
+  },
+  {
     id: 'google-ux',
     title: 'Google UX Design',
     issuer: 'Google · Coursera',
