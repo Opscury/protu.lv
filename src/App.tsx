@@ -104,6 +104,16 @@ function App() {
             {projects.map((project) => (
               <ProjectCard key={project.id} project={project} lang={lang} />
             ))}
+            <p className="gallery-aside">
+              {t.sideProject}{' '}
+              <a
+                href="https://vecasvaras.protu.lv"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t.sideProjectLink}
+              </a>
+            </p>
           </Gallery>
 
           <Gallery

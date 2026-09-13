@@ -513,6 +513,39 @@
   transform: none;
 }
 
+/* Blakusprojekts: klusa rindiņa zem darbiem, nevis pilna plāksne. */
+
+.gallery-aside {
+  grid-column: 1 / -1;
+  max-width: 65ch;
+  margin: 0.5rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--utility);
+  font-size: 0.6875rem;
+  line-height: 1.75;
+  color: var(--exhibit-soft);
+}
+
+.gallery-aside a {
+  color: var(--exhibit);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 2px solid var(--gallery-light, var(--exhibit));
+  padding-bottom: 2px;
+  white-space: nowrap;
+  transition: color 140ms ease;
+}
+
+.gallery-aside a::after {
+  content: ' \2192';
+}
+
+.gallery-aside a:hover,
+.gallery-aside a:focus-visible {
+  color: var(--gallery-light, var(--exhibit));
+}
+
 .gallery .plaque {
   opacity: 0;
   transform: translateY(20px);
@@ -562,6 +595,29 @@
   background: var(--plaque);
   border: 1px solid var(--rule);
   border-top: 4px solid var(--gallery-light, var(--exhibit));
+}
+
+/* Sertifikātu plāksnes dala kopīgas rindu sliedes ar sienu, tāpēc
+   svītra, apraksts un saite sakrīt arī tad, ja viens virsraksts
+   aizņem divas rindas, bet otrs vienu. */
+
+.gallery-b .plaque {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 4;
+  row-gap: 0;
+}
+
+@supports not (grid-template-rows: subgrid) {
+  .gallery-b .plaque {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gallery-b .plaque-links {
+    margin-top: auto;
+    padding-top: 1.375rem;
+  }
 }
 
 .case-study {

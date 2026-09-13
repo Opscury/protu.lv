@@ -18,6 +18,8 @@ type Strings = {
   langLabel: string
   verify: string
   selectedWorkNote: string
+  sideProject: string
+  sideProjectLink: string
   scope: string
   contribution: string
   outcome: string
@@ -61,6 +63,10 @@ export const ui: Record<Lang, Strings> = {
     verify: 'Pārbaudīt īstumu',
     selectedWorkNote:
       'Viena dokumentēta pieredze. Vēl citiem darbiem tiek gatavoti publicējami stāsti.',
+    sideProject:
+      'Blakus darbam — «Vecās Varas», īss point-and-click gabals par ' +
+      'latviešu folkloru. Phaser 3 un TypeScript, spēlējams pārlūkā.',
+    sideProjectLink: 'Spēlēt',
     scope: 'Apjoms',
     contribution: 'Mans ieguldījums',
     outcome: 'Rezultāts',
@@ -102,6 +108,10 @@ export const ui: Record<Lang, Strings> = {
     verify: 'Verify credential',
     selectedWorkNote:
       'One documented experience so far. Further publishable case studies are being prepared.',
+    sideProject:
+      'On the side — Vecās Varas, a short point-and-click piece drawn from ' +
+      'Latvian folklore. Phaser 3 and TypeScript, playable in the browser.',
+    sideProjectLink: 'Play it',
     scope: 'Scope',
     contribution: 'My contribution',
     outcome: 'Outcome',
