@@ -18,6 +18,38 @@ export const skills: Skill[] = [
     },
   },
   {
+    id: 'django',
+    label: 'Django',
+    note: {
+      lv: 'REST API, datubāzes un admin panelis, ko saprot arī klients',
+      en: 'REST APIs, databases and an admin panel the client can actually use',
+    },
+  },
+  {
+    id: 'python',
+    label: 'Python',
+    note: {
+      lv: 'Servera loģika, datu apstrāde, skripti',
+      en: 'Server logic, data handling, scripts',
+    },
+  },
+  {
+    id: 'css',
+    label: 'CSS',
+    note: {
+      lv: 'Izkārtojumi, animācijas, pieejamība',
+      en: 'Layouts, animation, accessibility',
+    },
+  },
+  {
+    id: 'uiux',
+    label: 'UI/UX',
+    note: {
+      lv: 'Lietotāju izpēte, prototipi Figma, lietojamības testi',
+      en: 'User research, Figma prototypes, usability testing',
+    },
+  },
+  {
     id: 'unity',
     label: 'Unity',
     note: {
@@ -31,22 +63,6 @@ export const skills: Skill[] = [
     note: {
       lv: 'Spēļu loģika, eksponātu vadība, iekšējie rīki',
       en: 'Game logic, exhibit control, internal tools',
-    },
-  },
-  {
-    id: 'uiux',
-    label: 'UI/UX',
-    note: {
-      lv: 'Lietotāju izpēte, prototipi Figma, lietojamības testi',
-      en: 'User research, Figma prototypes, usability testing',
-    },
-  },
-  {
-    id: 'css',
-    label: 'CSS',
-    note: {
-      lv: 'Izkārtojumi, animācijas, pieejamība',
-      en: 'Layouts, animation, accessibility',
     },
   },
 ]
@@ -123,6 +139,45 @@ export const projects: Project[] = [
 ]
 
 export const certificates: Certificate[] = [
+  {
+    id: 'meta-backend',
+    title: 'Meta Back-End Developer',
+    issuer: 'Meta · Coursera',
+    issued: '2026',
+    summary: {
+      lv:
+        'Deviņu kursu programma: Python programmēšana, versiju kontrole ' +
+        'ar Git, relāciju datubāzes un SQL, Django ietvars, REST API ' +
+        'ar Django REST Framework, pilna steka savienošana, noslēguma ' +
+        'projekts un sagatavošanās tehniskajām intervijām.',
+      en:
+        'A nine-course programme: programming in Python, version control ' +
+        'with Git, relational databases and SQL, the Django framework, ' +
+        'REST APIs with Django REST Framework, wiring up the full stack, ' +
+        'a back-end capstone and coding interview preparation.',
+    },
+    credentialUrl:
+      'https://coursera.org/share/9ebbee4c7908cba52f62fa4c6fa9bff7',
+  },
+  {
+    id: 'meta-fullstack',
+    title: 'Meta Full Stack Developer',
+    issuer: 'Meta · Coursera',
+    issued: '2026',
+    summary: {
+      lv:
+        'Desmit kursu specializācija no priekšgala līdz serverim: ' +
+        'HTML, CSS un JavaScript, React un Advanced React, Python, ' +
+        'datubāzes, Django tīmekļa lietotnes ar lietotāju autentifikāciju ' +
+        'un API izstrāde.',
+      en:
+        'A ten-course specialisation from front end to server: HTML, ' +
+        'CSS and JavaScript, React and Advanced React, Python, databases, ' +
+        'Django web apps with user authentication and building APIs.',
+    },
+    credentialUrl:
+      'https://coursera.org/share/6da3254ec4620620034db2e7ad690579',
+  },
   {
     id: 'meta-frontend',
     title: 'Meta Front-End Developer',

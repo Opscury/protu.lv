@@ -44,7 +44,7 @@ export const ui: Record<Lang, Strings> = {
   lv: {
     documentTitle: 'Valdis Viška — interaktīvu lietu izstrādātājs',
     documentDescription:
-      'Interaktīvu pieredžu izstrādātājs: Unity, C#, React, TypeScript un UX.',
+      'Interaktīvu pieredžu izstrādātājs: React, TypeScript, Django, Python, Unity, C# un UX.',
     eyebrow: 'Interaktīvu pieredžu izstrādātājs',
     heroTitle: 'Veidoju pieredzes, kurās cilvēki piedalās.',
     heroLead:
@@ -89,7 +89,7 @@ export const ui: Record<Lang, Strings> = {
   en: {
     documentTitle: 'Valdis Viška — interactive developer',
     documentDescription:
-      'Interactive-experience developer working across Unity, C#, React, TypeScript and UX.',
+      'Interactive-experience developer working across React, TypeScript, Django, Python, Unity, C# and UX.',
     eyebrow: 'Interactive-experience developer',
     heroTitle: 'I build experiences people can take part in.',
     heroLead:
