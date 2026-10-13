@@ -31,7 +31,6 @@ type Strings = {
   contactEmail: string
   contactMessage: string
   contactSend: string
-  contactHint: string
   contactSending: string
   contactSuccess: string
   contactError: string
@@ -78,7 +77,6 @@ export const ui: Record<Lang, Strings> = {
     contactEmail: 'E-pasts',
     contactMessage: 'Ziņa',
     contactSend: 'Sūtīt ziņu',
-    contactHint: 'Ziņa tiks nosūtīta tieši Valdim.',
     contactSending: 'Sūta…',
     contactSuccess: 'Paldies! Ziņa ir nosūtīta.',
     contactError: 'Ziņu neizdevās nosūtīt. Lūdzu, mēģini vēlreiz vai raksti e-pastu.',
@@ -123,7 +121,6 @@ export const ui: Record<Lang, Strings> = {
     contactEmail: 'Email',
     contactMessage: 'Message',
     contactSend: 'Send message',
-    contactHint: 'Your message will be sent directly to Valdis.',
     contactSending: 'Sending…',
     contactSuccess: 'Thank you — your message has been sent.',
     contactError: 'The message could not be sent. Please try again or email directly.',

@@ -54,7 +54,6 @@ function ContactForm({ lang }: Props) {
           <button className="action action-primary" type="submit" disabled={status === 'submitting'}>
             {status === 'submitting' ? t.contactSending : t.contactSend}
           </button>
-          <p>{t.contactHint}</p>
         </div>
         <p className={`contact-status ${status}`} aria-live="polite">
           {status === 'succeeded' && t.contactSuccess}
