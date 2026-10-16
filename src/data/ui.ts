@@ -61,7 +61,7 @@ export const ui: Record<Lang, Strings> = {
     langLabel: 'Valoda',
     verify: 'Pārbaudīt īstumu',
     selectedWorkNote:
-      'Viena dokumentēta pieredze. Vēl citiem darbiem tiek gatavoti publicējami stāsti.',
+      'Divi dokumentēti darbi. Vēl citiem tiek gatavoti publicējami stāsti.',
     sideProject:
       'Blakus darbam — «Vecās Varas», īss point-and-click gabals par ' +
       'latviešu folkloru. Phaser 3 un TypeScript, spēlējams pārlūkā.',
@@ -105,7 +105,7 @@ export const ui: Record<Lang, Strings> = {
     langLabel: 'Language',
     verify: 'Verify credential',
     selectedWorkNote:
-      'One documented experience so far. Further publishable case studies are being prepared.',
+      'Two documented projects so far. Further publishable case studies are being prepared.',
     sideProject:
       'On the side — Vecās Varas, a short point-and-click piece drawn from ' +
       'Latvian folklore. Phaser 3 and TypeScript, playable in the browser.',

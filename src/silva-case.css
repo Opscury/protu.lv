@@ -1,0 +1,315 @@
+/* ── Bistro Silva gadījuma izpēte ───────────────────── */
+
+.case-study.silva-case {
+  display: block;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.silva-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(14rem, 0.8fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: end;
+}
+
+.silva-title {
+  font-size: clamp(1.75rem, 3.6vw, 2.75rem);
+  line-height: 1;
+}
+
+.silva-head .case-summary {
+  max-width: 52ch;
+}
+
+.silva-status {
+  margin: 0;
+  padding: 1rem 1.125rem;
+  border-left: 3px solid var(--beam-b);
+  background: color-mix(in srgb, var(--beam-b) 6%, var(--plaque));
+  font-family: var(--utility);
+  font-size: 0.6875rem;
+  line-height: 1.7;
+  color: var(--exhibit-soft);
+}
+
+/* Salīdzinājums */
+
+.silva-compare {
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+.silva-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.875rem;
+}
+
+.silva-switch {
+  display: flex;
+  border: 1.5px solid var(--exhibit);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.silva-switch button {
+  min-height: 2.25rem;
+  padding: 0.4rem 0.8rem;
+  border: 0;
+  background: transparent;
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--exhibit);
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.silva-switch button + button {
+  border-left: 1.5px solid var(--exhibit);
+}
+
+.silva-switch button:hover {
+  background: color-mix(in srgb, var(--exhibit) 10%, transparent);
+}
+
+.silva-switch button[aria-pressed='true'] {
+  background: var(--exhibit);
+  color: var(--plaque);
+}
+
+.silva-switch button:focus-visible {
+  outline: 2px solid var(--beam-a);
+  outline-offset: -4px;
+}
+
+.compare {
+  --pos: 50%;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  border: 1px solid var(--rule);
+  background: var(--gallery);
+  cursor: ew-resize;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.compare-desktop {
+  width: 100%;
+  aspect-ratio: 1440 / 900;
+}
+
+.compare-mobile {
+  width: min(100%, 21rem);
+  aspect-ratio: 390 / 844;
+  border: 6px solid var(--exhibit);
+  border-radius: 1.75rem;
+}
+
+.compare-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  pointer-events: none;
+}
+
+.compare-before {
+  clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+}
+
+.compare-tag {
+  position: absolute;
+  bottom: 0.75rem;
+  z-index: 2;
+  padding: 0.3rem 0.5rem;
+  background: rgb(20 23 26 / 82%);
+  font-family: var(--utility);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: white;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+.compare-tag-before { left: 0.75rem; }
+.compare-tag-after { right: 0.75rem; }
+
+.compare-mobile .compare-tag { bottom: 0.6rem; font-size: 0.5rem; }
+.compare-mobile .compare-tag-domain { display: none; }
+.compare-mobile .compare-tag-before { left: 0.6rem; }
+.compare-mobile .compare-tag-after { right: 0.6rem; }
+
+.compare-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos);
+  z-index: 3;
+  width: 2.75rem;
+  margin-left: -1.375rem;
+  display: grid;
+  place-items: center;
+  outline: none;
+}
+
+.compare-handle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: white;
+  box-shadow: 0 0 0 1px rgb(20 23 26 / 35%);
+}
+
+.compare-grip {
+  position: relative;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 2px solid white;
+  border-radius: 50%;
+  background: var(--beam-a);
+  font-family: var(--utility);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  box-shadow: 0 6px 18px rgb(20 23 26 / 28%);
+  transition: transform 140ms ease;
+}
+
+.compare:hover .compare-grip { transform: scale(1.06); }
+.compare-handle:focus-visible .compare-grip { outline: 3px solid var(--beam-b); outline-offset: 3px; }
+
+.silva-hint {
+  margin: 0.75rem 0 0;
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  color: var(--exhibit-soft);
+  text-align: center;
+}
+
+/* Kas mainījās + skaitļi */
+
+.silva-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(15rem, 0.75fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+  border-top: 1px solid var(--rule);
+}
+
+.silva-changes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: change;
+}
+
+.silva-changes li {
+  counter-increment: change;
+}
+
+.silva-changes h4,
+.silva-metrics h4 {
+  margin: 0;
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--exhibit-soft);
+}
+
+.silva-changes h4::before {
+  content: counter(change, decimal-leading-zero) '  ';
+  color: var(--gallery-light);
+}
+
+.silva-changes p {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.silva-metrics {
+  align-self: start;
+  padding: 1.25rem;
+  background: var(--gallery);
+}
+
+.silva-metrics table {
+  width: 100%;
+  margin-top: 0.875rem;
+  border-collapse: collapse;
+  font-family: var(--utility);
+  font-size: 0.6875rem;
+}
+
+.silva-metrics th,
+.silva-metrics td {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+  text-align: right;
+  font-weight: 500;
+}
+
+.silva-metrics th[scope='row'] {
+  text-align: left;
+  color: var(--exhibit-soft);
+}
+
+.silva-metrics thead th {
+  font-size: 0.5625rem;
+  text-transform: uppercase;
+  color: var(--exhibit-soft);
+}
+
+.silva-metrics td { color: var(--exhibit-soft); padding-left: 0.75rem; }
+.silva-metrics td.silva-better { color: var(--exhibit); font-weight: 600; }
+
+.silva-metrics p {
+  margin: 0.75rem 0 0;
+  font-family: var(--utility);
+  font-size: 0.5625rem;
+  line-height: 1.6;
+  color: var(--exhibit-soft);
+}
+
+.silva-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 0.5rem 2rem;
+  margin-top: 1.75rem;
+}
+
+.silva-foot .plaque-links { margin-top: 1.25rem; }
+
+@media (max-width: 56rem) {
+  .silva-head,
+  .silva-body { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 34rem) {
+  .silva-changes { grid-template-columns: 1fr; }
+  .silva-controls { justify-content: center; }
+  .silva-switch button { padding: 0.4rem 0.6rem; }
+}

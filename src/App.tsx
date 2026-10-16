@@ -6,6 +6,7 @@ import Gallery from './components/Gallery'
 import LanguageToggle from './components/LanguageToggle'
 import Logo from './components/Logo'
 import ProjectCard from './components/ProjectCard'
+import SilvaCase from './components/SilvaCase'
 import { certificates, projects, skills } from './data/portfolio'
 import { ui } from './data/ui'
 import type { Lang } from './types'
@@ -101,6 +102,7 @@ function App() {
         <main className="galleries">
           <Gallery id="darbi" title={t.works} tone="a" backdrop="projection">
             <p className="gallery-note">{t.selectedWorkNote}</p>
+            <SilvaCase lang={lang} />
             {projects.map((project) => (
               <ProjectCard key={project.id} project={project} lang={lang} />
             ))}
