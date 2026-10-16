@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties, KeyboardEvent, PointerEvent } from 'react'
 
 type Props = {
@@ -11,6 +11,8 @@ type Props = {
   sliderLabel: string
   device: 'desktop' | 'mobile'
 }
+
+let introPlayed = false
 
 /** "Pirms · bistro.lv" → domēnu šaurā rāmī var paslēpt. */
 function Tag({ text }: { text: string }) {
@@ -37,6 +39,42 @@ function BeforeAfter({
   const [pos, setPos] = useState(50)
   const frame = useRef<HTMLDivElement>(null)
   const dragging = useRef(false)
+  const touched = useRef(false)
+
+  // Pirmo reizi redzams: robeža aizslīd pa labi, pa kreisi un atpakaļ —
+  // lai būtu skaidrs, ka to var vilkt. Tikai vienreiz lapā.
+  useEffect(() => {
+    const el = frame.current
+    if (!el || introPlayed) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let raf = 0
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || introPlayed) return
+        introPlayed = true
+        io.disconnect()
+        const keys = [50, 78, 24, 50]
+        const segment = 520
+        const start = performance.now() + 250
+        const tick = (now: number) => {
+          if (touched.current) return
+          const t = Math.max(0, now - start)
+          const i = Math.min(keys.length - 2, Math.floor(t / segment))
+          const k = Math.min(1, (t - i * segment) / segment)
+          const ease = k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2
+          setPos(keys[i] + (keys[i + 1] - keys[i]) * ease)
+          if (t < segment * (keys.length - 1)) raf = requestAnimationFrame(tick)
+        }
+        raf = requestAnimationFrame(tick)
+      },
+      { threshold: 0.6 },
+    )
+    io.observe(el)
+    return () => {
+      io.disconnect()
+      cancelAnimationFrame(raf)
+    }
+  }, [])
 
   function moveTo(clientX: number) {
     const box = frame.current?.getBoundingClientRect()
@@ -47,6 +85,7 @@ function BeforeAfter({
 
   function onPointerDown(e: PointerEvent<HTMLDivElement>) {
     dragging.current = true
+    touched.current = true
     e.currentTarget.setPointerCapture(e.pointerId)
     moveTo(e.clientX)
   }
@@ -60,6 +99,7 @@ function BeforeAfter({
   }
 
   function onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
+    touched.current = true
     const step = e.shiftKey ? 10 : 2
     if (e.key === 'ArrowLeft') setPos((p) => Math.max(0, p - step))
     else if (e.key === 'ArrowRight') setPos((p) => Math.min(100, p + step))

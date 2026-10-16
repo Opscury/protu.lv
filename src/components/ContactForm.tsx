@@ -8,6 +8,8 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xgaeogwv'
 function ContactForm({ lang }: Props) {
   const t = ui[lang]
   const [status, setStatus] = useState<'idle' | 'submitting' | 'succeeded' | 'failed'>('idle')
+  // Tēma nonāk e-pasta tēmas rindā — uzreiz redzams, vai raksta klients vai darba devējs.
+  const [topic, setTopic] = useState<keyof typeof t.topics | null>(null)
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -23,6 +25,7 @@ function ContactForm({ lang }: Props) {
 
       if (!response.ok) throw new Error('Form submission failed')
       form.reset()
+      setTopic(null)
       setStatus('succeeded')
     } catch {
       setStatus('failed')
@@ -38,6 +41,25 @@ function ContactForm({ lang }: Props) {
       </div>
 
       <form className="contact-form" onSubmit={submit}>
+        <fieldset className="contact-topic">
+          <legend>{t.contactTopic}</legend>
+          {(Object.keys(t.topics) as (keyof typeof t.topics)[]).map((key) => (
+            <label key={key}>
+              <input
+                type="radio"
+                name="topic"
+                value={ui.lv.topics[key]}
+                checked={topic === key}
+                onChange={() => setTopic(key)}
+                required
+              />
+              <span>{t.topics[key]}</span>
+            </label>
+          ))}
+        </fieldset>
+        {topic && (
+          <input type="hidden" name="_subject" value={`protu.lv — ${ui.lv.topics[topic]}`} />
+        )}
         <label>
           <span>{t.contactName}</span>
           <input required name="name" autoComplete="name" />

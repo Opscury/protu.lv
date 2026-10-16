@@ -313,3 +313,203 @@
   .silva-controls { justify-content: center; }
   .silva-switch button { padding: 0.4rem 0.6rem; }
 }
+
+/* Admin panelis */
+
+.silva-admin {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(15rem, 0.75fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+  border-top: 1px solid var(--rule);
+}
+
+.silva-admin-media { margin: 0; }
+
+.silva-admin-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1200 / 750;
+  border: 1px solid var(--rule);
+  background: var(--gallery);
+  box-shadow: 0 12px 32px rgb(20 23 26 / 10%);
+}
+
+.silva-admin-media figcaption {
+  margin-top: 0.625rem;
+  font-family: var(--utility);
+  font-size: 0.5625rem;
+  color: var(--exhibit-soft);
+}
+
+.silva-admin-text h4,
+.silva-steps h4 {
+  margin: 0;
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--exhibit-soft);
+}
+
+.silva-admin-text p {
+  margin: 0.75rem 0 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Kā tas tapa */
+
+.silva-steps {
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+}
+
+.silva-steps ol {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0.875rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.silva-steps li {
+  position: relative;
+  counter-increment: step;
+  padding: 1.5rem 1rem 0 0;
+  border-top: 3px solid var(--gallery-light);
+}
+
+.silva-steps li::before {
+  content: counter(step);
+  position: absolute;
+  top: -0.8rem;
+  left: 0;
+  display: grid;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--gallery-light);
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--plaque);
+}
+
+.silva-steps li[data-upcoming] {
+  border-top-style: dashed;
+  border-top-color: var(--rule);
+}
+
+.silva-steps li[data-upcoming]::before {
+  background: var(--plaque);
+  border: 1.5px dashed var(--exhibit-soft);
+  color: var(--exhibit-soft);
+}
+
+.silva-steps strong {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.silva-steps span {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: var(--utility);
+  font-size: 0.5625rem;
+  line-height: 1.6;
+  color: var(--exhibit-soft);
+}
+
+@media (max-width: 56rem) {
+  .silva-admin { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 40rem) {
+  .silva-steps ol { grid-template-columns: 1fr 1fr; row-gap: 1.75rem; }
+}
+
+/* Citas gadījuma izpētes tajā pašā izkārtojumā (VIZIUM) */
+
+.project-head { grid-template-columns: 1fr; }
+
+.project-media {
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  border: 1px solid var(--rule);
+  background: var(--gallery);
+}
+
+.project-media .image-carousel,
+.project-media .image-carousel img {
+  min-height: 0;
+  aspect-ratio: 16 / 9;
+  max-height: 38rem;
+}
+
+.project-subhead {
+  margin: 0 0 1rem;
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--exhibit-soft);
+}
+
+.project-contribution p { margin: 0; font-size: 0.9375rem; }
+
+.project-contribution li::before {
+  content: counter(change, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.375rem;
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--gallery-light);
+}
+
+.project-facts p {
+  margin: 0.5rem 0 1.25rem;
+  font-family: var(--body);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--exhibit);
+}
+
+.project-facts p:last-child { margin-bottom: 0; }
+
+/* Spēle — mazāka kartīte zem gadījumu izpētēm */
+
+.case-study.game-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-top-color: var(--beam-b);
+}
+
+.game-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #14171a;
+}
+
+.game-card .case-label { color: var(--beam-b); }
+.game-card .plaque-spec { margin-top: 0.5rem; }
+
+.game-body {
+  margin: 1rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.game-card .plaque-links a { border-bottom-color: var(--beam-b); }
+
+@media (max-width: 48rem) {
+  .case-study.game-card { grid-template-columns: 1fr; }
+}

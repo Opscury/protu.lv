@@ -17,9 +17,10 @@ type Strings = {
   certificates: string
   langLabel: string
   verify: string
-  selectedWorkNote: string
-  sideProject: string
-  sideProjectLink: string
+  navLabel: string
+  navContact: string
+  contactTopic: string
+  topics: { site: string; job: string; other: string }
   scope: string
   contribution: string
   outcome: string
@@ -60,12 +61,10 @@ export const ui: Record<Lang, Strings> = {
     certificates: 'Sertifikāti',
     langLabel: 'Valoda',
     verify: 'Pārbaudīt īstumu',
-    selectedWorkNote:
-      'Divi dokumentēti darbi. Vēl citiem tiek gatavoti publicējami stāsti.',
-    sideProject:
-      'Blakus darbam — «Vecās Varas», īss point-and-click gabals par ' +
-      'latviešu folkloru. Phaser 3 un TypeScript, spēlējams pārlūkā.',
-    sideProjectLink: 'Spēlēt',
+    navLabel: 'Sadaļas',
+    navContact: 'Kontakti',
+    contactTopic: 'Par ko?',
+    topics: { site: 'Mājaslapa vai projekts', job: 'Darba piedāvājums', other: 'Cits' },
     scope: 'Apjoms',
     contribution: 'Mans ieguldījums',
     outcome: 'Rezultāts',
@@ -104,12 +103,10 @@ export const ui: Record<Lang, Strings> = {
     certificates: 'Certificates',
     langLabel: 'Language',
     verify: 'Verify credential',
-    selectedWorkNote:
-      'Two documented projects so far. Further publishable case studies are being prepared.',
-    sideProject:
-      'On the side — Vecās Varas, a short point-and-click piece drawn from ' +
-      'Latvian folklore. Phaser 3 and TypeScript, playable in the browser.',
-    sideProjectLink: 'Play it',
+    navLabel: 'Sections',
+    navContact: 'Contact',
+    contactTopic: 'What about?',
+    topics: { site: 'Website or project', job: 'Job opportunity', other: 'Something else' },
     scope: 'Scope',
     contribution: 'My contribution',
     outcome: 'Outcome',

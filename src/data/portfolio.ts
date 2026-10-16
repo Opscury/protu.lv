@@ -113,19 +113,19 @@ export const projects: Project[] = [
     ],
     images: [
       {
-        src: 'https://www.dja.lv/img/projects/vizium-10.jpg',
+        src: '/work/vizium/vizium-10.webp',
         alt: { lv: 'VIZIUM ekspozīcijas interjers', en: 'VIZIUM exhibition interior' },
       },
       {
-        src: 'https://www.dja.lv/img/projects/vizium-15.jpg',
+        src: '/work/vizium/vizium-15.webp',
         alt: { lv: 'Interaktīvs eksponāts VIZIUM centrā', en: 'Interactive exhibit at VIZIUM' },
       },
       {
-        src: 'https://www.dja.lv/img/projects/vizium-12.jpg',
+        src: '/work/vizium/vizium-12.webp',
         alt: { lv: 'VIZIUM zinātnes centra instalācija', en: 'Installation at the VIZIUM science centre' },
       },
       {
-        src: 'https://www.dja.lv/img/projects/vizium-17.jpg',
+        src: '/work/vizium/vizium-17.webp',
         alt: { lv: 'Apmeklētāji VIZIUM ekspozīcijā', en: 'Visitors in the VIZIUM exhibition' },
       },
     ],

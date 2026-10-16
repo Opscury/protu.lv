@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import CertificateCard from './components/CertificateCard'
 import ContactForm from './components/ContactForm'
 import ExhibitHero from './components/ExhibitHero'
+import GameCard from './components/GameCard'
 import Gallery from './components/Gallery'
 import LanguageToggle from './components/LanguageToggle'
 import Logo from './components/Logo'
@@ -75,12 +76,17 @@ function App() {
 
   return (
     <>
-      <div className="page">
+      <div className="page" id="top">
         <div className="rail">
-          <span className="rail-mark">
+          <a className="rail-mark" href="#top">
             <Logo size={18} />
             protu.lv
-          </span>
+          </a>
+          <nav className="rail-nav" aria-label={t.navLabel}>
+            <a href="#darbi">{t.works}</a>
+            <a href="#sertifikati">{t.certificates}</a>
+            <a href="#contact">{t.navContact}</a>
+          </nav>
           <div className="rail-end">
             <span className="rail-meta">Valdis Viška · Latvija</span>
             <LanguageToggle
@@ -101,21 +107,11 @@ function App() {
 
         <main className="galleries">
           <Gallery id="darbi" title={t.works} tone="a" backdrop="projection">
-            <p className="gallery-note">{t.selectedWorkNote}</p>
             <SilvaCase lang={lang} />
             {projects.map((project) => (
               <ProjectCard key={project.id} project={project} lang={lang} />
             ))}
-            <p className="gallery-aside">
-              {t.sideProject}{' '}
-              <a
-                href="https://vecasvaras.protu.lv"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {t.sideProjectLink}
-              </a>
-            </p>
+            <GameCard lang={lang} />
           </Gallery>
 
           <Gallery

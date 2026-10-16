@@ -930,3 +930,117 @@
     display: none;
   }
 }
+
+/* ── Navigācija sliedē (lipīga) ─────────────────────── */
+
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+.rail {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  align-items: center;
+  margin: 0 calc(var(--edge) * -1);
+  padding-inline: var(--edge);
+  background: color-mix(in srgb, var(--gallery) 86%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.rail-mark { text-decoration: none; }
+
+.rail-nav {
+  display: flex;
+  gap: clamp(0.75rem, 2.5vw, 1.75rem);
+}
+
+.rail-nav a {
+  padding: 0.25rem 0;
+  border-bottom: 1.5px solid transparent;
+  color: var(--exhibit);
+  text-decoration: none;
+  transition: border-color 140ms ease, color 140ms ease;
+}
+
+.rail-nav a:hover,
+.rail-nav a:focus-visible {
+  border-bottom-color: var(--beam-a);
+}
+
+#darbi,
+#sertifikati,
+#contact {
+  scroll-margin-top: 3.5rem;
+}
+
+@media (max-width: 40rem) {
+  .rail { flex-wrap: wrap; row-gap: 0.5rem; padding-block: 0.75rem; }
+  .rail-nav { order: 3; width: 100%; justify-content: space-between; }
+  #darbi, #sertifikati, #contact { scroll-margin-top: 5.5rem; }
+}
+
+/* ── Kontaktformas tēma ─────────────────────────────── */
+
+.contact-topic {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.contact-topic legend {
+  width: 100%;
+  margin-bottom: 0.45rem;
+  padding: 0;
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--exhibit-soft);
+}
+
+.contact-form .contact-topic label {
+  display: inline-flex;
+  position: relative;
+}
+
+.contact-topic input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.contact-form .contact-topic label > span {
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid var(--exhibit);
+  border-radius: 2px;
+  background: var(--plaque);
+  font-family: var(--utility);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: none;
+  color: var(--exhibit);
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.contact-topic label:hover > span {
+  background: color-mix(in srgb, var(--exhibit) 8%, var(--plaque));
+}
+
+.contact-topic input:checked + span {
+  background: var(--exhibit);
+  color: var(--plaque);
+}
+
+.contact-topic input:focus-visible + span {
+  outline: 2px solid var(--beam-a);
+  outline-offset: 2px;
+}

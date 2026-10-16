@@ -96,19 +96,6 @@ export const changes: { title: Localized; body: Localized }[] = [
     },
   },
   {
-    title: { lv: 'Saturu maina paši', en: 'Staff edit it themselves' },
-    body: {
-      lv:
-        'Nedēļas ēdienkarti darbinieki nomaina latviskā Django admin ' +
-        'panelī. Grupai redzams tikai tas, kas jāmaina — bez zvana ' +
-        'izstrādātājam.',
-      en:
-        'Staff replace the weekly lunch menu in a Latvian-language Django ' +
-        'admin. Their group sees only what they need to change — no call ' +
-        'to the developer.',
-    },
-  },
-  {
     title: { lv: 'Savs serveris', en: 'Own server' },
     body: {
       lv:
@@ -148,7 +135,7 @@ export const metrics = {
   metric: { lv: 'Rādītājs', en: 'Metric' },
   rebuild: { lv: 'Jaunā', en: 'Rebuild' },
   rows: [
-    { label: { lv: 'Lapas svars', en: 'Page weight' }, old: '7,3 MB', new: '1,7 MB' },
+    { label: { lv: 'Lapas svars', en: 'Page weight' }, old: '7,3 MB', new: '1,1 MB' },
     { label: { lv: 'Pieprasījumi', en: 'Requests' }, old: '31', new: '21' },
     { label: { lv: 'Pieejamība', en: 'Accessibility' }, old: '93', new: '96' },
     { label: { lv: 'Visi attēli kopā', en: 'All images' }, old: '202 MB', new: '31 MB' },
@@ -158,3 +145,49 @@ export const metrics = {
     en: 'Lighthouse, mobile profile, 16 Oct 2026. Image total — before and after conversion.',
   },
 }
+
+export const admin = {
+  title: { lv: 'Ko redz darbinieki', en: 'What the staff see' },
+  body: {
+    lv:
+      'Pirmdienas rīts: jaunā pusdienu ēdienkarte ir PDF failā. Darbinieks ' +
+      'ielogojas, izvēlas ēdienkarti, nomaina failu un saglabā — pēc minūtes ' +
+      'tā ir vietnē. Panelis ir latviski, un darbinieku grupa redz tikai to, ' +
+      'kas viņiem jāmaina.',
+    en:
+      'Monday morning: the new lunch menu is a PDF. A staff member logs in, ' +
+      'picks the menu, swaps the file and saves — a minute later it is on the ' +
+      'site. The panel is in Latvian, and the staff group sees only what they ' +
+      'need to change.',
+  },
+  caption: {
+    lv: 'Īsts ieraksts no admin paneļa, demo lietotājs.',
+    en: 'A real recording of the admin panel, demo user.',
+  },
+  videoLabel: {
+    lv: 'Video: darbinieks nomaina nedēļas ēdienkartes PDF admin panelī',
+    en: 'Video: a staff member replaces the weekly menu PDF in the admin panel',
+  },
+}
+
+export const steps: { label: Localized; note: Localized; upcoming?: boolean }[] = [
+  {
+    label: { lv: 'Precīza kopija', en: 'Faithful copy' },
+    note: { lv: 'Visas 7 lapas React, pikselis pret pikseli', en: 'All 7 pages in React, pixel for pixel' },
+  },
+  {
+    label: { lv: 'Jauns izskats', en: 'New look' },
+    note: { lv: 'Konditorejas stils visai vietnei', en: 'The bakery style across the site' },
+  },
+  {
+    label: { lv: 'Admin panelis', en: 'Admin panel' },
+    note: { lv: 'Django, savs serveris, satura API', en: 'Django, own server, content API' },
+  },
+  {
+    label: { lv: 'v2 pēc zīmola izpētes', en: 'v2 from brand research' },
+    note: { lv: 'Nākamais solis', en: 'Next step' },
+    upcoming: true,
+  },
+]
+
+export const processTitle = { lv: 'Kā tas tapa', en: 'How it was built' }

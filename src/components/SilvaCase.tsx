@@ -1,6 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BeforeAfter from './BeforeAfter'
-import { changes, comparePages, links, metrics, shot, silva, tags } from '../data/silva'
+import LoopVideo from './LoopVideo'
+import {
+  admin,
+  changes,
+  comparePages,
+  links,
+  metrics,
+  processTitle,
+  shot,
+  silva,
+  steps,
+  tags,
+} from '../data/silva'
 import type { Lang } from '../types'
 import '../silva-case.css'
 
@@ -14,6 +26,23 @@ function SilvaCase({ lang }: Props) {
     window.matchMedia('(max-width: 40rem)').matches ? 'mobile' : 'desktop',
   )
   const pageName = comparePages.find((p) => p.id === page)?.label[lang] ?? ''
+
+  // Pārējo cilņu ekrānuzņēmumus ielādē fonā, kad lapa ir mierīga —
+  // pārslēdzot cilni, rāmis nepaliek tukšs.
+  useEffect(() => {
+    const warm = () => {
+      for (const p of comparePages)
+        for (const d of ['desktop', 'mobile'])
+          for (const s of ['old', 'new'] as const) new Image().src = shot(s, p.id, d)
+    }
+    const idle = window.requestIdleCallback
+    if (idle) {
+      const id = idle(warm, { timeout: 4000 })
+      return () => window.cancelIdleCallback(id)
+    }
+    const id = window.setTimeout(warm, 2500)
+    return () => window.clearTimeout(id)
+  }, [])
 
   return (
     <article className="case-study silva-case">
@@ -74,6 +103,22 @@ function SilvaCase({ lang }: Props) {
         <p className="silva-hint">{silva.compareHint[lang]}</p>
       </div>
 
+      <section className="silva-admin" aria-labelledby="silva-admin-title">
+        <figure className="silva-admin-media">
+          <LoopVideo
+            className="silva-admin-video"
+            src="/work/silva/admin-demo.mp4"
+            poster="/work/silva/admin-demo-poster.webp"
+            label={admin.videoLabel[lang]}
+          />
+          <figcaption>{admin.caption[lang]}</figcaption>
+        </figure>
+        <div className="silva-admin-text">
+          <h4 id="silva-admin-title">{admin.title[lang]}</h4>
+          <p>{admin.body[lang]}</p>
+        </div>
+      </section>
+
       <div className="silva-body">
         <ol className="silva-changes">
           {changes.map((c) => (
@@ -106,6 +151,18 @@ function SilvaCase({ lang }: Props) {
           </table>
           <p>{metrics.note[lang]}</p>
         </aside>
+      </div>
+
+      <div className="silva-steps">
+        <h4>{processTitle[lang]}</h4>
+        <ol>
+          {steps.map((s) => (
+            <li key={s.label.en} data-upcoming={s.upcoming || undefined}>
+              <strong>{s.label[lang]}</strong>
+              <span>{s.note[lang]}</span>
+            </li>
+          ))}
+        </ol>
       </div>
 
       <footer className="silva-foot">
