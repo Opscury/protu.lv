@@ -13,7 +13,7 @@ import { ui } from './data/ui'
 import type { Lang } from './types'
 import './App.css'
 
-const EMAIL = 'viska.valdis@gmail.com'
+const EMAIL = 'valdis@protu.lv'
 const CYCLE_MS = 2600
 const STORAGE_KEY = 'protu-lang'
 
