@@ -28,6 +28,10 @@ type Strings = {
   availability: string
   contactTitle: string
   contactLead: string
+  /** Virsraksts virs tiešās e-pasta adreses. */
+  contactDirect: string
+  /** Piezīme, ka pasta serveris ir paša uzstādīts un uzturēts. */
+  selfHosted: string
   contactName: string
   contactEmail: string
   contactMessage: string
@@ -72,6 +76,9 @@ export const ui: Record<Lang, Strings> = {
     availability: 'Atvērts jaunām iespējām Latvijā un attālināti.',
     contactTitle: 'Sazināmies',
     contactLead: 'Pastāsti īsi par iespēju, komandu vai projektu.',
+    contactDirect: 'Vai raksti tieši',
+    selfHosted:
+      'Šī adrese darbojas uz mana paša pasta servera — Stalwart, ko pats uzstādīju un uzturu savā VPS, ar SPF, DKIM un DMARC.',
     contactName: 'Vārds',
     contactEmail: 'E-pasts',
     contactMessage: 'Ziņa',
@@ -114,6 +121,9 @@ export const ui: Record<Lang, Strings> = {
     availability: 'Open to opportunities in Latvia and remotely.',
     contactTitle: 'Let’s talk',
     contactLead: 'Tell me a little about the opportunity, team or project.',
+    contactDirect: 'Or write directly',
+    selfHosted:
+      'This address runs on my own mail server — Stalwart, set up and maintained by me on my own VPS, with SPF, DKIM and DMARC.',
     contactName: 'Name',
     contactEmail: 'Email',
     contactMessage: 'Message',

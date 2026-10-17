@@ -4,6 +4,8 @@ import type { Lang } from '../types'
 
 type Props = { lang: Lang }
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xgaeogwv'
+// Pašhostēts pasts (Stalwart uz netcup VPS, mail.protu.lv).
+const CONTACT_EMAIL = 'valdis@protu.lv'
 
 function ContactForm({ lang }: Props) {
   const t = ui[lang]
@@ -37,7 +39,17 @@ function ContactForm({ lang }: Props) {
       <div className="contact-intro">
         <p className="eyebrow">{t.eyebrow}</p>
         <h2 id="contact-title">{t.contactTitle}</h2>
-        <p>{t.contactLead}</p>
+        <p className="contact-lead">{t.contactLead}</p>
+        <div className="contact-direct">
+          <span>{t.contactDirect}</span>
+          <a className="mailto" href={`mailto:${CONTACT_EMAIL}`}>
+            {CONTACT_EMAIL}
+          </a>
+          <p className="self-hosted">
+            <span className="self-hosted-dot" aria-hidden="true" />
+            {t.selfHosted}
+          </p>
+        </div>
       </div>
 
       <form className="contact-form" onSubmit={submit}>

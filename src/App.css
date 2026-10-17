@@ -261,11 +261,52 @@
   text-transform: uppercase;
 }
 
-.contact-intro > p:last-child {
+.contact-intro .contact-lead {
   max-width: 30ch;
   margin: 1.25rem 0 0;
   font-size: 1.0625rem;
   line-height: 1.55;
+}
+
+.contact-direct {
+  display: grid;
+  justify-items: start;
+  margin-top: 2rem;
+}
+
+.contact-direct > span {
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--exhibit-soft);
+}
+
+.contact-direct .mailto {
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+}
+
+.self-hosted {
+  display: flex;
+  gap: 0.55rem;
+  align-items: baseline;
+  max-width: 36ch;
+  margin: 1rem 0 0;
+  font-family: var(--utility);
+  font-size: 0.625rem;
+  line-height: 1.6;
+  color: var(--exhibit-soft);
+}
+
+.self-hosted-dot {
+  flex: none;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: #087c47;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #087c47 18%, transparent);
+  transform: translateY(-0.05rem);
 }
 
 .contact-form { display: grid; gap: 1.25rem; }
