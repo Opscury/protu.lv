@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import CertificateCard from './components/CertificateCard'
 import ContactForm from './components/ContactForm'
 import ExhibitHero from './components/ExhibitHero'
-import GameCard from './components/GameCard'
 import Gallery from './components/Gallery'
 import LanguageToggle from './components/LanguageToggle'
 import Logo from './components/Logo'
 import ProjectCard from './components/ProjectCard'
 import SilvaCase from './components/SilvaCase'
+import WorkCard from './components/WorkCard'
 import { certificates, projects, skills } from './data/portfolio'
 import { ui } from './data/ui'
+import { caseIds, works } from './data/works'
+import { onLinkClick, restoreScroll, usePath } from './router'
 import type { Lang } from './types'
 import './App.css'
 
@@ -26,10 +28,19 @@ function initialLang(): Lang {
   return navigator.language.toLowerCase().startsWith('lv') ? 'lv' : 'en'
 }
 
+/** /darbi/silva → 'silva'; nezināms ceļš → null (rāda sākumlapu). */
+function caseFromPath(path: string): string | null {
+  const id = path.match(/^\/darbi\/([\w-]+)\/?$/)?.[1]
+  return id && caseIds.includes(id) ? id : null
+}
+
 function App() {
   const [lang, setLang] = useState<Lang>(initialLang)
   const [active, setActive] = useState(0)
   const [handedOver, setHandedOver] = useState(false)
+  const path = usePath()
+  const caseId = caseFromPath(path)
+  const caseWork = works.find((w) => w.id === caseId)
 
   const t = ui[lang]
 
@@ -41,23 +52,25 @@ function App() {
     const url = new URL(window.location.href)
     if (lang === 'en') url.searchParams.set('lang', 'en')
     else url.searchParams.delete('lang')
-    window.history.replaceState({}, '', url)
-    document.title = ui[lang].documentTitle
-    document
-      .querySelector('meta[name="description"]')
-      ?.setAttribute('content', ui[lang].documentDescription)
-    document
-      .querySelector('meta[property="og:description"]')
-      ?.setAttribute('content', ui[lang].documentDescription)
+    window.history.replaceState(window.history.state, '', url)
+    document.title = caseWork
+      ? `${caseWork.title} — ${ui[lang].caseStudy} · Valdis Viška`
+      : ui[lang].documentTitle
+    const description = caseWork ? caseWork.blurb[lang] : ui[lang].documentDescription
+    document.querySelector('meta[name="description"]')?.setAttribute('content', description)
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', description)
     document
       .querySelector('meta[property="og:locale"]')
       ?.setAttribute('content', lang === 'lv' ? 'lv_LV' : 'en_US')
-  }, [lang])
+  }, [lang, caseWork])
+
+  // Lapas maiņa: atpakaļ uz to pašu vietu, uz #enkuru vai uz augšu.
+  useLayoutEffect(restoreScroll, [path])
 
   // Piesaistes cikls: rullē pats, līdz apmeklētājs pieskaras.
   // Tad vadība paliek viņam.
   useEffect(() => {
-    if (handedOver) return
+    if (handedOver || caseId) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const id = window.setInterval(() => {
@@ -65,7 +78,7 @@ function App() {
     }, CYCLE_MS)
 
     return () => window.clearInterval(id)
-  }, [handedOver])
+  }, [handedOver, caseId])
 
   function choose(i: number) {
     setActive(i)
@@ -74,17 +87,25 @@ function App() {
 
   const shift = active / (skills.length - 1)
 
+  // Sākumlapā enkuri strādā tieši; gadījuma lapā tie ved atpakaļ uz sākumu.
+  const homeLink = (hash: string) =>
+    caseId ? { href: `/${hash}`, onClick: onLinkClick } : { href: hash }
+
+  const nextId = caseId ? caseIds[(caseIds.indexOf(caseId) + 1) % caseIds.length] : null
+  const nextWork = works.find((w) => w.id === nextId)
+  const vizium = projects.find((p) => p.id === 'vizium')
+
   return (
     <>
       <div className="page" id="top">
         <div className="rail">
-          <a className="rail-mark" href="#top">
+          <a className="rail-mark" {...(caseId ? { href: '/', onClick: onLinkClick } : { href: '#top' })}>
             <Logo size={18} />
             protu.lv
           </a>
           <nav className="rail-nav" aria-label={t.navLabel}>
-            <a href="#darbi">{t.works}</a>
-            <a href="#sertifikati">{t.certificates}</a>
+            <a {...homeLink('#darbi')}>{t.works}</a>
+            <a {...homeLink('#sertifikati')}>{t.certificates}</a>
             <a href="#contact">{t.navContact}</a>
           </nav>
           <div className="rail-end">
@@ -97,39 +118,55 @@ function App() {
           </div>
         </div>
 
-        <ExhibitHero
-          skills={skills}
-          active={active}
-          onChoose={choose}
-          lang={lang}
-          shift={shift}
-        />
+        {caseId ? (
+          <main className="case-page gallery gallery-a" data-visible="true">
+            <a className="case-back" href="/#darbi" onClick={onLinkClick}>
+              {t.backToWork}
+            </a>
+            {caseId === 'silva' && <SilvaCase lang={lang} />}
+            {caseId === 'vizium' && vizium && <ProjectCard project={vizium} lang={lang} />}
+            {nextWork && nextWork.id !== caseId && (
+              <a className="case-next" href={nextWork.href} onClick={onLinkClick}>
+                <span>{t.nextWork}</span>
+                {nextWork.title}
+              </a>
+            )}
+          </main>
+        ) : (
+          <>
+            <ExhibitHero
+              skills={skills}
+              active={active}
+              onChoose={choose}
+              lang={lang}
+              shift={shift}
+            />
 
-        <main className="galleries">
-          <Gallery id="darbi" title={t.works} tone="a" backdrop="projection">
-            <SilvaCase lang={lang} />
-            {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} lang={lang} />
-            ))}
-            <GameCard lang={lang} />
-          </Gallery>
+            <main className="galleries">
+              <Gallery id="darbi" title={t.works} tone="a" backdrop="projection">
+                {works.map((work) => (
+                  <WorkCard key={work.id} work={work} lang={lang} />
+                ))}
+              </Gallery>
 
-          <Gallery
-            id="sertifikati"
-            title={t.certificates}
-            tone="b"
-            backdrop="wireframe"
-          >
-            {certificates.map((certificate) => (
-              <CertificateCard
-                key={certificate.id}
-                certificate={certificate}
-                lang={lang}
-                verifyLabel={t.verify}
-              />
-            ))}
-          </Gallery>
-        </main>
+              <Gallery
+                id="sertifikati"
+                title={t.certificates}
+                tone="b"
+                backdrop="wireframe"
+              >
+                {certificates.map((certificate) => (
+                  <CertificateCard
+                    key={certificate.id}
+                    certificate={certificate}
+                    lang={lang}
+                    verifyLabel={t.verify}
+                  />
+                ))}
+              </Gallery>
+            </main>
+          </>
+        )}
 
         <ContactForm lang={lang} />
 

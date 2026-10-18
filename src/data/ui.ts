@@ -25,6 +25,8 @@ type Strings = {
   contribution: string
   outcome: string
   caseStudy: string
+  backToWork: string
+  nextWork: string
   availability: string
   contactTitle: string
   contactLead: string
@@ -73,6 +75,8 @@ export const ui: Record<Lang, Strings> = {
     contribution: 'Mans ieguldījums',
     outcome: 'Rezultāts',
     caseStudy: 'Gadījuma izpēte',
+    backToWork: 'Visi darbi',
+    nextWork: 'Nākamais darbs',
     availability: 'Atvērts jaunām iespējām Latvijā un attālināti.',
     contactTitle: 'Sazināmies',
     contactLead: 'Pastāsti īsi par iespēju, komandu vai projektu.',
@@ -118,6 +122,8 @@ export const ui: Record<Lang, Strings> = {
     contribution: 'My contribution',
     outcome: 'Outcome',
     caseStudy: 'Case study',
+    backToWork: 'All work',
+    nextWork: 'Next project',
     availability: 'Open to opportunities in Latvia and remotely.',
     contactTitle: 'Let’s talk',
     contactLead: 'Tell me a little about the opportunity, team or project.',

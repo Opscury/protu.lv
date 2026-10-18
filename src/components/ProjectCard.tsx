@@ -14,7 +14,7 @@ function ProjectCard({ project, lang }: Props) {
       <header className="silva-head project-head">
         <div>
           <p className="case-label">{lang === 'lv' ? 'Gadījuma izpēte' : 'Case study'}</p>
-          <h3 className="plaque-title silva-title">{project.title}</h3>
+          <h1 className="plaque-title silva-title">{project.title}</h1>
           <dl className="plaque-spec">
             <dt className="sr-only">{lang === 'lv' ? 'Loma' : 'Role'}</dt>
             <dd>{project.role[lang]}</dd>

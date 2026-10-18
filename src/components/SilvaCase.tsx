@@ -49,7 +49,7 @@ function SilvaCase({ lang }: Props) {
       <header className="silva-head">
         <div>
           <p className="case-label">{silva.label[lang]}</p>
-          <h3 className="plaque-title silva-title">{silva.title}</h3>
+          <h1 className="plaque-title silva-title">{silva.title}</h1>
           <dl className="plaque-spec">
             <dt className="sr-only">{lang === 'lv' ? 'Loma' : 'Role'}</dt>
             <dd>{silva.role[lang]}</dd>
