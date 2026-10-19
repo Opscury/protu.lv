@@ -40,6 +40,25 @@ export const works: Work[] = [
     cta: { lv: 'Skatīt gadījuma izpēti', en: 'Read the case study' },
   },
   {
+    id: 'anda',
+    title: 'Anda Viška — portfolio',
+    label: { lv: 'Gadījuma izpēte · klienta darbs', en: 'Case study · client work' },
+    spec: 'HTML · CSS · JS · VPS',
+    blurb: {
+      lv:
+        'Spēļu mākslinieces portfolio no Canva uz pašas domēnu: tās pašas ' +
+        'pasteļkrāsas, skaidra struktūra un sava lapa katram projektam.',
+      en:
+        'A game artist’s portfolio moved from Canva to her own domain: the same ' +
+        'pastel colours, a clear structure and a page for every project.',
+    },
+    fact: { lv: 'Lapas svars 20,6 MB → 0,45 MB', en: 'Page weight 20.6 MB → 0.45 MB' },
+    image: '/work/anda/new-home-desktop.webp',
+    imageAlt: { lv: 'Andas Viškas jaunā portfolio sākumlapa', en: 'Anda Viška’s new portfolio home page' },
+    href: '/darbi/anda',
+    cta: { lv: 'Skatīt gadījuma izpēti', en: 'Read the case study' },
+  },
+  {
     id: 'vizium',
     title: 'VIZIUM',
     label: { lv: 'Gadījuma izpēte', en: 'Case study' },

@@ -7,6 +7,7 @@ import LanguageToggle from './components/LanguageToggle'
 import Logo from './components/Logo'
 import ProjectCard from './components/ProjectCard'
 import SilvaCase from './components/SilvaCase'
+import AndaCase from './components/AndaCase'
 import WorkCard from './components/WorkCard'
 import { certificates, projects, skills } from './data/portfolio'
 import { ui } from './data/ui'
@@ -124,6 +125,7 @@ function App() {
               {t.backToWork}
             </a>
             {caseId === 'silva' && <SilvaCase lang={lang} />}
+            {caseId === 'anda' && <AndaCase lang={lang} />}
             {caseId === 'vizium' && vizium && <ProjectCard project={vizium} lang={lang} />}
             {nextWork && nextWork.id !== caseId && (
               <a className="case-next" href={nextWork.href} onClick={onLinkClick}>
