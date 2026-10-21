@@ -1,71 +1,4 @@
-import type { Certificate, Project, Skill } from '../types'
-
-export const skills: Skill[] = [
-  {
-    id: 'react',
-    label: 'React',
-    note: {
-      lv: 'Komponentes, hooks, stāvokļa pārvaldība',
-      en: 'Components, hooks, state management',
-    },
-  },
-  {
-    id: 'typescript',
-    label: 'TypeScript',
-    note: {
-      lv: 'Tipizēti dati — kļūdas pamana redaktors, nevis lietotājs',
-      en: 'Typed data — the editor catches mistakes, not the user',
-    },
-  },
-  {
-    id: 'django',
-    label: 'Django',
-    note: {
-      lv: 'REST API, datubāzes un admin panelis, ko saprot arī klients',
-      en: 'REST APIs, databases and an admin panel the client can actually use',
-    },
-  },
-  {
-    id: 'python',
-    label: 'Python',
-    note: {
-      lv: 'Servera loģika, datu apstrāde, skripti',
-      en: 'Server logic, data handling, scripts',
-    },
-  },
-  {
-    id: 'css',
-    label: 'CSS',
-    note: {
-      lv: 'Izkārtojumi, animācijas, pieejamība',
-      en: 'Layouts, animation, accessibility',
-    },
-  },
-  {
-    id: 'uiux',
-    label: 'UI/UX',
-    note: {
-      lv: 'Lietotāju izpēte, prototipi Figma, lietojamības testi',
-      en: 'User research, Figma prototypes, usability testing',
-    },
-  },
-  {
-    id: 'unity',
-    label: 'Unity',
-    note: {
-      lv: 'Interaktīvas instalācijas un mobilās spēles',
-      en: 'Interactive installations and mobile games',
-    },
-  },
-  {
-    id: 'csharp',
-    label: 'C#',
-    note: {
-      lv: 'Spēļu loģika, eksponātu vadība, iekšējie rīki',
-      en: 'Game logic, exhibit control, internal tools',
-    },
-  },
-]
+import type { Certificate, Project } from '../types'
 
 export const projects: Project[] = [
   {
@@ -79,31 +12,31 @@ export const projects: Project[] = [
     period: '2022',
     summary: {
       lv:
-        'Interaktīvo eksponātu izstrāde Ventspils zinātnes centram VIZIUM.',
+        'Programmēju interaktīvus eksponātus Ventspils zinātnes centram VIZIUM.',
       en:
-        'Interactive exhibit development for the VIZIUM science centre in Ventspils.',
+        'I programmed interactive exhibits for the VIZIUM science centre in Ventspils.',
     },
     scope: {
-      lv: 'Vairākas tehnoloģiskas instalācijas zinātnes centra ekspozīcijās.',
-      en: 'Multiple technology-led installations within a science-centre exhibition.',
+      lv: 'Vairākas instalācijas zinātnes centra ekspozīcijā.',
+      en: 'Several installations in the science centre’s exhibition.',
     },
     contribution: [
       {
-        lv: 'Strādāju OVERLY programmēšanas komandā pie Unity un C# risinājumiem.',
-        en: 'Worked within OVERLY’s programming team on Unity and C# solutions.',
+        lv: 'Strādāju OVERLY programmēšanas komandā ar Unity un C#.',
+        en: 'I worked in OVERLY’s programming team, in Unity and C#.',
       },
       {
         lv: 'Savienoju multimediju projekcijas, simulatorus un interaktīvas saskarnes.',
-        en: 'Brought together multimedia projections, simulators and interactive interfaces.',
+        en: 'I connected multimedia projections, simulators and interactive interfaces.',
       },
       {
-        lv: 'Veidoju risinājumus eksponātiem par fiziku, matemātiku un viedajām tehnoloģijām.',
-        en: 'Built for exhibits spanning physics, mathematics and smart technology.',
+        lv: 'Strādāju pie eksponātiem par fiziku, matemātiku un viedajām tehnoloģijām.',
+        en: 'I worked on exhibits about physics, maths and smart technology.',
       },
     ],
     outcome: {
-      lv: 'Apmeklētājiem paredzētas instalācijas kļuva par daļu no VIZIUM daudznozaru ekspozīcijas.',
-      en: 'Visitor-facing installations became part of VIZIUM’s multidisciplinary exhibition.',
+      lv: 'Instalācijas kļuva par daļu no VIZIUM ekspozīcijas, un tās lieto apmeklētāji.',
+      en: 'The installations became part of the VIZIUM exhibition, built for visitors to use.',
     },
     tags: [
       { lv: 'Unity', en: 'Unity' },

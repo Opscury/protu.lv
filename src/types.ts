@@ -13,13 +13,6 @@ export type ProjectImage = {
   alt: Localized
 }
 
-export type Skill = {
-  id: string
-  label: string
-  /** Ko tieši es ar to daru — parādās vadības panelī. */
-  note: Localized
-}
-
 export type Project = {
   id: string
   title: string

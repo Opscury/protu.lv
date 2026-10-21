@@ -46,8 +46,8 @@ function AndaCase({ lang }: Props) {
     <article className="case-study silva-case">
       <header className="silva-head">
         <div>
-          <p className="case-label">{anda.label[lang]}</p>
           <h1 className="plaque-title silva-title">{anda.title}</h1>
+          <p className="case-label">{anda.label[lang]}</p>
           <dl className="plaque-spec">
             <dt className="sr-only">{lang === 'lv' ? 'Loma' : 'Role'}</dt>
             <dd>{anda.role[lang]}</dd>
@@ -94,8 +94,8 @@ function AndaCase({ lang }: Props) {
           after={shot('new', page, device)}
           beforeLabel={anda.before[lang]}
           afterLabel={anda.after[lang]}
-          beforeAlt={`Canva — ${pageName}`}
-          afterAlt={`anda.protu.lv — ${pageName}`}
+          beforeAlt={`Canva · ${pageName}`}
+          afterAlt={`anda.protu.lv · ${pageName}`}
           sliderLabel={anda.sliderLabel[lang]}
         />
         <p className="silva-hint">{anda.compareHint[lang]}</p>

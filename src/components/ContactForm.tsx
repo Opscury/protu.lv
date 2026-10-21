@@ -37,7 +37,6 @@ function ContactForm({ lang }: Props) {
   return (
     <section className="contact" id="contact" aria-labelledby="contact-title">
       <div className="contact-intro">
-        <p className="eyebrow">{t.eyebrow}</p>
         <h2 id="contact-title">{t.contactTitle}</h2>
         <p className="contact-lead">{t.contactLead}</p>
         <div className="contact-direct">
@@ -70,7 +69,7 @@ function ContactForm({ lang }: Props) {
           ))}
         </fieldset>
         {topic && (
-          <input type="hidden" name="_subject" value={`protu.lv — ${ui.lv.topics[topic]}`} />
+          <input type="hidden" name="_subject" value={`protu.lv · ${ui.lv.topics[topic]}`} />
         )}
         <label>
           <span>{t.contactName}</span>

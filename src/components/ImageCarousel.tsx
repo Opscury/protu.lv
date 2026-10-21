@@ -17,10 +17,10 @@ function ImageCarousel({ images, lang, title }: Props) {
     <div className="image-carousel" aria-label={`${title} ${t.caseStudy}`}>
       <img src={image.src} alt={image.alt[lang]} />
       <button className="carousel-nav carousel-nav-previous" type="button" onClick={() => move(-1)} aria-label={t.previousImage}>
-        <span aria-hidden="true">←</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3 5 8l5 5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" /></svg>
       </button>
       <button className="carousel-nav carousel-nav-next" type="button" onClick={() => move(1)} aria-label={t.nextImage}>
-        <span aria-hidden="true">→</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" /></svg>
       </button>
       <div className="carousel-dots" aria-label={`${title} images`}>
         {images.map((item, index) => (

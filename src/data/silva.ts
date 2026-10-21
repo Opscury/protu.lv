@@ -23,23 +23,23 @@ export const silva = {
   place: 'Jelgava · 2026',
   summary: {
     lv:
-      'Ģimenes bistro, konditorejas un banketu zāles mājaslapas pārbūve — ' +
+      'Pārbūvēju ģimenes bistro, konditorejas un banketu zāles mājaslapu: ' +
       'no WordPress tēmas uz ātru React vietni ar paša veidotu satura ' +
       'pārvaldību, ko darbinieki saprot bez instrukcijas.',
     en:
-      'Rebuilding the website of a family bistro, bakery and banquet venue — ' +
-      'from a WordPress theme to a fast React site with a custom content ' +
-      'admin the staff can use without a manual.',
+      'I rebuilt the website of a family bistro, bakery and banquet venue. ' +
+      'It went from a WordPress theme to a fast React site with a custom ' +
+      'content admin the staff can use without a manual.',
   },
   status: {
     lv:
-      'Koncepts, nevis gala versija. Publiskā vietne joprojām ir bistro.lv. ' +
-      'Gala dizainu pabeigsim, balstoties uz Silvas zīmola izpēti, kas ' +
+      'Šis ir koncepts. Publiskā vietne joprojām ir bistro.lv. ' +
+      'Gala dizainu pabeigsim pēc Silvas zīmola izpētes, kas ' +
       'top kā zīmola dizaina maģistra darbs.',
     en:
-      'A concept, not the final version — bistro.lv is still the public site. ' +
-      'The final design will be completed on the basis of brand research ' +
-      'for Silva, currently under way as a brand design master’s project.',
+      'This is a concept. The public site is still bistro.lv. ' +
+      'We’ll finish the design after the brand research for Silva, ' +
+      'which is under way as a brand design master’s project.',
   },
   compareHint: {
     lv: 'Velc robežu: pa kreisi pašreizējā bistro.lv, pa labi jaunā versija.',
@@ -63,12 +63,12 @@ export const changes: { title: Localized; body: Localized }[] = [
     body: {
       lv:
         'Visas septiņas lapas pārzīmētas vienā stilā, kas izaudzis no ' +
-        'konditorejas lapas. Logotips un struktūra paliek — klientam ' +
-        'pazīstama vietne, tikai sakārtota.',
+        'konditorejas lapas. Logotips un struktūra palika, tāpēc īpašnieki ' +
+        'savu vietni atpazīst, tikai tagad tā ir sakārtota.',
       en:
         'All seven pages redrawn in one style grown out of the bakery page. ' +
-        'The logo and structure stay — a site the owners recognise, just ' +
-        'put in order.',
+        'The logo and structure stayed, so the owners still recognise their ' +
+        'site. It is just in order now.',
     },
   },
   {
@@ -88,11 +88,11 @@ export const changes: { title: Localized; body: Localized }[] = [
     title: { lv: 'Vieglāki attēli', en: 'Lighter images' },
     body: {
       lv:
-        '317 attēli samazināti un pārveidoti WebP formātā — kopā no ' +
-        '202 MB uz 31 MB, bez redzama kvalitātes zuduma.',
+        '317 attēlus samazināju un pārveidoju WebP formātā. Kopā tie no ' +
+        '202 MB kļuva par 31 MB, un kvalitātes zudumu nevar redzēt.',
       en:
-        '317 images resized and converted to WebP — from 202 MB down to ' +
-        '31 MB in total, with no visible loss of quality.',
+        'I resized 317 images and converted them to WebP. Together they went from 202 MB to ' +
+        '31 MB, with no loss of quality you can see.',
     },
   },
   {
@@ -141,8 +141,8 @@ export const metrics = {
     { label: { lv: 'Visi attēli kopā', en: 'All images' }, old: '202 MB', new: '31 MB' },
   ],
   note: {
-    lv: 'Lighthouse, mobilais profils, 16.10.2026. Attēlu apjoms — pirms un pēc konvertēšanas.',
-    en: 'Lighthouse, mobile profile, 16 Oct 2026. Image total — before and after conversion.',
+    lv: 'Lighthouse, mobilais profils, 16.10.2026. Attēlu apjoms mērīts pirms un pēc konvertēšanas.',
+    en: 'Lighthouse, mobile profile, 16 Oct 2026. Image totals are before and after conversion.',
   },
 }
 
@@ -151,12 +151,12 @@ export const admin = {
   body: {
     lv:
       'Pirmdienas rīts: jaunā pusdienu ēdienkarte ir PDF failā. Darbinieks ' +
-      'ielogojas, izvēlas ēdienkarti, nomaina failu un saglabā — pēc minūtes ' +
+      'ielogojas, izvēlas ēdienkarti, nomaina failu un saglabā. Pēc minūtes ' +
       'tā ir vietnē. Panelis ir latviski, un darbinieku grupa redz tikai to, ' +
       'kas viņiem jāmaina.',
     en:
       'Monday morning: the new lunch menu is a PDF. A staff member logs in, ' +
-      'picks the menu, swaps the file and saves — a minute later it is on the ' +
+      'picks the menu, swaps the file and saves. A minute later it is on the ' +
       'site. The panel is in Latvian, and the staff group sees only what they ' +
       'need to change.',
   },

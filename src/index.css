@@ -1,29 +1,46 @@
 :root {
-  /* Galerija — VIZIUM ekspozīcijas pieeja: balta telpa, melni eksponāti,
-     krāsa nāk tikai no gaismas un projekcijām. */
-  --gallery: #f1f3f2;
-  --plaque: #ffffff;
-  --exhibit: #14171a;
-  --exhibit-soft: #59616b;
-  --rule: #d8dcdb;
-  --beam-a: #00a9c0;
-  --beam-b: #c4319b;
+  /* Gaiša, vēsa darba virsma; melna tinte; viens oranžsarkans akcents,
+     kas pieder tikai kursoram, līnijām un aktīvajiem stāvokļiem. */
+  --ground: #e9eaed;
+  --dot: #c4c6cd;
+  --surface: #ffffff;
+  --frame: #f7f7f8;
+  --ink: #111214;
+  --muted: #5b5e66;
+  --rule: #d3d5db;
+  --accent: #e04418;
+  --accent-ink: #b8330c;
 
-  --display: 'Archivo', 'Segoe UI', sans-serif;
-  --body: 'Instrument Sans', 'Segoe UI', sans-serif;
-  --utility: 'Martian Mono', ui-monospace, 'Cascadia Code', monospace;
+  --sans: 'Inter Tight Variable', 'Inter Tight', system-ui, sans-serif;
+  --mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
 
-  --step: clamp(1rem, 0.6rem + 1.6vw, 1.5rem);
+  --gutter: clamp(1rem, 2.4vw, 2.25rem);
+  --bar-h: 3.75rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Vecie nosaukumi, ko vēl lieto gadījuma izpētes stils. */
+  --gallery: var(--ground);
+  --plaque: var(--surface);
+  --exhibit: var(--ink);
+  --exhibit-soft: var(--muted);
+  --beam-a: var(--accent-ink);
+  --beam-b: var(--accent-ink);
+  --gallery-light: var(--accent-ink);
+  --utility: var(--sans);
+  --display: var(--sans);
+  --body: var(--sans);
 
   color-scheme: light;
-  font-family: var(--body);
+  font-family: var(--sans);
   font-size: 16px;
-  line-height: 1.6;
-  color: var(--exhibit);
-  background-color: var(--gallery);
+  line-height: 1.55;
+  color: var(--ink);
+  background-color: var(--ground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-feature-settings: 'ss01', 'cv11';
+  scrollbar-color: #a9acb4 var(--ground);
 }
 
 *,
@@ -35,14 +52,28 @@
 body {
   margin: 0;
   min-height: 100svh;
-  /* Novērš horizontālu ritjoslu no .atmosphere pilna platuma trika
-     (100vw skaitīšana neņem vērā ritjoslas platumu). */
   overflow-x: hidden;
 }
 
+::selection {
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+  color: var(--ink);
+}
+
 :focus-visible {
-  outline: 2px solid var(--exhibit);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 3px;
+  border-radius: 4px;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
 }
 
 .sr-only {

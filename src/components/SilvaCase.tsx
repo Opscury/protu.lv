@@ -48,8 +48,8 @@ function SilvaCase({ lang }: Props) {
     <article className="case-study silva-case">
       <header className="silva-head">
         <div>
-          <p className="case-label">{silva.label[lang]}</p>
           <h1 className="plaque-title silva-title">{silva.title}</h1>
+          <p className="case-label">{silva.label[lang]}</p>
           <dl className="plaque-spec">
             <dt className="sr-only">{lang === 'lv' ? 'Loma' : 'Role'}</dt>
             <dd>{silva.role[lang]}</dd>
@@ -96,8 +96,8 @@ function SilvaCase({ lang }: Props) {
           after={shot('new', page, device)}
           beforeLabel={silva.before[lang]}
           afterLabel={silva.after[lang]}
-          beforeAlt={`bistro.lv — ${pageName}`}
-          afterAlt={`silva.protu.lv — ${pageName}`}
+          beforeAlt={`bistro.lv · ${pageName}`}
+          afterAlt={`silva.protu.lv · ${pageName}`}
           sliderLabel={silva.sliderLabel[lang]}
         />
         <p className="silva-hint">{silva.compareHint[lang]}</p>

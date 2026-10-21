@@ -3,27 +3,29 @@ import type { Lang } from '../types'
 type Strings = {
   documentTitle: string
   documentDescription: string
-  eyebrow: string
-  heroTitle: string
-  heroLead: string
-  workCta: string
-  emailCta: string
-  panelHint: string
-  skillsLabel: string
-  lead: string
+  skip: string
+  /** Ievadlauka pieejamais nosaukums: "Protu ___". */
+  inputLabel: string
+  tryHint: string
+  /** Kad ierakstītais nesakrīt ne ar vienu prasmi. */
+  noMatch: string
+  noMatchLink: string
+  intro: string
   /** Paskaidro zīmola vārdu tiem, kas nerunā latviski. */
   gloss: string | null
+  statusMail: string
+  opensNew: string
+  provesLabel: string
   works: string
+  worksLead: string
   certificates: string
+  certificatesLead: string
   langLabel: string
   verify: string
   navLabel: string
   navContact: string
   contactTopic: string
   topics: { site: string; job: string; other: string }
-  scope: string
-  contribution: string
-  outcome: string
   caseStudy: string
   backToWork: string
   nextWork: string
@@ -48,41 +50,38 @@ type Strings = {
 
 export const ui: Record<Lang, Strings> = {
   lv: {
-    documentTitle: 'Valdis Viška — interaktīvu lietu izstrādātājs',
+    documentTitle: 'Valdis Viška · protu.lv',
     documentDescription:
-      'Interaktīvu pieredžu izstrādātājs: React, TypeScript, Django, Python, Unity, C# un UX.',
-    eyebrow: 'Interaktīvu pieredžu izstrādātājs',
-    heroTitle: 'Veidoju pieredzes, kurās cilvēki piedalās.',
-    heroLead:
-      'No zinātnes centra eksponātiem līdz digitāliem produktiem — savienoju tehnisku precizitāti ar saprotamu lietotāja pieredzi.',
-    workCta: 'Skatīt atlasītos darbus',
-    emailCta: 'Sazināties par iespējām',
-    panelHint: 'Nospied, lai pabeigtu teikumu',
-    skillsLabel: 'Tehniskie virzieni',
-    lead:
-      'Veidoju interaktīvas lietas — no zinātnes centra eksponātiem ' +
-      'līdz mobilajām spēlēm un mājaslapām.',
+      'Uztaisu mājaslapu no idejas līdz serverim: dizainu, kodu, hostingu un pastu. React, Django, Python, Unity.',
+    skip: 'Pāriet uz saturu',
+    inputLabel: 'Protu… Ieraksti prasmi, un redzēsi darbu, kas to pierāda',
+    tryHint: 'Ieraksti, ko vajag: React, serverus, dizainu, Unity, pastu…',
+    noMatch: 'Šo vēl neprotu.',
+    noMatchLink: 'Uzraksti, varbūt iemācos.',
+    intro: 'Esmu Valdis. Uztaisu mājaslapu no idejas līdz serverim un pēc tam pats to uzturu.',
     gloss: null,
+    statusMail: 'pasts uz paša servera',
+    opensNew: 'atveras jaunā cilnē',
+    provesLabel: 'Ko šis darbs pierāda',
     works: 'Darbi',
+    worksLead: 'Klientu vietnes, zinātnes centra eksponāti un viena spēle.',
     certificates: 'Sertifikāti',
+    certificatesLead: 'Ko esmu mācījies, ar saiti, kur to pārbaudīt.',
     langLabel: 'Valoda',
-    verify: 'Pārbaudīt īstumu',
+    verify: 'Pārbaudīt',
     navLabel: 'Sadaļas',
     navContact: 'Kontakti',
     contactTopic: 'Par ko?',
     topics: { site: 'Mājaslapa vai projekts', job: 'Darba piedāvājums', other: 'Cits' },
-    scope: 'Apjoms',
-    contribution: 'Mans ieguldījums',
-    outcome: 'Rezultāts',
     caseStudy: 'Gadījuma izpēte',
     backToWork: 'Visi darbi',
     nextWork: 'Nākamais darbs',
-    availability: 'Atvērts jaunām iespējām Latvijā un attālināti.',
+    availability: 'Strādāju Latvijā un attālināti.',
     contactTitle: 'Sazināmies',
-    contactLead: 'Pastāsti īsi par iespēju, komandu vai projektu.',
+    contactLead: 'Pastāsti īsi par projektu vai ideju. Atbildu pats.',
     contactDirect: 'Vai raksti tieši',
     selfHosted:
-      'Šī adrese darbojas uz mana paša pasta servera — Stalwart, ko pats uzstādīju un uzturu savā VPS, ar SPF, DKIM un DMARC.',
+      'Šī adrese darbojas uz mana paša pasta servera. Tas ir Stalwart, ko uzstādīju un uzturu savā VPS, ar SPF, DKIM un DMARC.',
     contactName: 'Vārds',
     contactEmail: 'E-pasts',
     contactMessage: 'Ziņa',
@@ -95,47 +94,44 @@ export const ui: Record<Lang, Strings> = {
     imageOf: 'Attēls',
   },
   en: {
-    documentTitle: 'Valdis Viška — interactive developer',
+    documentTitle: 'Valdis Viška · protu.lv',
     documentDescription:
-      'Interactive-experience developer working across React, TypeScript, Django, Python, Unity, C# and UX.',
-    eyebrow: 'Interactive-experience developer',
-    heroTitle: 'I build experiences people can take part in.',
-    heroLead:
-      'From science-centre exhibits to digital products, I combine technical craft with clear user experience.',
-    workCta: 'View selected work',
-    emailCta: 'Discuss an opportunity',
-    panelHint: 'Press to complete the sentence',
-    skillsLabel: 'Technical directions',
-    lead:
-      'I build interactive things — science centre exhibits, ' +
-      'mobile games and websites.',
-    gloss: '“protu” — Latvian for “I know how to”',
+      'I build websites from the idea to the server: design, code, hosting and email. React, Django, Python, Unity.',
+    skip: 'Skip to content',
+    inputLabel: 'Protu… Type a skill to see the work that proves it',
+    tryHint: 'Type what you need: React, servers, design, Unity, email…',
+    noMatch: 'Don’t know that one yet.',
+    noMatchLink: 'Tell me, maybe I’ll learn it.',
+    intro: 'I’m Valdis. I build a website from the idea to the server, then keep it running myself.',
+    gloss: '“protu” is Latvian for “I know how to”',
+    statusMail: 'mail on my own server',
+    opensNew: 'opens in a new tab',
+    provesLabel: 'What this work proves',
     works: 'Work',
+    worksLead: 'Client sites, science-centre exhibits and one game.',
     certificates: 'Certificates',
+    certificatesLead: 'What I’ve studied, each with a link to verify it.',
     langLabel: 'Language',
-    verify: 'Verify credential',
+    verify: 'Verify',
     navLabel: 'Sections',
     navContact: 'Contact',
     contactTopic: 'What about?',
     topics: { site: 'Website or project', job: 'Job opportunity', other: 'Something else' },
-    scope: 'Scope',
-    contribution: 'My contribution',
-    outcome: 'Outcome',
     caseStudy: 'Case study',
     backToWork: 'All work',
     nextWork: 'Next project',
-    availability: 'Open to opportunities in Latvia and remotely.',
+    availability: 'Working in Latvia and remotely.',
     contactTitle: 'Let’s talk',
-    contactLead: 'Tell me a little about the opportunity, team or project.',
+    contactLead: 'Tell me a little about the project or idea. I answer myself.',
     contactDirect: 'Or write directly',
     selfHosted:
-      'This address runs on my own mail server — Stalwart, set up and maintained by me on my own VPS, with SPF, DKIM and DMARC.',
+      'This address runs on my own mail server: Stalwart, which I set up and maintain on my VPS, with SPF, DKIM and DMARC.',
     contactName: 'Name',
     contactEmail: 'Email',
     contactMessage: 'Message',
     contactSend: 'Send message',
     contactSending: 'Sending…',
-    contactSuccess: 'Thank you — your message has been sent.',
+    contactSuccess: 'Thanks, your message has been sent.',
     contactError: 'The message could not be sent. Please try again or email directly.',
     previousImage: 'Previous image',
     nextImage: 'Next image',

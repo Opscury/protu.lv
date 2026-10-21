@@ -15,7 +15,7 @@ export const shot = (site: 'old' | 'new', page: string, device: string) =>
 
 export const anda = {
   label: { lv: 'Gadījuma izpēte · klienta darbs', en: 'Case study · client work' },
-  title: 'Anda Viška — portfolio',
+  title: 'Anda Viška · portfolio',
   role: {
     lv: 'Dizains, izstrāde, serveris',
     en: 'Design, development, hosting',
@@ -23,24 +23,24 @@ export const anda = {
   place: 'Latvija · 2026',
   summary: {
     lv:
-      'Spēļu mākslinieces portfolio pārnešana no Canva uz pašas domēnu. ' +
+      'Pārnesu spēļu mākslinieces portfolio no Canva uz viņas pašas domēnu. ' +
       'Klientes vēlme: „lai izskatās profesionālāk, bet ar pasteļkrāsām”. ' +
-      'Rezultāts — tā pati personība, skaidra struktūra un vietne, kas ' +
-      'ielādējas 45 reizes vieglāk.',
+      'Personība palika tā pati, struktūra kļuva skaidrāka, un vietne ' +
+      'tagad ir 45 reizes vieglāka.',
     en:
-      'Moving a game artist’s portfolio from Canva to her own domain. ' +
+      'I moved a game artist’s portfolio from Canva to her own domain. ' +
       'The brief: “make it look more professional, but keep the pastel ' +
-      'colours”. The result — the same personality, a clear structure and ' +
-      'a site that loads 45 times lighter.',
+      'colours”. The personality stayed, the structure got clearer, and ' +
+      'the site is now 45 times lighter.',
   },
   status: {
     lv:
       'Publicēts: anda.protu.lv. Vispirms Canva vietni pārnesu uz savu serveri ' +
-      'kā precīzu kopiju, tad uztaisīju maketu — Anda apstiprināja virzienu ' +
+      'kā precīzu kopiju, tad uztaisīju maketu. Anda apstiprināja virzienu ' +
       'pēc pirmā skata.',
     en:
-      'Live at anda.protu.lv. First the Canva site moved to my server as an ' +
-      'exact copy, then a mockup — Anda approved the direction on first look.',
+      'Live at anda.protu.lv. First I moved the Canva site to my server as an ' +
+      'exact copy, then made a mockup. Anda approved the direction on first look.',
   },
   compareHint: {
     lv: 'Velc robežu: pa kreisi vecā Canva vietne, pa labi jaunā.',
@@ -76,20 +76,20 @@ export const changes: { title: Localized; body: Localized }[] = [
     title: { lv: 'Pasteļi kā sistēma', en: 'Pastels as a system' },
     body: {
       lv:
-        'Gradienta fona vietā — mierīga gaiša pamatne un katram projektam ' +
-        'savs pasteļtonis. Viļņoto laukumu vietā dekors ir Andas pašas tēli, ' +
-        'tāpēc personība paliek, bet troksnis pazūd.',
+        'Gradienta fona vietā ir mierīga gaiša pamatne, un katram projektam ir ' +
+        'savs pasteļtonis. Viļņoto laukumu vietā dekorācijai izmantoti Andas ' +
+        'pašas tēli.',
       en:
-        'Instead of a gradient behind everything — a calm light base and one ' +
-        'pastel tint per project. Her own characters replace the wavy blobs as ' +
-        'decoration, so the personality stays and the noise goes.',
+        'The gradient behind everything became a calm light base, with one ' +
+        'pastel tint per project. Her own characters replaced the wavy blobs as ' +
+        'decoration.',
     },
   },
   {
     title: { lv: 'Teksts, ko var izlasīt', en: 'Text you can read' },
     body: {
       lv:
-        'Sīku slīprakstu kontūrburtu virsrakstu vietā — divi fonti normālā ' +
+        'Sīko slīprakstu un kontūrburtu virsrakstu vietā ir divi fonti normālā ' +
         'izmērā ar latviešu burtiem, mitināti uz sava servera. Lighthouse ' +
         'pieejamība 93 → 100.',
       en:
@@ -102,11 +102,11 @@ export const changes: { title: Localized; body: Localized }[] = [
     title: { lv: 'Viegla un sava', en: 'Light, and her own' },
     body: {
       lv:
-        'Attēli pārveidoti WebP — visa vietne no ~128 MB uz 4,6 MB. ' +
+        'Attēlus pārveidoju WebP formātā, un visa vietne no ~128 MB kļuva par 4,6 MB. ' +
         'Bez Canva skriptiem, uz mana VPS ar HTTPS; vecās Canva saites ' +
         'pāradresētas uz jaunajām lapām.',
       en:
-        'Images converted to WebP — the whole site from ~128 MB to 4.6 MB. ' +
+        'I converted the images to WebP, and the whole site went from ~128 MB to 4.6 MB. ' +
         'No Canva scripts, running on my VPS with HTTPS; old Canva links ' +
         'redirect to the new pages.',
     },
@@ -165,13 +165,13 @@ export const pages = {
     lv:
       'Darba devējs, kas atver Spider Meadow, uzreiz redz, ko tieši Anda ' +
       'darīja: visu spēles mākslu, flīzes un zirnekļa animāciju, komandā ar ' +
-      'programmētāju. Zemāk — tēli, kukaiņi un pasaules priekšmeti kā ' +
-      'kārtīga asset lapa, nevis kolāža.',
+      'programmētāju. Zemāk ir tēli, kukaiņi un pasaules priekšmeti, sakārtoti kā ' +
+      'kārtīga asset lapa.',
     en:
       'An employer who opens Spider Meadow sees straight away what exactly ' +
       'Anda did: all the game art, tiles and the spider’s animation, in a team ' +
-      'with a programmer. Below — characters, bugs and world items laid out ' +
-      'as a proper asset sheet, not a collage.',
+      'with a programmer. Below are the characters, bugs and world items, laid out ' +
+      'as a proper asset sheet.',
   },
   caption: {
     lv: 'Spider Meadow projekta lapa jaunajā vietnē.',
@@ -190,7 +190,7 @@ export const steps: { label: Localized; note: Localized; upcoming?: boolean }[] 
   },
   {
     label: { lv: 'Makets', en: 'Mockup' },
-    note: { lv: 'Sākumlapa un viens projekts — apstiprināts', en: 'Home and one project — approved' },
+    note: { lv: 'Sākumlapa un viens projekts, apstiprināts', en: 'Home and one project, approved' },
   },
   {
     label: { lv: 'Visa vietne', en: 'Full site' },

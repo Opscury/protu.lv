@@ -160,7 +160,9 @@ function BeforeAfter({
         onKeyDown={onKeyDown}
       >
         <span className="compare-grip" aria-hidden="true">
-          ‹ ›
+          <svg width="20" height="12" viewBox="0 0 20 12" fill="none">
+            <path d="M6 1 1 6l5 5M14 1l5 5-5 5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </span>
       </div>
     </div>
