@@ -41,7 +41,7 @@ export const skills: Skill[] = [
     word: { lv: 'Django', en: 'Django' },
     aliases: ['django', 'backend', 'back-end', 'api', 'rest'],
     proof: {
-      silva: { lv: 'Silva · Django admin bez instrukcijas', en: 'Silva · Django admin, no manual needed' },
+      silva: { lv: 'Silva · Django admin panelis', en: 'Silva · Django admin panel' },
     },
   },
   {

@@ -118,7 +118,7 @@
   height: max(40rem, calc(100svh - var(--bar-h)));
   max-height: 68rem;
   container-type: size;
-  --tag-size: 13.5px;
+  --tag-size: clamp(12px, 0.95cqw, 13.5px);
   background-image: radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 1.4px);
   background-size: 22px 22px;
   background-position: 10px 10px;
@@ -136,10 +136,13 @@
   pointer-events: none;
 }
 
+/* Līnijas stāv uz vietas: pelēkas pēc noklusējuma, oranžas, kad darbs pierāda
+   ierakstīto prasmi. Mainās tikai krāsa — pārzīmētas tās netiek. */
 .protu-wire {
   fill: none;
-  stroke: currentColor;
+  stroke: #a3a6ae;
   stroke-width: 1.5;
+  transition: stroke 520ms ease;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 1;
@@ -147,10 +150,9 @@
   animation: protu-draw 720ms var(--ease-out) forwards;
 }
 
-.protu-wire.is-off { stroke: #a3a6ae; stroke-width: 1.25; }
+.protu-wire.is-on { stroke: var(--accent); }
 .protu-arrow-on path { stroke: var(--accent); }
 .protu-arrow-off path { stroke: #a3a6ae; }
-.protu-tag.is-off { color: var(--muted); }
 
 @keyframes protu-draw {
   to { stroke-dashoffset: 0; }
@@ -165,15 +167,27 @@
   font-size: var(--tag-size);
   font-weight: 450;
   line-height: 1.35;
-  color: var(--accent-ink);
   white-space: nowrap;
+  display: grid;
   opacity: 0;
   animation: protu-tag-in 420ms var(--ease-out) forwards;
 }
 
-.protu-tag-start { transform: translate(0, -50%); }
-.protu-tag-end { transform: translate(-100%, -50%); text-align: right; }
-.protu-tag-center { transform: translate(-50%, -50%); text-align: center; }
+/* Nosaukums un pierādījums stāv vienā vietā un pārplūst viens otrā. */
+.protu-tag-name,
+.protu-tag-proof {
+  grid-area: 1 / 1;
+  transition: opacity 480ms ease;
+}
+
+.protu-tag-name { color: var(--muted); }
+.protu-tag-proof { color: var(--accent-ink); opacity: 0; }
+.protu-tag[data-on] .protu-tag-name { opacity: 0; }
+.protu-tag[data-on] .protu-tag-proof { opacity: 1; }
+
+.protu-tag-start { transform: translate(0, -50%); justify-items: start; }
+.protu-tag-end { transform: translate(-100%, -50%); justify-items: end; }
+.protu-tag-center { transform: translate(-50%, -50%); justify-items: center; }
 
 @keyframes protu-tag-in {
   from { opacity: 0; filter: blur(4px); }

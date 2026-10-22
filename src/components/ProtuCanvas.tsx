@@ -49,11 +49,11 @@ const NODES: Node[] = [
   { id: 'mail', title: 'mail.protu.lv', href: '#contact' },
 ]
 
-type Wire = { id: NodeId; on: boolean; text: string; d: string; lx: number; ly: number; align: 'start' | 'end' | 'center' }
+type Wire = { id: NodeId; d: string; lx: number; ly: number; align: 'start' | 'end' | 'center' }
 
 const TYPE_MS = 70
 const ERASE_MS = 35
-const HOLD_MS = 2400
+const HOLD_MS = 4200
 
 /** Nosaukums pelēkajai līnijai, kad darbs ierakstīto prasmi nepierāda. */
 const NAME: Partial<Record<NodeId, Localized>> = {
@@ -61,6 +61,7 @@ const NAME: Partial<Record<NodeId, Localized>> = {
   anda: { lv: 'Anda Viška · portfolio', en: 'Anda Viška · portfolio' },
   vizium: { lv: 'VIZIUM · eksponāti', en: 'VIZIUM · exhibits' },
   senciems: { lv: 'Senciems · spēle', en: 'Senciems · game' },
+  mail: { lv: 'pasta serveris', en: 'mail server' },
 }
 
 /** Zem darba nosaukuma uzrakstam nevajag atkārtot projekta vārdu. */
@@ -95,6 +96,7 @@ function ProtuCanvas({ lang, onSkill }: Props) {
   const head = useRef<HTMLHeadingElement>(null)
   const center = useRef<HTMLDivElement>(null)
   const help = useRef<HTMLParagraphElement>(null)
+  const verb = useRef<HTMLSpanElement>(null)
   const field = useRef<HTMLSpanElement>(null)
   const list = useRef<HTMLDivElement>(null)
   // Vidējā ekrānā: viena līnija no vārda pasvītrojuma līdz saraksta mugurkaulam.
@@ -102,8 +104,6 @@ function ProtuCanvas({ lang, onSkill }: Props) {
   const nodes = useRef<Partial<Record<NodeId, HTMLElement | null>>>({})
 
   const skill = findSkill(value)
-  // Jauna prasme vai valoda — līnijas zīmējas no jauna.
-  const drawKey = `${skill?.id ?? 'none'}-${lang}`
   const proof = skill?.proof ?? {}
   const typedSomething = value.trim().length >= 2
 
@@ -165,60 +165,55 @@ function ProtuCanvas({ lang, onSkill }: Props) {
     setValue(e.target.value)
   }
 
-  // Līnijas: izmēra virsrakstu un darbus, uzzīmē ceļu no viena uz otru.
+  // Līnijas: izmēra izkārtojumu un uzzīmē ceļu no ievadlauka uz katru darbu.
+  // Ģeometrija nav atkarīga no ierakstītā vārda — līnijas stāv uz vietas,
+  // mainās tikai to krāsa un uzraksts. Tāpēc pārmēra tikai, mainoties izmēram vai valodai.
   const measure = useCallback(() => {
     const box = canvas.current?.getBoundingClientRect()
     const h = head.current?.getBoundingClientRect()
-    const c = center.current?.getBoundingClientRect()
+    const v = verb.current?.getBoundingClientRect()
+    const hp = help.current?.getBoundingClientRect()
     if (box && window.matchMedia('(min-width: 40rem) and (max-width: 63.99rem)').matches) {
       setWires([])
       const fr = field.current?.getBoundingClientRect()
       const lr = list.current?.getBoundingClientRect()
-      const hasMatch = NODES.some((n) => proof[n.id])
-      if (!fr || !lr || !hasMatch) {
+      if (!fr || !lr) {
         setLink(null)
         return
       }
       const spineX = lr.left - box.left + parseFloat(getComputedStyle(list.current!).getPropertyValue('--spine-x')) * 16
       const y = fr.bottom - box.top - 1
       const top = lr.top - box.top
-      // Horizontāli no pasvītrojuma beigām, tad ar noapaļotu stūri uz augšu vai leju līdz sarakstam.
-      const x0 = fr.right - box.left + 8
+      // No vārda sākuma pa pasvītrojumu uz labo pusi, tad ar noapaļotu stūri līdz sarakstam.
+      const x0 = fr.left - box.left
       const dy = Math.sign(top - y)
       const r = Math.min(14, Math.abs(top - y), Math.abs(spineX - x0) / 2)
       setLink(r < 2 ? `M${x0},${y} H${spineX}` : `M${x0},${y} H${spineX - r} Q${spineX},${y} ${spineX},${y + dy * r} V${top}`)
       return
     }
     setLink(null)
-    if (!box || !h || !c || !window.matchMedia('(min-width: 64rem)').matches) {
+    if (!box || !h || !v || !hp || !window.matchMedia('(min-width: 64rem)').matches) {
       setWires([])
       return
     }
-    const hx = h.left - box.left
+    // Iedomāta virsraksta kaste: "Protu" + garākā vārda vieta aiz tā.
+    const hx = v.left - box.left
+    const hw = v.width * 2.3
     const hy = h.top - box.top
-    const hcx = hx + h.width / 2
+    const hcx = hx + hw / 2
     const hcy = hy + h.height / 2
-    // Zem virsraksta ir mājiens; apakšējās līnijas iziet no tā apakšmalas,
-    // tikai tur, kur ir teksts — lai neviena līnija nekarājas gaisā.
-    const range = document.createRange()
-    if (help.current) range.selectNodeContents(help.current)
-    const hr = help.current ? range.getBoundingClientRect() : c
-    const below = hr.bottom - box.top + 6
-    const hintL = hr.left - box.left + 10
-    const hintR = hr.right - box.left - 10
-    const clampHint = (x: number) => Math.min(Math.max(x, hintL), hintR)
-    // Uzraksta platums: monospace, ~0.6em uz zīmi, plus atkāpes.
-    const tagSize = parseFloat(getComputedStyle(canvas.current!).getPropertyValue("--tag-size")) || 14
-    const label = (id: NodeId) => proof[id]?.[lang] ?? NAME[id]?.[lang] ?? ''
-    const tagWidth = (id: NodeId) => label(id).length * tagSize * 0.6 + 40
-    const clampX = (x: number) => Math.min(Math.max(x, hx + 24), hx + h.width - 24)
+    const below = hp.bottom - box.top + 4
+    const clampX = (x: number) => Math.min(Math.max(x, hx + 24), hx + hw - 24)
+    const clampHint = (x: number) => Math.min(Math.max(x, hx + 10), hx + hw * 0.8)
+    // Uzraksta vieta: garākais teksts, kas šim darbam jebkad var parādīties.
+    const tagSize = Math.min(13.5, Math.max(12, box.width * 0.0095)) // = --tag-size clamp(12px, 0.95cqw, 13.5px)
+    const longest = (id: NodeId) =>
+      Math.max((NAME[id]?.[lang] ?? '').length, ...skills.map((sk) => sk.proof[id]?.[lang].length ?? 0))
+    const tagWidth = (id: NodeId) => longest(id) * tagSize * 0.6 + 40
     const next: Wire[] = []
 
-    // Visi darbi ar attēlu vienmēr savienoti; pasta mezgls — tikai, ja tas pierāda.
-    const ids = NODES.filter((n) => n.image || proof[n.id]).map((n) => n.id)
-    for (const id of ids) {
-      const on = Boolean(proof[id])
-      const text = label(id)
+    for (const n of NODES) {
+      const id = n.id
       const el = nodes.current[id]
       if (!el) continue
       const r = el.getBoundingClientRect()
@@ -230,19 +225,20 @@ function ProtuCanvas({ lang, onSkill }: Props) {
       if (tcy < hcy) {
         // Augšā: no virsraksta augšmalas uz augšu, tad uz sāniem.
         const ex = left ? t.r + 12 : t.l - 12
-        const sx = clampX(left ? Math.max(hx + h.width * 0.3, ex + tagWidth(id)) : Math.min(hx + h.width * 0.5, ex - tagWidth(id)))
+        // Kreisā augšējā līnija vienmēr paliek pa kreisi no labās, lai tās nekad nekrustojas.
+        const sx = left
+          ? Math.min(clampX(Math.max(hx + hw * 0.3, ex + tagWidth(id))), hx + hw * 0.42)
+          : Math.max(clampX(Math.min(hx + hw * 0.62, ex - tagWidth(id))), hx + hw * 0.52)
         const sy = hy - 6
         const ey = Math.min(t.t + (t.b - t.t) * 0.22, sy - 56)
-        next.push({ id, on, text, d: elbow(sx, sy, ex, ey), lx: left ? ex + 10 : ex - 10, ly: ey, align: left ? 'start' : 'end' })
-      } else if (t.l < hx + h.width && t.r > hx) {
+        next.push({ id, d: elbow(sx, sy, ex, ey), lx: left ? ex + 10 : ex - 10, ly: ey, align: left ? 'start' : 'end' })
+      } else if (t.l < hx + hw && t.r > hx) {
         // Tieši zem virsraksta: līkne uz leju, uzraksts virs rāmja.
         const sx = clampHint(tcx + 60)
         const sy = below
         const ey = t.t - 40
         next.push({
           id,
-          on,
-          text,
           d: `M${sx},${sy} C${sx},${(sy + ey) / 2} ${tcx},${(sy + ey) / 2 - 10} ${tcx},${ey}`,
           lx: tcx,
           ly: t.t - 22,
@@ -259,17 +255,15 @@ function ProtuCanvas({ lang, onSkill }: Props) {
         const wall = left
           ? Math.min(Infinity, ...others.map((o) => o.left - box.left).filter((x) => x > ex)) - 18
           : Math.max(-Infinity, ...others.map((o) => o.right - box.left).filter((x) => x < ex)) + 18
-        let sx = clampHint(left ? Math.max(hx + h.width * 0.2, ex + tagWidth(id)) : Math.min(hx + h.width * 0.85, ex - tagWidth(id)))
+        let sx = clampHint(left ? Math.max(hx + hw * 0.2, ex + tagWidth(id)) : Math.min(hx + hw * 0.85, ex - tagWidth(id)))
         sx = clampHint(left ? Math.min(sx, wall) : Math.max(sx, wall))
         const sy = below
         const ey = Math.max(t.t + (t.b - t.t) * 0.5, sy + 40)
-        next.push({ id, on, text, d: elbow(sx, sy, ex, ey), lx: left ? ex + 10 : ex - 10, ly: ey, align: left ? 'start' : 'end' })
+        next.push({ id, d: elbow(sx, sy, ex, ey), lx: left ? ex + 10 : ex - 10, ly: ey, align: left ? 'start' : 'end' })
       }
     }
     setWires(next)
-    // proof mainās tikai līdz ar prasmi; skill.id ir stabila atslēga.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [skill?.id, lang])
+  }, [lang])
 
   useLayoutEffect(measure, [measure])
 
@@ -296,7 +290,7 @@ function ProtuCanvas({ lang, onSkill }: Props) {
 
   return (
     <header className="protu" ref={canvas}>
-      <svg className="protu-wires" aria-hidden="true" key={drawKey}>
+      <svg className="protu-wires" aria-hidden="true">
         <defs>
           {(['on', 'off'] as const).map((k) => (
             <marker key={k} id={`protu-arrow-${k}`} className={`protu-arrow-${k}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -304,14 +298,14 @@ function ProtuCanvas({ lang, onSkill }: Props) {
             </marker>
           ))}
         </defs>
-        {link && <path className="protu-wire protu-link" d={link} pathLength={1} />}
+        {link && <path className={`protu-wire protu-link${lastMatch >= 0 ? ' is-on' : ''}`} d={link} pathLength={1} />}
         {wires.map((w, i) => (
           <path
             key={w.id}
-            className={`protu-wire${w.on ? '' : ' is-off'}`}
+            className={`protu-wire${proof[w.id] ? ' is-on' : ''}`}
             d={w.d}
             pathLength={1}
-            markerEnd={`url(#protu-arrow-${w.on ? 'on' : 'off'})`}
+            markerEnd={`url(#protu-arrow-${proof[w.id] ? 'on' : 'off'})`}
             style={{ animationDelay: `${i * 90}ms` }}
           />
         ))}
@@ -319,19 +313,21 @@ function ProtuCanvas({ lang, onSkill }: Props) {
 
       {wires.map((w, i) => (
         <span
-          key={`${drawKey}-${w.id}`}
-          className={`protu-tag protu-tag-${w.align}${w.on ? '' : ' is-off'}`}
+          key={w.id}
+          className={`protu-tag protu-tag-${w.align}`}
+          data-on={proof[w.id] ? true : undefined}
           aria-hidden="true"
           style={{ left: w.lx, top: w.ly, animationDelay: `${180 + i * 90}ms` }}
         >
-          {w.text}
+          <span className="protu-tag-name">{NAME[w.id]?.[lang]}</span>
+          <span className="protu-tag-proof">{proof[w.id]?.[lang] ?? ''}</span>
         </span>
       ))}
 
       <div className="protu-center" ref={center}>
         <h1 className="protu-head" ref={head}>
           <label className="protu-line">
-            <span className="protu-verb">Protu</span>
+            <span className="protu-verb" ref={verb}>Protu</span>
             <span className="protu-field" ref={field}>
               <span className="protu-mirror" aria-hidden="true">{value || ' '}</span>
               <input
