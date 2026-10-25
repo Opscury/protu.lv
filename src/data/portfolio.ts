@@ -73,6 +73,25 @@ export const projects: Project[] = [
 
 export const certificates: Certificate[] = [
   {
+    id: 'linux-server',
+    title: 'Linux Server Management and Security',
+    issuer: 'University of Colorado · Coursera',
+    issued: '2026',
+    summary: {
+      lv:
+        'Linux serveru administrēšana: lietotāju un tiesību pārvaldība, ' +
+        'autentifikācija, programmatūras instalēšana un sistēmas ' +
+        'konfigurācija, tīkla administrēšana un servera drošības ' +
+        'nostiprināšana.',
+      en:
+        'Running Linux servers: user provisioning and permissions, ' +
+        'authentication, software installation and system configuration, ' +
+        'network administration and hardening a server’s security.',
+    },
+    credentialUrl:
+      'https://coursera.org/share/aee365ec4ca3b536bf8fb87d6e05a1df',
+  },
+  {
     id: 'meta-backend',
     title: 'Meta Back-End Developer',
     issuer: 'Meta · Coursera',
