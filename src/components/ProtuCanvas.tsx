@@ -43,7 +43,7 @@ const NODES: Node[] = [
     title: 'Senciems',
     image: '/work/senciems/senciems-poster.webp',
     alt: { lv: 'Senciems, ciema skats spēlē', en: 'Senciems, the village in the game' },
-    href: 'https://vecasvaras.protu.lv',
+    href: 'https://senciems.protu.lv',
     external: true,
   },
   { id: 'mail', title: 'mail.protu.lv', href: '#contact' },

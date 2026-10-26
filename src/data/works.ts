@@ -79,7 +79,7 @@ export const works: Work[] = [
     },
     image: '/work/senciems/senciems-poster.webp',
     imageAlt: { lv: 'Senciems, ciema skats', en: 'Senciems, the village' },
-    href: 'https://vecasvaras.protu.lv',
+    href: 'https://senciems.protu.lv',
     external: true,
     cta: { lv: 'Spēlēt', en: 'Play it' },
     side: true,
