@@ -10,9 +10,10 @@ import AndaCase from './components/AndaCase'
 import WorkRow from './components/WorkRow'
 import { certificates, projects } from './data/portfolio'
 import { ui } from './data/ui'
-import { caseIds, works } from './data/works'
+import { caseFromPath, caseIds, works } from './data/works'
 import { SERVICES_PATH, serviceHref, serviceRoute, services, servicesPage } from './data/services'
 import { inBrowser, onLinkClick, restoreScroll, usePath } from './router'
+import { applyMeta, pageMeta } from './seo'
 import type { Lang } from './types'
 import './App.css'
 
@@ -34,19 +35,12 @@ function initialLang(): Lang {
   return navigator.language.toLowerCase().startsWith('lv') ? 'lv' : 'en'
 }
 
-/** /darbi/silva → 'silva'; nezināms ceļš → null (rāda sākumlapu). */
-function caseFromPath(path: string): string | null {
-  const id = path.match(/^\/darbi\/([\w-]+)\/?$/)?.[1]
-  return id && caseIds.includes(id) ? id : null
-}
-
 function App() {
   const [lang, setLang] = useState<Lang>(initialLang)
   // Ierakstītā prasme pirmajā skatā — darbu sarakstā iekrāso tās pierādījumu.
   const [skillId, setSkillId] = useState<string | null>(null)
   const path = usePath()
   const caseId = caseFromPath(path)
-  const caseWork = works.find((w) => w.id === caseId)
   const route = serviceRoute(path)
   const service = route?.service ?? null
   // Kuru plānu lasītājs piesaka; der tikai tajā lapā, kur to izvēlējās.
@@ -70,22 +64,8 @@ function App() {
     if (lang === 'en') url.searchParams.set('lang', 'en')
     else url.searchParams.delete('lang')
     window.history.replaceState(window.history.state, '', url)
-    document.title = route
-      ? `${(service ?? servicesPage).seoTitle[lang]} · protu.lv`
-      : caseWork
-        ? `${caseWork.title} · ${ui[lang].caseStudy} · Valdis Viška`
-        : ui[lang].documentTitle
-    const description = route
-      ? (service ?? servicesPage).seoDescription[lang]
-      : caseWork
-        ? caseWork.blurb[lang]
-        : ui[lang].documentDescription
-    document.querySelector('meta[name="description"]')?.setAttribute('content', description)
-    document.querySelector('meta[property="og:description"]')?.setAttribute('content', description)
-    document
-      .querySelector('meta[property="og:locale"]')
-      ?.setAttribute('content', lang === 'lv' ? 'lv_LV' : 'en_US')
-  }, [lang, caseWork, route, service])
+    applyMeta(pageMeta(path, lang), lang)
+  }, [lang, path])
 
   // Lapas maiņa: atpakaļ uz to pašu vietu, uz #enkuru vai uz augšu.
   useLayoutEffect(restoreScroll, [path])

@@ -88,3 +88,9 @@ export const works: Work[] = [
 
 /** Pilno lapu secība — "nākamais darbs" saitei. */
 export const caseIds = works.filter((w) => !w.external).map((w) => w.id)
+
+/** /darbi/silva → 'silva'; nezināms ceļš → null (rāda sākumlapu). */
+export function caseFromPath(path: string): string | null {
+  const id = path.match(/^\/darbi\/([\w-]+)\/?$/)?.[1]
+  return id && caseIds.includes(id) ? id : null
+}
