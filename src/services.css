@@ -471,3 +471,6 @@
   .svc-section,
   .svc-example { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Pieteikuma poga ritina līdz formai: lai tā nepaslēpjas zem lipīgās joslas. */
+.contact-form { scroll-margin-top: calc(var(--bar-h) + 2.5rem); }

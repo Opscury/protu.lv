@@ -36,6 +36,12 @@ function PriceTag({ price, lang }: { price: Price; lang: Lang }) {
   )
 }
 
+/** Uz ziņas formu lapas apakšā; fokuss vārda laukā, lai var uzreiz rakstīt. */
+function goToForm() {
+  document.querySelector('#contact form')?.scrollIntoView({ block: 'start' })
+  document.querySelector<HTMLInputElement>('#contact input[name="name"]')?.focus({ preventScroll: true })
+}
+
 function ServicePage({ service, lang, onRequest }: Props) {
   const t = servicesPage
   const next = services[(services.indexOf(service) + 1) % services.length]
@@ -83,15 +89,20 @@ function ServicePage({ service, lang, onRequest }: Props) {
                 <ul className="svc-checks svc-checks-tight">
                   {plan.includes.map((item) => <li key={item.en}>{item[lang]}</li>)}
                 </ul>
-                <a
+                {/* Poga, nevis saite: Umami aptur klikšķus uz saitēm ar data-umami-event,
+                    līdz notikums ir nosūtīts, un tad pārlādē lapu. */}
+                <button
+                  type="button"
                   className="action action-primary svc-cta"
-                  href="#contact"
-                  onClick={() => onRequest(plan.id)}
+                  onClick={() => {
+                    onRequest(plan.id)
+                    goToForm()
+                  }}
                   data-umami-event={`cta-${service.slug}`}
                   data-umami-event-plan={plan.id}
                 >
                   {plan.cta[lang]}
-                </a>
+                </button>
               </li>
             ))}
           </ul>

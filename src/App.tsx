@@ -46,7 +46,7 @@ function App() {
   // Kuru plānu lasītājs piesaka; der tikai tajā lapā, kur to izvēlējās.
   const [picked, setPicked] = useState<{ path: string; plan: string } | null>(null)
   const plan = picked?.path === path ? service?.plans.find((p) => p.id === picked.plan) : undefined
-  const request = service ? (plan ?? service).name : undefined
+  const request = service ? (plan ? (plan.requestName ?? plan.name) : service.name) : undefined
   const subPage = Boolean(caseId || route)
 
   const t = ui[lang]

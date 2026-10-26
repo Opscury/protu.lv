@@ -20,6 +20,8 @@ export type Plan = {
   priceNote?: Localized
   includes: Localized[]
   cta: Localized
+  /** Pieteikuma tēmai, ja plāna nosaukums viens pats nav saprotams. */
+  requestName?: Localized
 }
 
 export type Step = { title: Localized; body: Localized }
@@ -332,6 +334,7 @@ export const services: Service[] = [
           { lv: 'Domēns uz tava vārda', en: 'The domain in your name' },
         ],
         cta: { lv: 'Pieteikt lapas pārcelšanu', en: 'Request a site move' },
+        requestName: { lv: 'Pārcelšana no Wix vai Tilda', en: 'Move from Wix or Tilda' },
       },
     ],
     steps: [
@@ -501,6 +504,7 @@ export const services: Service[] = [
           },
         ],
         cta: { lv: 'Pieteikt Pamata hostingu', en: 'Request Basic hosting' },
+        requestName: { lv: 'Hostings Pamata', en: 'Basic hosting' },
       },
       {
         id: 'plus',
@@ -524,6 +528,7 @@ export const services: Service[] = [
           },
         ],
         cta: { lv: 'Pieteikt Plus hostingu', en: 'Request Plus hosting' },
+        requestName: { lv: 'Hostings Plus', en: 'Plus hosting' },
       },
     ],
     steps: [
@@ -691,6 +696,7 @@ export const services: Service[] = [
           { lv: '1 atjauninājums ceturksnī', en: '1 update per quarter' },
         ],
         cta: { lv: 'Pieteikt portfolio pa mēnešiem', en: 'Request a portfolio, paid monthly' },
+        requestName: { lv: 'Portfolio lapa, pa mēnešiem', en: 'Portfolio site, paid monthly' },
       },
       {
         id: 'gads',
@@ -710,6 +716,7 @@ export const services: Service[] = [
           { lv: '€10 lētāk nekā pa mēnešiem', en: '€10 less than paying monthly' },
         ],
         cta: { lv: 'Pieteikt portfolio ar pirmo gadu', en: 'Request a portfolio, first year included' },
+        requestName: { lv: 'Portfolio lapa ar pirmo gadu', en: 'Portfolio site, first year included' },
       },
     ],
     steps: [
