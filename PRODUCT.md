@@ -29,7 +29,8 @@ protu.lv is Valdis Viška's portfolio and his proof of capability. It exists to 
 
 - Visitors usually arrive from a direct link in a grant application, proposal or message, not from search.
 - Each case study lives at its own URL, `/darbi/<id>`, so a single project can be linked directly.
-- There are two ways to make contact: a form submitted through Formspree, with a topic choice of site/project, job or other; and direct email to valdis@protu.lv.
+- Services live at `/pakalpojumi/` and `/pakalpojumi/<slug>/` (majaslapa, parcelsana, hostings, portfolio), with published prices from `src/data/services.ts`. These pages exist to be found on Google, so they are prerendered to static HTML at build time (`src/entry-server.ts`, `scripts/prerender.mjs`). Prices never appear in the home hero; the home page has only a small price-free teaser below works and certificates.
+- There are two ways to make contact: a form submitted through Formspree, with a topic choice of site/project, job or other; and direct email to valdis@protu.lv. On service pages the request buttons fill the form with the chosen plan (subject `Pieteikums: <plan>`) and are tracked in Umami as `cta-<slug>`.
 
 ## Capabilities and Constraints
 
@@ -37,7 +38,7 @@ protu.lv is Valdis Viška's portfolio and his proof of capability. It exists to 
 - Bilingual LV/EN. The language comes from `?lang=`, then localStorage, then the browser setting. Every user-facing string is localized in `src/data/*`.
 - Content is data-driven: `src/data/works.ts`, `silva.ts`, `anda.ts`, `portfolio.ts` and `ui.ts`.
 - The case studies use interactive before/after comparison sliders (page × device), and some include video loops.
-- SEO and structured data: canonical/hreflang tags and a Person JSON-LD block listing his credentials.
+- SEO and structured data: per-page title, description, canonical and hreflang (`src/seo.ts`), a Person JSON-LD block listing his credentials, Service/Offer JSON-LD on service pages, and a generated `sitemap.xml`.
 
 ## Brand Commitments
 
@@ -56,7 +57,7 @@ protu.lv is Valdis Viška's portfolio and his proof of capability. It exists to 
 - **Senciems**: a side project, a point-and-click game in Phaser 3 and TypeScript, live at vecasvaras.protu.lv. Assets: `public/work/senciems/`.
 - **Certificates (2026)**: Meta Back-End, Meta Full Stack, Meta Front-End and Google UX Design, each with a verification URL.
 - **Self-hosted infrastructure**: the VPS and mail.protu.lv.
-- **Absent, so never fabricate**: testimonials, client quotes beyond what is in the case data, a client count, revenue or pricing, and team size (he works solo).
+- **Absent, so never fabricate**: testimonials, client quotes beyond what is in the case data, a client count, revenue, prices other than the ones in `src/data/services.ts`, and team size (he works solo).
 
 ## Product Principles
 
