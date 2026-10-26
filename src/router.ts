@@ -6,7 +6,16 @@ import type { MouseEvent } from 'react'
 const listeners = new Set<() => void>()
 let cameFromHistory = false
 
-if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
+/** Būvēšanas laikā lapas tiek renderētas Node vidē, kur nav window. */
+export const inBrowser = typeof window !== 'undefined'
+let serverPath = '/'
+
+/** Iepriekšrenderēšanai: kuru ceļu rādīt, kad pārlūka nav. */
+export function setServerPath(path: string) {
+  serverPath = path
+}
+
+if (inBrowser && 'scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
 
 export function navigate(to: string) {
   const url = new URL(to, window.location.href)
@@ -20,7 +29,7 @@ export function navigate(to: string) {
 }
 
 export function usePath() {
-  const [path, setPath] = useState(window.location.pathname)
+  const [path, setPath] = useState(() => (inBrowser ? window.location.pathname : serverPath))
   useEffect(() => {
     const update = () => setPath(window.location.pathname)
     const onPop = () => {

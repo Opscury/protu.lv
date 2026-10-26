@@ -9,7 +9,7 @@ import WorkRow from './components/WorkRow'
 import { certificates, projects } from './data/portfolio'
 import { ui } from './data/ui'
 import { caseIds, works } from './data/works'
-import { onLinkClick, restoreScroll, usePath } from './router'
+import { inBrowser, onLinkClick, restoreScroll, usePath } from './router'
 import type { Lang } from './types'
 import './App.css'
 
@@ -18,6 +18,8 @@ const STORAGE_KEY = 'protu-lang'
 
 /** Atceras iepriekšējo izvēli; pirmajā reizē skatās pārlūka valodu. */
 function initialLang(): Lang {
+  // Iepriekšrenderētās lapas ir latviski; angliski tās pārzīmē pārlūkā.
+  if (!inBrowser) return 'lv'
   const requested = new URLSearchParams(window.location.search).get('lang')
   if (requested === 'lv' || requested === 'en') return requested
   try {
