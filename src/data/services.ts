@@ -209,10 +209,12 @@ export const services: Service[] = [
         a: {
           lv:
             'Tev. Domēnu reģistrēju uz tava vārda. Ja kādreiz gribēsi strādāt ar citu ' +
-            'izstrādātāju, domēns paliek tev.',
+            'izstrādātāju, domēns paliek tev. Domēna cenu (.lv aptuveni €15 gadā) maksā tu, ' +
+            'tā nav iekļauta lapas cenā.',
           en:
             'You do. I register the domain in your name. If you ever want to work with another ' +
-            'developer, the domain stays with you.',
+            'developer, the domain stays with you. You pay the domain fee yourself (a .lv is about ' +
+            '€15 a year); it isn\'t included in the site price.',
         },
       },
       {
