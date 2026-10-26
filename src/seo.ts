@@ -7,6 +7,7 @@ import {
   type Price,
   type Service,
 } from './data/services'
+import { allPosts, BLOG_PATH, blogPage, blogRoute, postHref, publishedPosts, type Post } from './data/blog'
 import { ui } from './data/ui'
 import { caseFromPath, caseIds, works } from './data/works'
 import type { Lang } from './types'
@@ -24,6 +25,12 @@ export type PageMeta = {
   /** Ceļš bez valodas, piemēram /pakalpojumi/majaslapa/. */
   path: string
   jsonLd: object[]
+  /** Tikai latviski (blogs): bez hreflang un og:locale:alternate, html lang vienmēr lv. */
+  lvOnly?: boolean
+  /** Melnraksts: lapa ir, bet meklētāji to neindeksē. */
+  noindex?: boolean
+  /** og:type; raksts ir "article", pārējās lapas "website". */
+  ogType?: 'article'
 }
 
 /** Angļu versija ir tā pati adrese ar ?lang=en, tāpat kā visā vietnē. */
@@ -106,7 +113,84 @@ function overviewJsonLd(lang: Lang) {
   ]
 }
 
+/** Autors ir tā pati persona, kas index.html Person blokā. */
+const author = provider
+
+function postJsonLd(post: Post) {
+  const url = pageUrl(postHref(post.slug), 'lv')
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      '@id': `${url}#post`,
+      headline: post.title,
+      description: post.description,
+      datePublished: post.date,
+      dateModified: post.updated ?? post.date,
+      inLanguage: 'lv',
+      url,
+      mainEntityOfPage: url,
+      author,
+      publisher: author,
+      image: `${SITE}/og-image.svg`,
+      isPartOf: { '@type': 'Blog', '@id': `${SITE}${BLOG_PATH}#blog` },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'protu.lv', item: pageUrl('/', 'lv') },
+        { '@type': 'ListItem', position: 2, name: blogPage.title, item: pageUrl(BLOG_PATH, 'lv') },
+        { '@type': 'ListItem', position: 3, name: post.title, item: url },
+      ],
+    },
+  ]
+}
+
+function blogJsonLd() {
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Blog',
+      '@id': `${SITE}${BLOG_PATH}#blog`,
+      name: blogPage.seoTitle,
+      description: blogPage.seoDescription,
+      url: pageUrl(BLOG_PATH, 'lv'),
+      inLanguage: 'lv',
+      author,
+      blogPost: publishedPosts.map((post) => ({
+        '@type': 'BlogPosting',
+        headline: post.title,
+        url: pageUrl(postHref(post.slug), 'lv'),
+        datePublished: post.date,
+      })),
+    },
+  ]
+}
+
 export function pageMeta(path: string, lang: Lang): PageMeta {
+  const blog = blogRoute(path)
+  if (blog?.post) {
+    const post = blog.post
+    return {
+      title: `${post.title} · protu.lv`,
+      description: post.description,
+      path: postHref(post.slug),
+      jsonLd: postJsonLd(post),
+      lvOnly: true,
+      ogType: 'article',
+      noindex: post.draft,
+    }
+  }
+  if (blog) {
+    return {
+      title: `${blogPage.seoTitle} · protu.lv`,
+      description: blogPage.seoDescription,
+      path: BLOG_PATH,
+      jsonLd: blogJsonLd(),
+      lvOnly: true,
+    }
+  }
   const route = serviceRoute(path)
   if (route?.service) {
     const s = route.service
@@ -141,15 +225,33 @@ const LD_ID = 'page-ld'
 
 /** Pārlūkā: atjauno galvas tagus pēc lapas vai valodas maiņas. */
 export function applyMeta(meta: PageMeta, lang: Lang) {
+  if (meta.lvOnly) lang = 'lv'
   const url = pageUrl(meta.path, lang)
   const set = (selector: string, attr: string, value: string) =>
     document.querySelector(selector)?.setAttribute(attr, value)
+  /** Tagu, kura blogā nav, izveido no jauna, kad atgriežas citā lapā. */
+  const ensure = (tag: 'link' | 'meta', attrs: Record<string, string>, present: boolean) => {
+    const [key, value] = Object.entries(attrs)[0]
+    const el = document.head.querySelector(`${tag}[${key}="${value}"]`)
+    if (!present) return el?.remove()
+    if (el) return
+    const created = document.createElement(tag)
+    Object.entries(attrs).forEach(([k, v]) => created.setAttribute(k, v))
+    document.querySelector('link[rel="canonical"]')?.after(created)
+  }
+  const alternates = !meta.lvOnly
+  ;(['lv', 'en', 'x-default'] as const).forEach((hreflang) =>
+    ensure('link', { hreflang, rel: 'alternate', href: '' }, alternates),
+  )
+  ensure('meta', { property: 'og:locale:alternate', content: '' }, alternates)
+  ensure('meta', { name: 'robots', content: 'noindex' }, Boolean(meta.noindex))
 
   document.title = meta.title
   set('meta[name="description"]', 'content', meta.description)
   set('meta[property="og:title"]', 'content', meta.title)
   set('meta[property="og:description"]', 'content', meta.description)
   set('meta[property="og:url"]', 'content', url)
+  set('meta[property="og:type"]', 'content', meta.ogType ?? 'website')
   set('meta[property="og:locale"]', 'content', lang === 'lv' ? 'lv_LV' : 'en_US')
   set('meta[property="og:locale:alternate"]', 'content', lang === 'lv' ? 'en_US' : 'lv_LV')
   set('meta[name="twitter:title"]', 'content', meta.title)
@@ -178,6 +280,7 @@ const escapeAttr = (value: string) =>
 
 /** Būvēšanā: ieraksta tos pašus tagus gatavā dist/index.html kopijā. */
 export function renderHead(template: string, meta: PageMeta, lang: Lang) {
+  if (meta.lvOnly) lang = 'lv'
   const url = pageUrl(meta.path, lang)
   const content = (attr: string, key: string, value: string) => (html: string) =>
     html.replace(
@@ -193,12 +296,20 @@ export function renderHead(template: string, meta: PageMeta, lang: Lang) {
     content('property', 'og:title', meta.title),
     content('property', 'og:description', meta.description),
     content('property', 'og:url', url),
+    content('property', 'og:type', meta.ogType ?? 'website'),
     content('name', 'twitter:title', meta.title),
     content('name', 'twitter:description', meta.description),
     href('rel="canonical"', url),
     href('rel="alternate" hreflang="lv"', pageUrl(meta.path, 'lv')),
     href('rel="alternate" hreflang="en"', pageUrl(meta.path, 'en')),
     href('rel="alternate" hreflang="x-default"', pageUrl(meta.path, 'lv')),
+    // Blogā nav angļu versijas: bez hreflang un og:locale:alternate.
+    (html: string) =>
+      meta.lvOnly
+        ? html.replace(/^\s*<link rel="alternate" hreflang="[^"]*"[^>]*>\n/gm, '').replace(/^\s*<meta property="og:locale:alternate"[^>]*>\n/m, '')
+        : html,
+    (html: string) =>
+      meta.noindex ? html.replace('</head>', '  <meta name="robots" content="noindex" />\n  </head>') : html,
     (html: string) =>
       meta.jsonLd.length
         ? html.replace(
@@ -210,14 +321,19 @@ export function renderHead(template: string, meta: PageMeta, lang: Lang) {
   return steps.reduce((html, step) => step(html), template)
 }
 
-/** Lapas, ko būvēšanā pārvērš statiskā HTML. */
-export const prerenderPaths = [SERVICES_PATH, ...services.map((s) => serviceHref(s.slug))]
+/** Lapas, ko būvēšanā pārvērš statiskā HTML. Melnraksti arī, lai tos var apskatīt pa tiešo adresi. */
+export const prerenderPaths = [
+  SERVICES_PATH,
+  ...services.map((s) => serviceHref(s.slug)),
+  BLOG_PATH,
+  ...allPosts.map((p) => postHref(p.slug)),
+]
 
-/** sitemap.xml ar abām valodām katrai adresei. */
+/** sitemap.xml: abas valodas katrai adresei, blogs tikai latviski. */
 export function sitemapXml() {
-  const paths = ['/', ...caseIds.map((id) => `/darbi/${id}`), ...prerenderPaths]
+  const bilingual = ['/', ...caseIds.map((id) => `/darbi/${id}`), SERVICES_PATH, ...services.map((s) => serviceHref(s.slug))]
   const xml = (s: string) => s.replace(/&/g, '&amp;')
-  const entries = paths.flatMap((path) =>
+  const entries = bilingual.flatMap((path) =>
     (['lv', 'en'] as const).map(
       (lang) => `  <url>
     <loc>${xml(pageUrl(path, lang))}</loc>
@@ -227,9 +343,19 @@ export function sitemapXml() {
   </url>`,
     ),
   )
+  // Blogs ir tikai latviski: viena adrese bez valodu alternatīvām; melnraksti nav iekšā.
+  const newest = publishedPosts.map((p) => p.updated ?? p.date).sort().at(-1)
+  const blogEntries = [
+    { path: BLOG_PATH, lastmod: newest },
+    ...publishedPosts.map((p) => ({ path: postHref(p.slug), lastmod: p.updated ?? p.date })),
+  ].map(
+    ({ path, lastmod }) => `  <url>
+    <loc>${xml(pageUrl(path, 'lv'))}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}
+  </url>`,
+  )
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${entries.join('\n')}
+${[...entries, ...blogEntries].join('\n')}
 </urlset>
 `
 }

@@ -30,6 +30,7 @@ protu.lv is Valdis Viška's portfolio and his proof of capability. It exists to 
 - Visitors usually arrive from a direct link in a grant application, proposal or message, not from search.
 - Each case study lives at its own URL, `/darbi/<id>`, so a single project can be linked directly.
 - Services live at `/pakalpojumi/` and `/pakalpojumi/<slug>/` (majaslapa, parcelsana, hostings, portfolio), with published prices from `src/data/services.ts`. These pages exist to be found on Google, so they are prerendered to static HTML at build time (`src/entry-server.ts`, `scripts/prerender.mjs`). Prices never appear in the home hero; the home page has only a small price-free teaser below works and certificates.
+- A Latvian-only blog for creatives lives at `/blog/` and `/blog/<slug>/`. Each post is one Markdown file in `src/content/blog/` (see `HOW-TO-ADD-A-POST.md`), prerendered with the service pages and listed in the sitemap unless `draft: true`. Every post ends with a CTA to `/pakalpojumi/portfolio/` (Umami event `blog-cta`). The EN switch on blog pages goes to the EN home page, and the blog link is hidden in EN.
 - There are two ways to make contact: a form submitted through Formspree, with a topic choice of site/project, job or other; and direct email to valdis@protu.lv. On service pages the request buttons fill the form with the chosen plan (subject `Pieteikums: <plan>`) and are tracked in Umami as `cta-<slug>`.
 
 ## Capabilities and Constraints

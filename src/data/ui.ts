@@ -25,6 +25,8 @@ type Strings = {
   navLabel: string
   navContact: string
   services: string
+  /** Blogs ir tikai latviski; angliski saiti nerāda. */
+  blog: string
   /** Kājenes saišu grupas nosaukums ekrānlasītājiem. */
   footNav: string
   /** Virs formas, kad atnāc no pakalpojuma pieteikuma pogas. */
@@ -77,6 +79,7 @@ export const ui: Record<Lang, Strings> = {
     navLabel: 'Sadaļas',
     navContact: 'Kontakti',
     services: 'Pakalpojumi',
+    blog: 'Blogs',
     footNav: 'Saites',
     contactRequest: 'Pieteikums',
     contactTopic: 'Par ko?',
@@ -124,6 +127,7 @@ export const ui: Record<Lang, Strings> = {
     navLabel: 'Sections',
     navContact: 'Contact',
     services: 'Services',
+    blog: 'Blog',
     footNav: 'Links',
     contactRequest: 'Request',
     contactTopic: 'What about?',

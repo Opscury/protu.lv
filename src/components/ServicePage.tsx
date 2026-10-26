@@ -9,6 +9,7 @@ import {
   type Price,
   type Service,
 } from '../data/services'
+import { BLOG_PATH } from '../data/blog'
 import { onLinkClick } from '../router'
 import type { Lang } from '../types'
 import '../services.css'
@@ -137,6 +138,12 @@ function ServicePage({ service, lang, onRequest }: Props) {
                     {portfolioExample.liveLink[lang]}
                   </a>
                 </li>
+                {/* Blogs ir tikai latviski. */}
+                {lang === 'lv' && (
+                  <li>
+                    <a href={BLOG_PATH} onClick={onLinkClick}>Raksti radošajiem</a>
+                  </li>
+                )}
               </ul>
             </div>
           </div>

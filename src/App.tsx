@@ -7,12 +7,15 @@ import ServicePage from './components/ServicePage'
 import ServicesOverview from './components/ServicesOverview'
 import SilvaCase from './components/SilvaCase'
 import AndaCase from './components/AndaCase'
+import BlogIndex from './components/BlogIndex'
+import BlogPost from './components/BlogPost'
 import WorkRow from './components/WorkRow'
+import { BLOG_PATH, blogRoute } from './data/blog'
 import { certificates, projects } from './data/portfolio'
 import { ui } from './data/ui'
 import { caseFromPath, caseIds, works } from './data/works'
 import { SERVICES_PATH, serviceHref, serviceRoute, services, servicesPage } from './data/services'
-import { inBrowser, onLinkClick, restoreScroll, usePath } from './router'
+import { inBrowser, navigate, onLinkClick, restoreScroll, usePath } from './router'
 import { applyMeta, pageMeta } from './seo'
 import type { Lang } from './types'
 import './App.css'
@@ -43,13 +46,16 @@ function App() {
   const caseId = caseFromPath(path)
   const route = serviceRoute(path)
   const service = route?.service ?? null
+  const blog = blogRoute(path)
   // Kuru plānu lasītājs piesaka; der tikai tajā lapā, kur to izvēlējās.
   const [picked, setPicked] = useState<{ path: string; plan: string } | null>(null)
   const plan = picked?.path === path ? service?.plans.find((p) => p.id === picked.plan) : undefined
   const request = service ? (plan ? (plan.requestName ?? plan.name) : service.name) : undefined
-  const subPage = Boolean(caseId || route)
+  const subPage = Boolean(caseId || route || blog)
+  // Blogs ir tikai latviski: tur lapa vienmēr ir LV, bet izvēlētā valoda paliek atmiņā.
+  const pageLang: Lang = blog ? 'lv' : lang
 
-  const t = ui[lang]
+  const t = ui[pageLang]
 
   // Sinhronizē valodu ar dokumentu: ekrānlasītāji un meklētāji
   // lasa lang atribūtu, lai zinātu, kā izrunāt un indeksēt tekstu.
@@ -59,13 +65,19 @@ function App() {
     } catch {
       // Nav kur saglabāt — nekas slikts, nākamreiz atkal noteiks no pārlūka.
     }
-    document.documentElement.lang = lang
+    document.documentElement.lang = pageLang
     const url = new URL(window.location.href)
-    if (lang === 'en') url.searchParams.set('lang', 'en')
+    if (pageLang === 'en') url.searchParams.set('lang', 'en')
     else url.searchParams.delete('lang')
     window.history.replaceState(window.history.state, '', url)
-    applyMeta(pageMeta(path, lang), lang)
-  }, [lang, path])
+    applyMeta(pageMeta(path, pageLang), pageLang)
+  }, [lang, pageLang, path])
+
+  // Blogā angļu versijas nav: EN ved uz angļu sākumlapu, nevis uz tukšu lapu.
+  const changeLang = (next: Lang) => {
+    setLang(next)
+    if (blog && next === 'en') navigate('/')
+  }
 
   // Lapas maiņa: atpakaļ uz to pašu vietu, uz #enkuru vai uz augšu.
   useLayoutEffect(restoreScroll, [path])
@@ -95,10 +107,15 @@ function App() {
             >
               {t.services}
             </a>
+            {pageLang === 'lv' && (
+              <a href={BLOG_PATH} onClick={onLinkClick} aria-current={blog ? (blog.post ? 'true' : 'page') : undefined}>
+                {t.blog}
+              </a>
+            )}
             <a {...homeLink('#sertifikati')}>{t.certificates}</a>
             <a href="#contact">{t.navContact}</a>
           </nav>
-          <LanguageToggle lang={lang} label={t.langLabel} onChange={setLang} />
+          <LanguageToggle lang={pageLang} label={t.langLabel} onChange={changeLang} />
         </div>
         <div className="bar-end">
           <a className="bar-status" href="#contact">
@@ -109,7 +126,11 @@ function App() {
       </div>
 
       <div id="top">
-        {route ? (
+        {blog ? (
+          <main className="case-page" id="main">
+            {blog.post ? <BlogPost key={blog.post.slug} post={blog.post} /> : <BlogIndex />}
+          </main>
+        ) : route ? (
           <main className="case-page" id="main">
             {service ? (
               <ServicePage
@@ -204,7 +225,7 @@ function App() {
           </>
         )}
 
-        <ContactForm lang={lang} request={request} />
+        <ContactForm lang={pageLang} request={request} />
 
         <footer className="foot">
           <p>
@@ -213,6 +234,7 @@ function App() {
           </p>
           <nav className="foot-nav" aria-label={t.footNav}>
             <a href={SERVICES_PATH} onClick={onLinkClick}>{t.services}</a>
+            {pageLang === 'lv' && <a href={BLOG_PATH} onClick={onLinkClick}>{t.blog}</a>}
             <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
           </nav>
         </footer>

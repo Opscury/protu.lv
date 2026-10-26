@@ -1,0 +1,164 @@
+/* ── Blogs (/blog/…) ─────────────────────────────────── */
+
+/* Saraksts */
+
+.blog-list {
+  max-width: 52rem;
+  margin: 0;
+  padding: 0 0 clamp(1rem, 3vw, 2rem);
+  list-style: none;
+}
+
+.blog-item {
+  position: relative;
+  padding: clamp(1.5rem, 3vw, 2.25rem) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.blog-item h2 {
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.blog-item h2 a { text-decoration: none; }
+.blog-item h2 a:hover { color: var(--accent-ink); }
+
+/* Viss ieraksts ir klikšķināms. */
+.blog-item h2 a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.blog-item > p {
+  max-width: 60ch;
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.blog-date {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.blog-item > .blog-date { display: block; padding-top: 0.25rem; }
+
+.blog-draft {
+  display: inline-block;
+  margin: 0.75rem 0 0;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--accent-ink);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  color: var(--accent-ink);
+}
+
+.blog-item > .blog-draft { color: var(--accent-ink); }
+
+.blog-empty {
+  margin: 0;
+  padding: clamp(2rem, 4vw, 3rem) 0;
+  color: var(--muted);
+}
+
+/* Raksts: viena šaura kolonna, ~68 zīmes rindā. */
+
+.post {
+  max-width: 68ch;
+  margin: 0 auto;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+.post-head {
+  padding-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  border-bottom: 1px solid var(--ink);
+}
+
+.post-title {
+  margin: 0 0 1rem;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+.post-body {
+  padding-top: clamp(1.5rem, 3vw, 2.25rem);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  overflow-wrap: break-word;
+}
+
+.post-body p,
+.post-body ul,
+.post-body ol,
+.post-body blockquote { margin: 0 0 1.25em; text-wrap: pretty; }
+
+.post-body h2,
+.post-body h3 {
+  margin: 2em 0 0.6em;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.post-body h2 { font-size: clamp(1.5rem, 2.6vw, 1.875rem); }
+.post-body h3 { font-size: 1.25rem; letter-spacing: -0.015em; }
+
+.post-body ul,
+.post-body ol { padding-left: 1.25em; }
+.post-body li + li { margin-top: 0.4em; }
+.post-body li::marker { color: var(--accent-ink); }
+
+.post-body blockquote {
+  padding-left: 1.1rem;
+  border-left: 2px solid var(--accent);
+  color: var(--muted);
+}
+
+.post-body blockquote p { margin: 0; }
+
+.post-body a { text-decoration-color: var(--accent); text-decoration-thickness: 1.5px; }
+.post-body a:hover { color: var(--accent-ink); }
+
+.post-body code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+
+/* Noslēguma bloks: tāds pats kā sākumlapas teaser. */
+
+.post-cta {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: clamp(1.5rem, 3vw, 2.25rem);
+  border-top: 1px solid var(--ink);
+}
+
+.post-cta h2 {
+  margin: 0;
+  font-size: clamp(1.875rem, 3.2vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.post-cta p {
+  max-width: 48ch;
+  margin: 0.85rem 0 1.25rem;
+  font-size: 1.0625rem;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.post-cta .plaque-links { flex-direction: column; gap: 0.7rem; }
