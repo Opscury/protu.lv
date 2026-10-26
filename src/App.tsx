@@ -3,12 +3,15 @@ import ContactForm from './components/ContactForm'
 import LanguageToggle from './components/LanguageToggle'
 import ProjectCard from './components/ProjectCard'
 import ProtuCanvas from './components/ProtuCanvas'
+import ServicePage from './components/ServicePage'
+import ServicesOverview from './components/ServicesOverview'
 import SilvaCase from './components/SilvaCase'
 import AndaCase from './components/AndaCase'
 import WorkRow from './components/WorkRow'
 import { certificates, projects } from './data/portfolio'
 import { ui } from './data/ui'
 import { caseIds, works } from './data/works'
+import { SERVICES_PATH, serviceHref, serviceRoute, services, servicesPage } from './data/services'
 import { inBrowser, onLinkClick, restoreScroll, usePath } from './router'
 import type { Lang } from './types'
 import './App.css'
@@ -44,6 +47,13 @@ function App() {
   const path = usePath()
   const caseId = caseFromPath(path)
   const caseWork = works.find((w) => w.id === caseId)
+  const route = serviceRoute(path)
+  const service = route?.service ?? null
+  // Kuru plānu lasītājs piesaka; der tikai tajā lapā, kur to izvēlējās.
+  const [picked, setPicked] = useState<{ path: string; plan: string } | null>(null)
+  const plan = picked?.path === path ? service?.plans.find((p) => p.id === picked.plan) : undefined
+  const request = service ? (plan ?? service).name : undefined
+  const subPage = Boolean(caseId || route)
 
   const t = ui[lang]
 
@@ -60,23 +70,29 @@ function App() {
     if (lang === 'en') url.searchParams.set('lang', 'en')
     else url.searchParams.delete('lang')
     window.history.replaceState(window.history.state, '', url)
-    document.title = caseWork
-      ? `${caseWork.title} · ${ui[lang].caseStudy} · Valdis Viška`
-      : ui[lang].documentTitle
-    const description = caseWork ? caseWork.blurb[lang] : ui[lang].documentDescription
+    document.title = route
+      ? `${(service ?? servicesPage).seoTitle[lang]} · protu.lv`
+      : caseWork
+        ? `${caseWork.title} · ${ui[lang].caseStudy} · Valdis Viška`
+        : ui[lang].documentTitle
+    const description = route
+      ? (service ?? servicesPage).seoDescription[lang]
+      : caseWork
+        ? caseWork.blurb[lang]
+        : ui[lang].documentDescription
     document.querySelector('meta[name="description"]')?.setAttribute('content', description)
     document.querySelector('meta[property="og:description"]')?.setAttribute('content', description)
     document
       .querySelector('meta[property="og:locale"]')
       ?.setAttribute('content', lang === 'lv' ? 'lv_LV' : 'en_US')
-  }, [lang, caseWork])
+  }, [lang, caseWork, route, service])
 
   // Lapas maiņa: atpakaļ uz to pašu vietu, uz #enkuru vai uz augšu.
   useLayoutEffect(restoreScroll, [path])
 
   // Sākumlapā enkuri strādā tieši; gadījuma lapā tie ved atpakaļ uz sākumu.
   const homeLink = (hash: string) =>
-    caseId ? { href: `/${hash}`, onClick: onLinkClick } : { href: hash }
+    subPage ? { href: `/${hash}`, onClick: onLinkClick } : { href: hash }
 
   const nextId = caseId ? caseIds[(caseIds.indexOf(caseId) + 1) % caseIds.length] : null
   const nextWork = works.find((w) => w.id === nextId)
@@ -86,12 +102,19 @@ function App() {
     <>
       <a className="skip" href="#main">{t.skip}</a>
       <div className="bar">
-        <a className="bar-mark" {...(caseId ? { href: '/', onClick: onLinkClick } : { href: '#top' })}>
+        <a className="bar-mark" {...(subPage ? { href: '/', onClick: onLinkClick } : { href: '#top' })}>
           protu.lv
         </a>
         <div className="bar-center">
           <nav className="bar-nav" aria-label={t.navLabel}>
             <a {...homeLink('#darbi')}>{t.works}</a>
+            <a
+              href={SERVICES_PATH}
+              onClick={onLinkClick}
+              aria-current={route ? (service ? 'true' : 'page') : undefined}
+            >
+              {t.services}
+            </a>
             <a {...homeLink('#sertifikati')}>{t.certificates}</a>
             <a href="#contact">{t.navContact}</a>
           </nav>
@@ -106,7 +129,20 @@ function App() {
       </div>
 
       <div id="top">
-        {caseId ? (
+        {route ? (
+          <main className="case-page" id="main">
+            {service ? (
+              <ServicePage
+                key={service.slug}
+                service={service}
+                lang={lang}
+                onRequest={(id) => setPicked({ path, plan: id })}
+              />
+            ) : (
+              <ServicesOverview lang={lang} />
+            )}
+          </main>
+        ) : caseId ? (
           <main className="case-page" id="main">
             <a className="case-back" href="/#darbi" onClick={onLinkClick}>
               {t.backToWork}
@@ -164,18 +200,41 @@ function App() {
                   ))}
                 </ul>
               </section>
+
+              {/* Pakalpojumu teaser: mazs, bez cenām, zem darbiem un sertifikātiem. */}
+              <section className="section" aria-labelledby="teaser-title">
+                <div className="teaser">
+                  <div className="teaser-body">
+                    <h2 id="teaser-title">{servicesPage.teaserTitle[lang]}</h2>
+                    <p>{servicesPage.teaserLead[lang]}</p>
+                    <a className="action action-primary" href={SERVICES_PATH} onClick={onLinkClick}>
+                      {servicesPage.teaserLink[lang]}
+                    </a>
+                  </div>
+                  <ul className="plaque-links teaser-links">
+                    {services.map((s) => (
+                      <li key={s.slug}>
+                        <a href={serviceHref(s.slug)} onClick={onLinkClick}>{s.name[lang]}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </section>
             </main>
           </>
         )}
 
-        <ContactForm lang={lang} />
+        <ContactForm lang={lang} request={request} />
 
         <footer className="foot">
           <p>
             <strong>Valdis Viška</strong>
             <span>{t.availability}</span>
           </p>
-          <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+          <nav className="foot-nav" aria-label={t.footNav}>
+            <a href={SERVICES_PATH} onClick={onLinkClick}>{t.services}</a>
+            <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+          </nav>
         </footer>
       </div>
     </>

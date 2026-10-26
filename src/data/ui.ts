@@ -24,6 +24,11 @@ type Strings = {
   verify: string
   navLabel: string
   navContact: string
+  services: string
+  /** Kājenes saišu grupas nosaukums ekrānlasītājiem. */
+  footNav: string
+  /** Virs formas, kad atnāc no pakalpojuma pieteikuma pogas. */
+  contactRequest: string
   contactTopic: string
   topics: { site: string; job: string; other: string }
   caseStudy: string
@@ -71,6 +76,9 @@ export const ui: Record<Lang, Strings> = {
     verify: 'Pārbaudīt',
     navLabel: 'Sadaļas',
     navContact: 'Kontakti',
+    services: 'Pakalpojumi',
+    footNav: 'Saites',
+    contactRequest: 'Pieteikums',
     contactTopic: 'Par ko?',
     topics: { site: 'Mājaslapa vai projekts', job: 'Darba piedāvājums', other: 'Cits' },
     caseStudy: 'Gadījuma izpēte',
@@ -115,6 +123,9 @@ export const ui: Record<Lang, Strings> = {
     verify: 'Verify',
     navLabel: 'Sections',
     navContact: 'Contact',
+    services: 'Services',
+    footNav: 'Links',
+    contactRequest: 'Request',
     contactTopic: 'What about?',
     topics: { site: 'Website or project', job: 'Job opportunity', other: 'Something else' },
     caseStudy: 'Case study',

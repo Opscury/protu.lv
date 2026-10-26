@@ -1,0 +1,473 @@
+/* ── Pakalpojumi (/pakalpojumi/…) ───────────────────── */
+
+.svc {
+  max-width: 92rem;
+  margin: 0 auto;
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+.svc-head {
+  padding: clamp(1rem, 3vw, 2rem) 0 clamp(2rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--ink);
+}
+
+.svc-title {
+  margin: 0;
+  font-size: clamp(2.75rem, 6vw, 5.25rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.svc-lead {
+  max-width: 52ch;
+  margin: 1.5rem 0 0;
+  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.svc-from {
+  margin: 1rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+/* Sadaļa: virsraksts pa kreisi, saturs pa labi; šaurā ekrānā viens zem otra. */
+.svc-section {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: 1.25rem clamp(1.5rem, 3vw, 3rem);
+  padding: clamp(2.25rem, 4.5vw, 3.5rem) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.svc-section > h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.svc-section p { text-wrap: pretty; }
+
+.svc-list,
+.svc-checks {
+  display: grid;
+  gap: 0.85rem;
+  max-width: 62ch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+.svc-list li {
+  padding-left: 1.4rem;
+  position: relative;
+}
+
+/* Tukšs aplītis, tāpat kā statusa punkts joslā. */
+.svc-list li::before {
+  content: '';
+  position: absolute;
+  top: 0.55em;
+  left: 0.15rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+}
+
+.svc-checks li {
+  position: relative;
+  padding-left: 1.75rem;
+}
+
+/* Ķeksītis zīmēts ar apmalēm, nevis burtu. */
+.svc-checks li::before {
+  content: '';
+  position: absolute;
+  top: 0.32em;
+  left: 0.2rem;
+  width: 0.7rem;
+  height: 0.38rem;
+  border-bottom: 2px solid var(--accent-ink);
+  border-left: 2px solid var(--accent-ink);
+  transform: rotate(-45deg);
+}
+
+.svc-checks-tight {
+  gap: 0.55rem;
+  font-size: 0.9375rem;
+}
+
+.svc-checks-tight li::before { top: 0.3em; }
+
+.svc-honest {
+  max-width: 60ch;
+  margin: 0;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.9rem;
+  background: var(--ground);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+/* Cenas */
+
+.svc-plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.svc-plan {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  border: 1px solid #d9dadf;
+  border-radius: 1.25rem;
+  background: var(--surface);
+  box-shadow: 0 30px 60px -36px rgb(17 18 20 / 30%);
+}
+
+.svc-plan h3 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 1.625rem);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.svc-plan-solves {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+}
+
+.svc-price {
+  margin: 1.25rem 0 0;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.svc-price-amount {
+  font-size: clamp(2.5rem, 4.5vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.svc-price-small {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: pre;
+}
+
+.svc-plan-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.svc-plan .svc-checks {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.svc-cta {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+/* Poga vienmēr apakšā, arī ja kartītēm ir dažāds teksta garums. */
+.svc-plan .svc-checks { margin-bottom: 1.5rem; }
+
+.svc-cta::after {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  transform: rotate(135deg);
+  translate: 0 -2px;
+}
+
+.svc-cta-note {
+  margin: 1rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+/* Piemērs (portfolio) */
+
+.svc-example {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: center;
+}
+
+.svc-example-media {
+  display: block;
+  padding: 0.4rem;
+  border: 1px solid #d9dadf;
+  border-radius: 0.9rem;
+  background: var(--frame);
+  box-shadow:
+    0 1px 2px rgb(17 18 20 / 5%),
+    0 22px 44px -16px rgb(17 18 20 / 30%);
+}
+
+.svc-example-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  border-radius: 0.55rem;
+  object-fit: cover;
+  object-position: top;
+}
+
+.svc-example p {
+  max-width: 48ch;
+  margin: 0 0 1.25rem;
+  font-size: 1.0625rem;
+}
+
+.svc-example .plaque-links { flex-direction: column; gap: 0.6rem; }
+
+/* Soļi */
+
+.svc-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: 1.5rem clamp(1rem, 2vw, 1.75rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.svc-steps li {
+  padding-top: 1rem;
+  border-top: 1px solid var(--ink);
+  counter-increment: step;
+}
+
+.svc-steps li::before {
+  content: counter(step, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--accent-ink);
+}
+
+.svc-steps h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+.svc-steps p {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+}
+
+/* Jautājumi */
+
+.svc-faq { max-width: 62ch; }
+
+.svc-faq details {
+  border-bottom: 1px solid var(--rule);
+}
+
+.svc-faq details:first-child { border-top: 1px solid var(--rule); }
+
+.svc-faq summary {
+  position: relative;
+  padding: 1rem 2.25rem 1rem 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  list-style: none;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.svc-faq summary::-webkit-details-marker { display: none; }
+
+.svc-faq summary::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: -0.4rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 200ms var(--ease-out);
+}
+
+.svc-faq details[open] summary::after {
+  margin-top: -0.1rem;
+  transform: rotate(-135deg);
+}
+
+.svc-faq summary:hover { color: var(--accent-ink); }
+
+.svc-faq details p {
+  margin: 0;
+  padding: 0 0 1.15rem;
+  line-height: 1.55;
+}
+
+/* Lapas beigas: atpakaļ uz sarakstu un nākamais pakalpojums. */
+
+.svc-foot {
+  display: flex;
+  flex-direction: column;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.svc-foot .case-next { margin-top: 0.5rem; text-align: right; }
+
+/* Pārskats */
+
+.svc-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: 1rem;
+  margin: clamp(2rem, 4vw, 3rem) 0 clamp(1rem, 3vw, 2rem);
+  padding: 0;
+  list-style: none;
+}
+
+.svc-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  border: 1px solid #d9dadf;
+  border-radius: 1.25rem;
+  background: var(--surface);
+  box-shadow: 0 30px 60px -36px rgb(17 18 20 / 30%);
+  transition:
+    transform 520ms var(--ease-out),
+    box-shadow 520ms var(--ease-out);
+}
+
+.svc-card h2 {
+  margin: 0;
+  font-size: clamp(1.375rem, 2.2vw, 1.875rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.svc-card h2 a { text-decoration: none; }
+
+/* Visa kartīte ir klikšķināma. */
+.svc-card h2 a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.svc-card > p {
+  margin: 0.75rem 0 0;
+  font-size: 1rem;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.svc-card .svc-card-price {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.9375rem;
+  color: var(--ink);
+}
+
+.svc-card-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  margin-top: 1rem;
+  padding: 0.6rem 1.05rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--surface);
+  font-weight: 550;
+  transition: background-color 200ms ease;
+}
+
+.svc-card-more::after {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: translate 240ms var(--ease-out);
+}
+
+.svc-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 1px 2px rgb(17 18 20 / 6%),
+    0 34px 60px -24px rgb(17 18 20 / 36%);
+}
+
+.svc-card:hover .svc-card-more { background: var(--accent-ink); }
+.svc-card:hover .svc-card-more::after { translate: 3px 0; }
+
+.svc-card:has(a:focus-visible) { outline: 2px solid var(--accent-ink); outline-offset: 4px; }
+.svc-card h2 a:focus-visible { outline: none; }
+
+.svc-principles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1.5rem clamp(1rem, 2vw, 1.75rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.svc-principles h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+.svc-principles p {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+}
+
+@media (max-width: 56rem) {
+  .svc-section,
+  .svc-example { grid-template-columns: minmax(0, 1fr); }
+}

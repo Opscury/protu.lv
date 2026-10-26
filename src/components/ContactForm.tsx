@@ -1,17 +1,28 @@
 import { type FormEvent, useState } from 'react'
 import { ui } from '../data/ui'
-import type { Lang } from '../types'
+import type { Lang, Localized } from '../types'
 
-type Props = { lang: Lang }
+type Props = {
+  lang: Lang
+  /** Pakalpojums vai plāns, ko lasītājs piesaka (no pakalpojuma lapas pogas). */
+  request?: Localized
+}
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xgaeogwv'
 // Pašhostēts pasts (Stalwart uz netcup VPS, mail.protu.lv).
 const CONTACT_EMAIL = 'valdis@protu.lv'
 
-function ContactForm({ lang }: Props) {
+function ContactForm({ lang, request }: Props) {
   const t = ui[lang]
   const [status, setStatus] = useState<'idle' | 'submitting' | 'succeeded' | 'failed'>('idle')
   // Tēma nonāk e-pasta tēmas rindā — uzreiz redzams, vai raksta klients vai darba devējs.
-  const [topic, setTopic] = useState<keyof typeof t.topics | null>(null)
+  const [picked, setTopic] = useState<keyof typeof t.topics | null>(null)
+  // Pakalpojuma lapā tēma jau ir zināma: mājaslapa vai projekts.
+  const topic = picked ?? (request ? 'site' : null)
+  // Tēmas rinda vienmēr latviski, lai pastkastē viegli atrast.
+  const requestSubject = request && topic === 'site' ? `Pieteikums: ${request.lv}` : null
+  const mailto = `mailto:${CONTACT_EMAIL}${
+    request ? `?subject=${encodeURIComponent(`Pieteikums: ${request.lv}`)}` : ''
+  }`
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -41,7 +52,7 @@ function ContactForm({ lang }: Props) {
         <p className="contact-lead">{t.contactLead}</p>
         <div className="contact-direct">
           <span>{t.contactDirect}</span>
-          <a className="mailto" href={`mailto:${CONTACT_EMAIL}`}>
+          <a className="mailto" href={mailto}>
             {CONTACT_EMAIL}
           </a>
           <p className="self-hosted">
@@ -52,6 +63,11 @@ function ContactForm({ lang }: Props) {
       </div>
 
       <form className="contact-form" onSubmit={submit}>
+        {request && (
+          <p className="contact-request">
+            {t.contactRequest}: <strong>{request[lang]}</strong>
+          </p>
+        )}
         <fieldset className="contact-topic">
           <legend>{t.contactTopic}</legend>
           {(Object.keys(t.topics) as (keyof typeof t.topics)[]).map((key) => (
@@ -69,8 +85,13 @@ function ContactForm({ lang }: Props) {
           ))}
         </fieldset>
         {topic && (
-          <input type="hidden" name="_subject" value={`protu.lv · ${ui.lv.topics[topic]}`} />
+          <input
+            type="hidden"
+            name="_subject"
+            value={requestSubject ?? `protu.lv · ${ui.lv.topics[topic]}`}
+          />
         )}
+        {request && <input type="hidden" name="service" value={request.lv} />}
         <label>
           <span>{t.contactName}</span>
           <input required name="name" autoComplete="name" />

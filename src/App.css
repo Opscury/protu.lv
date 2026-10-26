@@ -57,6 +57,7 @@
 }
 
 .bar-nav a:hover { color: var(--accent-ink); }
+.bar-nav a[aria-current] { font-weight: 600; }
 
 .bar-end {
   justify-self: end;
@@ -875,6 +876,35 @@
   color: var(--surface);
 }
 
+/* Pakalpojumu teaser sākumlapā */
+
+.teaser {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+  gap: 1.75rem clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+  padding-top: clamp(1.5rem, 3vw, 2.25rem);
+  border-top: 1px solid var(--ink);
+}
+
+.teaser h2 {
+  margin: 0;
+  font-size: clamp(1.875rem, 3.2vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.teaser-body p {
+  max-width: 48ch;
+  margin: 0.85rem 0 1.5rem;
+  font-size: 1.0625rem;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.teaser-links { flex-direction: column; gap: 0.7rem; padding-top: 0.4rem; }
+
 /* ── Kontakti ───────────────────────────────────────── */
 
 .contact {
@@ -982,6 +1012,17 @@
 .contact-form input:user-invalid,
 .contact-form textarea:user-invalid { border-color: #b42318; }
 
+.contact-request {
+  margin: 0;
+  padding: 0.7rem 0.95rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.65rem;
+  background: var(--ground);
+  font-size: 0.9375rem;
+}
+
+.contact-request strong { font-weight: 650; }
+
 .contact-topic {
   display: flex;
   flex-wrap: wrap;
@@ -1071,6 +1112,7 @@
 .foot strong { color: var(--ink); font-weight: 600; }
 .foot a { color: var(--ink); text-decoration: none; }
 .foot a:hover { color: var(--accent-ink); }
+.foot-nav { display: flex; flex-wrap: wrap; gap: 0.35rem 1.5rem; }
 
 /* ── Gadījuma izpētes lapa ──────────────────────────── */
 
@@ -1259,20 +1301,23 @@
 /* ── Šauri ekrāni ───────────────────────────────────── */
 
 @media (max-width: 56rem) {
+  /* Valoda augšējā rindā blakus zīmei, lai četrām saitēm apakšā pietiek vietas. */
   .bar {
     grid-template-columns: 1fr auto;
-    grid-template-areas: "mark end" "nav nav";
+    grid-template-areas: "mark lang" "nav nav";
     height: auto;
     row-gap: 0.35rem;
     padding-top: 0.65rem;
     padding-bottom: 0.65rem;
   }
   .bar-mark { grid-area: mark; }
-  .bar-end { grid-area: end; }
-  .bar-center { grid-area: nav; justify-content: space-between; }
-  .bar-nav { gap: 1.25rem; }
+  .bar-center { display: contents; }
+  .lang { grid-area: lang; }
+  .bar-nav { grid-area: nav; flex-wrap: wrap; gap: 0.25rem 1.1rem; }
   .bar-nav a { font-size: 0.9375rem; }
-  .bar-status { display: none; }
+  .bar-end { display: none; }
+
+  .teaser { grid-template-columns: minmax(0, 1fr); }
 
   .section-head { grid-template-columns: 1fr; }
   .section-head p { justify-self: start; }

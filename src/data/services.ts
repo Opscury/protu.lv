@@ -619,8 +619,8 @@ export const services: Service[] = [
     },
     cardPrice: { parts: [{ amount: 79 }, { amount: 5, monthly: true }] },
     seoTitle: {
-      lv: 'Portfolio lapa māksliniekiem un dizaineriem · €79 · protu.lv',
-      en: 'Portfolio website for artists and designers · €79 · protu.lv',
+      lv: 'Portfolio lapa māksliniekiem un dizaineriem · no €79',
+      en: 'Portfolio website for artists and designers · from €79',
     },
     seoDescription: {
       lv:
