@@ -37,6 +37,8 @@ Tev nav jāpieskaņo visa darbu prezentācija vienas platformas projekta formāt
 
 Tas ir īpaši noderīgi, ja vēlies vienu skaidru saiti, ko nosūtīt potenciālajam klientam, darba devējam, galerijai vai cilvēkam, kurš interesējas par sadarbību.
 
+Tāda saite noder arī pieteikumos. Daudzi konkursi, rezidences un stipendijas pieteikumā prasa portfolio saiti. Atvērtos aicinājumus apkopoju lapā [Atvērtie konkursi](/konkursi/), piemēram, [grafiskajā dizainā](/konkursi/joma/grafiskais-dizains/) un [fotogrāfijā](/konkursi/joma/fotografija/).
+
 Iedomājies, ka piesakies darbam dizaina studijā. Tu vari nosūtīt CV un pievienot portfolio adresi. Saņēmējam ir viena vieta, kur apskatīt tavus labākos projektus, izlasīt īsu informāciju par tevi un atrast kontaktus.
 
 Tas negarantē darba piedāvājumu, taču palīdz tev pašam sakārtot savu prezentāciju.

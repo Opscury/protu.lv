@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://protu.lv/sitemap.xml
+Sitemap: https://protu.lv/konkursi/sitemap.xml

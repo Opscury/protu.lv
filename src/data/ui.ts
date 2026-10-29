@@ -27,6 +27,8 @@ type Strings = {
   services: string
   /** Blogs ir tikai latviski; angliski saiti nerāda. */
   blog: string
+  /** Atvērtie konkursi (protu.lv/konkursi/) ir tikai latviski. */
+  konkursi: string
   /** Kājenes saišu grupas nosaukums ekrānlasītājiem. */
   footNav: string
   /** Virs formas, kad atnāc no pakalpojuma pieteikuma pogas. */
@@ -80,6 +82,7 @@ export const ui: Record<Lang, Strings> = {
     navContact: 'Kontakti',
     services: 'Pakalpojumi',
     blog: 'Blogs',
+    konkursi: 'Konkursi',
     footNav: 'Saites',
     contactRequest: 'Pieteikums',
     contactTopic: 'Par ko?',
@@ -128,6 +131,7 @@ export const ui: Record<Lang, Strings> = {
     navContact: 'Contact',
     services: 'Services',
     blog: 'Blog',
+    konkursi: 'Open calls',
     footNav: 'Links',
     contactRequest: 'Request',
     contactTopic: 'What about?',

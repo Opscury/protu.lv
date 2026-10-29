@@ -51,6 +51,8 @@ Arī tava Instagram adrese ir saistīta ar platformu un lietotājvārdu. Tu neva
 
 Savukārt sava portfolio mājaslapa dod tev atsevišķu vietu, uz kuru vari norādīt no Instagram, e-pasta paraksta, CV vai pieteikuma darbam.
 
+Tas pats attiecas uz konkursiem un rezidencēm: pieteikuma formā bieži ir atsevišķs lauks portfolio saitei. Ja meklē, kur pieteikties, apskati atvērtos konkursus [ilustrācijā](/konkursi/joma/ilustracija/), [fotogrāfijā](/konkursi/joma/fotografija/) vai [vizuālajā mākslā](/konkursi/joma/vizuala-maksla/).
+
 Tā nav pilnīga neatkarība no tehniskām problēmām — arī mājaslapai nepieciešama uzturēšana un rezerves kopijas. Taču tev ir vēl viens veids, kā parādīt savus darbus.
 
 ## Vai Instagram attēlu kvalitāte ir pietiekama?

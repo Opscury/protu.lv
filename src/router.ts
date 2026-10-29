@@ -58,9 +58,18 @@ export function restoreScroll() {
   else window.scrollTo({ top: 0, behavior: 'instant' })
 }
 
+/** Ceļi, ko apkalpo nevis šī React lapa, bet protu-admin (Django) caur nginx. */
+export const SERVER_PATHS = ['/konkursi', '/k/']
+
+export function isServerPath(href: string) {
+  return SERVER_PATHS.some((prefix) => href === prefix || href.startsWith(prefix.endsWith('/') ? prefix : prefix + '/'))
+}
+
 /** Iekšējās saites: parasts klikšķis — bez pārlādes; jaunā cilnē — kā parasti. */
 export function onLinkClick(e: MouseEvent<HTMLAnchorElement>) {
   if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+  // /konkursi/ u.c. ir citas lietotnes lapas: tām vajag parastu pārlādi.
+  if (isServerPath(e.currentTarget.getAttribute('href') ?? '')) return
   e.preventDefault()
   navigate(e.currentTarget.getAttribute('href') ?? '/')
 }

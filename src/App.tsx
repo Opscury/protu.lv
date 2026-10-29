@@ -11,6 +11,9 @@ import BlogIndex from './components/BlogIndex'
 import BlogPost from './components/BlogPost'
 import WorkRow from './components/WorkRow'
 import { BLOG_PATH, blogRoute } from './data/blog'
+
+/** Atvērtie konkursi: atsevišķa lietotne (protu-admin), tāpēc parasta saite bez onLinkClick. */
+const KONKURSI_PATH = '/konkursi/'
 import { certificates, projects } from './data/portfolio'
 import { ui } from './data/ui'
 import { caseFromPath, caseIds, works } from './data/works'
@@ -112,6 +115,7 @@ function App() {
                 {t.blog}
               </a>
             )}
+            {pageLang === 'lv' && <a href={KONKURSI_PATH}>{t.konkursi}</a>}
             <a {...homeLink('#sertifikati')}>{t.certificates}</a>
             <a href="#contact">{t.navContact}</a>
           </nav>
@@ -235,6 +239,7 @@ function App() {
           <nav className="foot-nav" aria-label={t.footNav}>
             <a href={SERVICES_PATH} onClick={onLinkClick}>{t.services}</a>
             {pageLang === 'lv' && <a href={BLOG_PATH} onClick={onLinkClick}>{t.blog}</a>}
+            {pageLang === 'lv' && <a href={KONKURSI_PATH}>{t.konkursi}</a>}
             <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
           </nav>
         </footer>

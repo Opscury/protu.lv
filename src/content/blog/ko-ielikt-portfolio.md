@@ -96,6 +96,8 @@ Izmanto attēlus, kas ir pietiekami kvalitatīvi apskatei, bet nav nevajadzīgi 
 
 Ja tev pašlaik ir tikai daži darbi, vari sākt ar tiem. Ja vēl mācies, iekļauj studiju uzdevumus un personīgos projektus. Ja mainās tavs radošais virziens, laika gaitā nomaini arī darbu izlasi.
 
+Labs iemesls sakārtot portfolio ir konkrēts pieteikums. Lapā [Atvērtie konkursi](/konkursi/) apkopoju konkursus, [rezidences](/konkursi/veids/rezidence/) un [stipendijas](/konkursi/veids/stipendija/) radošiem cilvēkiem Latvijā, un pie katra ir norādīts, kas jāiesniedz.
+
 Portfolio ir vieta, ko vari pilnveidot, kad rodas jauni projekti un labāk saproti, ko vēlies darīt.
 
 Sāc ar vienkāršu struktūru: darbi, īss konteksts, sadaļa “Par mani” un kontakti. Kad saturs ir sakārtots, to būs vieglāk parādīt arī citiem.
