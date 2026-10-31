@@ -29,6 +29,13 @@ type Strings = {
   blog: string
   /** Atvērtie konkursi (protu.lv/konkursi/) ir tikai latviski. */
   konkursi: string
+  /** protu.lv izvēlnē: saite uz valdis.protu.lv. */
+  aboutMe: string
+  /** protu.lv sākumlapā darbu sadaļa rāda tikai klientu darbus. */
+  clientWorksLead: string
+  /** protu.lv (biznesa vietnes) sākumlapas virsraksts un apraksts. */
+  protuTitle: string
+  protuDescription: string
   /** Kājenes saišu grupas nosaukums ekrānlasītājiem. */
   footNav: string
   /** Virs formas, kad atnāc no pakalpojuma pieteikuma pogas. */
@@ -83,6 +90,11 @@ export const ui: Record<Lang, Strings> = {
     services: 'Pakalpojumi',
     blog: 'Blogs',
     konkursi: 'Konkursi',
+    aboutMe: 'Par mani',
+    clientWorksLead: 'Vietnes, ko esmu uztaisījis klientiem, ar visu procesu no sākuma līdz beigām.',
+    protuTitle: 'protu.lv · mājaslapas un portfolio radošajiem',
+    protuDescription:
+      'Mājaslapas, portfolio radošajiem un hostings Latvijā. Dizains, kods, serveris un pasts no vienas rokas.',
     footNav: 'Saites',
     contactRequest: 'Pieteikums',
     contactTopic: 'Par ko?',
@@ -132,6 +144,11 @@ export const ui: Record<Lang, Strings> = {
     services: 'Services',
     blog: 'Blog',
     konkursi: 'Open calls',
+    aboutMe: 'About me',
+    clientWorksLead: 'Sites I’ve built for clients, with the whole process from start to finish.',
+    protuTitle: 'protu.lv · websites and portfolios for creatives',
+    protuDescription:
+      'Websites, portfolios for creatives and hosting in Latvia. Design, code, server and email from one person.',
     footNav: 'Links',
     contactRequest: 'Request',
     contactTopic: 'What about?',

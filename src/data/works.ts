@@ -1,3 +1,4 @@
+import { CLIENT_CASES, isPersonal } from '../site'
 import type { Localized } from '../types'
 
 /** Sākumlapas kartītes. Pilnā gadījuma izpēte dzīvo /darbi/<id>. */
@@ -17,7 +18,7 @@ export type Work = {
   side?: boolean
 }
 
-export const works: Work[] = [
+const allWorks: Work[] = [
   {
     id: 'silva',
     title: 'Bistro Silva',
@@ -85,6 +86,10 @@ export const works: Work[] = [
     side: true,
   },
 ]
+
+/** protu.lv rāda tikai klientu darbus (biznesa pierādījumi);
+ *  valdis.protu.lv rāda visu, arī VIZIUM un Senciems. */
+export const works: Work[] = isPersonal ? allWorks : allWorks.filter((w) => CLIENT_CASES.includes(w.id))
 
 /** Pilno lapu secība — "nākamais darbs" saitei. */
 export const caseIds = works.filter((w) => !w.external).map((w) => w.id)

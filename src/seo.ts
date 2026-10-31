@@ -15,11 +15,13 @@ import type { Lang } from './types'
 /** Virsraksts, apraksts, kanoniskā adrese un JSON-LD katrai lapai.
  *  To pašu lieto pārlūkā (applyMeta) un būvēšanā (renderHead, sitemap). */
 
-export const SITE = 'https://protu.lv'
-/** Tas pats @id kā Person blokam index.html. */
-const PERSON_ID = `${SITE}/#valdis`
+import { CLIENT_CASES, isPersonal, PERSON_ID, PROTU_URL, SITE, VALDIS_URL } from './site'
+
+export { SITE }
 
 export type PageMeta = {
+  /** Cita vietne kanoniskajai adresei (valdis.protu.lv klientu darbi → protu.lv). */
+  base?: string
   title: string
   description: string
   /** Ceļš bez valodas, piemēram /pakalpojumi/majaslapa/. */
@@ -34,7 +36,8 @@ export type PageMeta = {
 }
 
 /** Angļu versija ir tā pati adrese ar ?lang=en, tāpat kā visā vietnē. */
-export const pageUrl = (path: string, lang: Lang) => `${SITE}${path}${lang === 'en' ? '?lang=en' : ''}`
+export const pageUrl = (path: string, lang: Lang, base: string = SITE) =>
+  `${base}${path}${lang === 'en' ? '?lang=en' : ''}`
 
 const areaServed = [
   { '@type': 'City', name: 'Jelgava' },
@@ -42,7 +45,7 @@ const areaServed = [
   { '@type': 'Country', name: 'Latvia' },
 ]
 
-const provider = { '@type': 'Person', '@id': PERSON_ID, name: 'Valdis Viška', url: `${SITE}/` }
+const provider = { '@type': 'Person', '@id': PERSON_ID, name: 'Valdis Viška', url: `${VALDIS_URL}/` }
 
 /** "no €400" → minPrice; "€15/mēn" → price ar mēneša vienību. */
 function priceSpecification(price: Price) {
@@ -216,7 +219,12 @@ export function pageMeta(path: string, lang: Lang): PageMeta {
       description: work.blurb[lang],
       path: work.href,
       jsonLd: [],
+      // Klientu darbi ir arī valdis.protu.lv, bet meklētājiem tie pieder protu.lv.
+      base: CLIENT_CASES.includes(work.id) ? PROTU_URL : SITE,
     }
+  }
+  if (!isPersonal) {
+    return { title: ui[lang].protuTitle, description: ui[lang].protuDescription, path: '/', jsonLd: [] }
   }
   return { title: ui[lang].documentTitle, description: ui[lang].documentDescription, path: '/', jsonLd: [] }
 }
@@ -226,7 +234,7 @@ const LD_ID = 'page-ld'
 /** Pārlūkā: atjauno galvas tagus pēc lapas vai valodas maiņas. */
 export function applyMeta(meta: PageMeta, lang: Lang) {
   if (meta.lvOnly) lang = 'lv'
-  const url = pageUrl(meta.path, lang)
+  const url = pageUrl(meta.path, lang, meta.base)
   const set = (selector: string, attr: string, value: string) =>
     document.querySelector(selector)?.setAttribute(attr, value)
   /** Tagu, kura blogā nav, izveido no jauna, kad atgriežas citā lapā. */
@@ -257,9 +265,9 @@ export function applyMeta(meta: PageMeta, lang: Lang) {
   set('meta[name="twitter:title"]', 'content', meta.title)
   set('meta[name="twitter:description"]', 'content', meta.description)
   set('link[rel="canonical"]', 'href', url)
-  set('link[hreflang="lv"]', 'href', pageUrl(meta.path, 'lv'))
-  set('link[hreflang="en"]', 'href', pageUrl(meta.path, 'en'))
-  set('link[hreflang="x-default"]', 'href', pageUrl(meta.path, 'lv'))
+  set('link[hreflang="lv"]', 'href', pageUrl(meta.path, 'lv', meta.base))
+  set('link[hreflang="en"]', 'href', pageUrl(meta.path, 'en', meta.base))
+  set('link[hreflang="x-default"]', 'href', pageUrl(meta.path, 'lv', meta.base))
 
   let script = document.getElementById(LD_ID)
   if (!meta.jsonLd.length) {
@@ -281,7 +289,7 @@ const escapeAttr = (value: string) =>
 /** Būvēšanā: ieraksta tos pašus tagus gatavā dist/index.html kopijā. */
 export function renderHead(template: string, meta: PageMeta, lang: Lang) {
   if (meta.lvOnly) lang = 'lv'
-  const url = pageUrl(meta.path, lang)
+  const url = pageUrl(meta.path, lang, meta.base)
   const content = (attr: string, key: string, value: string) => (html: string) =>
     html.replace(
       new RegExp(`(<meta\\s+${attr}="${key}"\\s+content=")[^"]*(")`),
@@ -300,9 +308,9 @@ export function renderHead(template: string, meta: PageMeta, lang: Lang) {
     content('name', 'twitter:title', meta.title),
     content('name', 'twitter:description', meta.description),
     href('rel="canonical"', url),
-    href('rel="alternate" hreflang="lv"', pageUrl(meta.path, 'lv')),
-    href('rel="alternate" hreflang="en"', pageUrl(meta.path, 'en')),
-    href('rel="alternate" hreflang="x-default"', pageUrl(meta.path, 'lv')),
+    href('rel="alternate" hreflang="lv"', pageUrl(meta.path, 'lv', meta.base)),
+    href('rel="alternate" hreflang="en"', pageUrl(meta.path, 'en', meta.base)),
+    href('rel="alternate" hreflang="x-default"', pageUrl(meta.path, 'lv', meta.base)),
     // Blogā nav angļu versijas: bez hreflang un og:locale:alternate.
     (html: string) =>
       meta.lvOnly
@@ -322,16 +330,19 @@ export function renderHead(template: string, meta: PageMeta, lang: Lang) {
 }
 
 /** Lapas, ko būvēšanā pārvērš statiskā HTML. Melnraksti arī, lai tos var apskatīt pa tiešo adresi. */
-export const prerenderPaths = [
-  SERVICES_PATH,
-  ...services.map((s) => serviceHref(s.slug)),
-  BLOG_PATH,
-  ...allPosts.map((p) => postHref(p.slug)),
-]
+export const prerenderPaths = isPersonal
+  ? []
+  : [SERVICES_PATH, ...services.map((s) => serviceHref(s.slug)), BLOG_PATH, ...allPosts.map((p) => postHref(p.slug))]
 
-/** sitemap.xml: abas valodas katrai adresei, blogs tikai latviski. */
+/** sitemap.xml: abas valodas katrai adresei, blogs tikai latviski.
+ *  valdis.protu.lv: sākumlapa + savi darbi (klientu darbi ir protu.lv sitemap). */
 export function sitemapXml() {
-  const bilingual = ['/', ...caseIds.map((id) => `/darbi/${id}`), SERVICES_PATH, ...services.map((s) => serviceHref(s.slug))]
+  const ownCases = caseIds.filter((id) => (isPersonal ? !CLIENT_CASES.includes(id) : true))
+  const bilingual = [
+    '/',
+    ...ownCases.map((id) => `/darbi/${id}`),
+    ...(isPersonal ? [] : [SERVICES_PATH, ...services.map((s) => serviceHref(s.slug))]),
+  ]
   const xml = (s: string) => s.replace(/&/g, '&amp;')
   const entries = bilingual.flatMap((path) =>
     (['lv', 'en'] as const).map(
@@ -345,10 +356,13 @@ export function sitemapXml() {
   )
   // Blogs ir tikai latviski: viena adrese bez valodu alternatīvām; melnraksti nav iekšā.
   const newest = publishedPosts.map((p) => p.updated ?? p.date).sort().at(-1)
-  const blogEntries = [
-    { path: BLOG_PATH, lastmod: newest },
-    ...publishedPosts.map((p) => ({ path: postHref(p.slug), lastmod: p.updated ?? p.date })),
-  ].map(
+  const blogPaths = isPersonal
+    ? []
+    : [
+        { path: BLOG_PATH, lastmod: newest },
+        ...publishedPosts.map((p) => ({ path: postHref(p.slug), lastmod: p.updated ?? p.date })),
+      ]
+  const blogEntries = blogPaths.map(
     ({ path, lastmod }) => `  <url>
     <loc>${xml(pageUrl(path, 'lv'))}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}
   </url>`,
