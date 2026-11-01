@@ -1,5 +1,6 @@
 import { type FormEvent, useState } from 'react'
 import { ui } from '../data/ui'
+import { isPersonal } from '../site'
 import type { Lang, Localized } from '../types'
 
 type Props = {
@@ -55,10 +56,13 @@ function ContactForm({ lang, request }: Props) {
           <a className="mailto" href={mailto}>
             {CONTACT_EMAIL}
           </a>
-          <p className="self-hosted">
-            <span className="self-hosted-dot" aria-hidden="true" />
-            {t.selfHosted}
-          </p>
+          {/* Paša pasta serveris ir prasmes pierādījums darba devējiem: tikai valdis.protu.lv. */}
+          {isPersonal && (
+            <p className="self-hosted">
+              <span className="self-hosted-dot" aria-hidden="true" />
+              {t.selfHosted}
+            </p>
+          )}
         </div>
       </div>
 
@@ -70,7 +74,10 @@ function ContactForm({ lang, request }: Props) {
         )}
         <fieldset className="contact-topic">
           <legend>{t.contactTopic}</legend>
-          {(Object.keys(t.topics) as (keyof typeof t.topics)[]).map((key) => (
+          {(Object.keys(t.topics) as (keyof typeof t.topics)[])
+            // Darba piedāvājumi pieder valdis.protu.lv, nevis biznesa vietnei.
+            .filter((key) => isPersonal || key !== 'job')
+            .map((key) => (
             <label key={key}>
               <input
                 type="radio"

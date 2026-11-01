@@ -9,7 +9,7 @@ import SilvaCase from './components/SilvaCase'
 import AndaCase from './components/AndaCase'
 import BlogIndex from './components/BlogIndex'
 import BuilderIntro from './components/BuilderIntro'
-import { builder } from './data/builder'
+import { builder, BUILDER_SIGNUP } from './data/builder'
 import BlogPost from './components/BlogPost'
 import WorkRow from './components/WorkRow'
 import { BLOG_PATH, blogRoute } from './data/blog'
@@ -136,10 +136,16 @@ function App() {
           <LanguageToggle lang={pageLang} label={t.langLabel} onChange={changeLang} />
         </div>
         <div className="bar-end">
-          <a className="bar-status" href="#contact">
-            <span className="bar-status-dot" aria-hidden="true" />
-            {t.statusMail}
-          </a>
+          {isPersonal ? (
+            <a className="bar-status" href="#contact">
+              <span className="bar-status-dot" aria-hidden="true" />
+              {t.statusMail}
+            </a>
+          ) : (
+            <a className="bar-cta" href={BUILDER_SIGNUP}>
+              {builder.cta[pageLang]}
+            </a>
+          )}
         </div>
       </div>
 
