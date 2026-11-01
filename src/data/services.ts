@@ -619,22 +619,22 @@ export const services: Service[] = [
   },
   {
     slug: 'portfolio',
-    name: { lv: 'Portfolio lapa radošajiem', en: 'Portfolio site for creatives' },
+    name: { lv: 'Portfolio lapa pēc pasūtījuma', en: 'Custom-made portfolio site' },
     pitch: {
-      lv: 'Tīrs portfolio māksliniekiem, dizaineriem un studentiem adresē vards.protu.lv.',
-      en: 'A clean portfolio for artists, designers and students at yourname.protu.lv.',
+      lv: 'Negribi pats? Salieku tavus darbus un uztaisu lapu ar dizainu tieši tev, adresē vārds.protu.lv.',
+      en: 'Rather not do it yourself? I set up your work and design the site just for you, at yourname.protu.lv.',
     },
     cardPrice: { parts: [{ amount: 79 }, { amount: 5, monthly: true }] },
     seoTitle: {
-      lv: 'Portfolio lapa māksliniekiem un dizaineriem · no €79',
-      en: 'Portfolio website for artists and designers · from €79',
+      lv: 'Portfolio lapa pēc pasūtījuma māksliniekiem un dizaineriem · no €79',
+      en: 'Custom-made portfolio website for artists and designers · from €79',
     },
     seoDescription: {
       lv:
-        'Tīra portfolio lapa māksliniekiem, dizaineriem un studentiem adresē vards.protu.lv: ' +
+        'Portfolio lapa ar dizainu tieši tev māksliniekiem, dizaineriem un studentiem adresē vārds.protu.lv: ' +
         '€79 vienreiz + €5/mēn vai €129 ar pirmo gadu. Izstrādāts Jelgavā, piemērs: anda.protu.lv.',
       en:
-        'A clean portfolio site for artists, designers and students at yourname.protu.lv: ' +
+        'A portfolio site designed just for you, for artists, designers and students at yourname.protu.lv: ' +
         '€79 once + €5/month, or €129 including the first year. Example: anda.protu.lv.',
     },
     serviceType: 'Portfolio website',
