@@ -8,6 +8,8 @@ import ServicesOverview from './components/ServicesOverview'
 import SilvaCase from './components/SilvaCase'
 import AndaCase from './components/AndaCase'
 import BlogIndex from './components/BlogIndex'
+import BuilderIntro from './components/BuilderIntro'
+import { builder } from './data/builder'
 import BlogPost from './components/BlogPost'
 import WorkRow from './components/WorkRow'
 import { BLOG_PATH, blogRoute } from './data/blog'
@@ -112,6 +114,7 @@ function App() {
             </nav>
           ) : (
             <nav className="bar-nav" aria-label={t.navLabel}>
+              <a {...homeLink('#portfolio')}>{t.portfolio}</a>
               <a
                 href={SERVICES_PATH}
                 onClick={onLinkClick}
@@ -178,8 +181,9 @@ function App() {
             {isPersonal && <ProtuCanvas lang={lang} onSkill={setSkillId} />}
 
             <main id="main" className={isPersonal ? undefined : 'case-page'}>
-              {/* protu.lv sākumlapa: pakalpojumi pirmie, līdz to aizstās portfolio veidotāja lapa. */}
-              {!isPersonal && <ServicesOverview lang={lang} />}
+              {/* protu.lv sākumlapa: vispirms bezmaksas portfolio veidotājs, zem tā pakalpojumi. */}
+              {!isPersonal && <BuilderIntro lang={lang} />}
+              {!isPersonal && <ServicesOverview lang={lang} under eyebrow={builder.customTitle[lang]} />}
 
               <section className="section" id="darbi" aria-labelledby="darbi-title">
                 <div className="section-head">
@@ -240,6 +244,7 @@ function App() {
             </nav>
           ) : (
             <nav className="foot-nav" aria-label={t.footNav}>
+              <a href="https://mans.protu.lv/registreties/">{t.portfolio}</a>
               <a href={SERVICES_PATH} onClick={onLinkClick}>{t.services}</a>
               {pageLang === 'lv' && <a href={BLOG_PATH} onClick={onLinkClick}>{t.blog}</a>}
               {pageLang === 'lv' && <a href={KONKURSI_PATH}>{t.konkursi}</a>}

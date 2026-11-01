@@ -3,16 +3,19 @@ import { onLinkClick } from '../router'
 import type { Lang } from '../types'
 import '../services.css'
 
-type Props = { lang: Lang }
+type Props = { lang: Lang; under?: boolean; eyebrow?: string }
 
-/** /pakalpojumi/: kartīte katram pakalpojumam ar vienu teikumu un cenu. */
-function ServicesOverview({ lang }: Props) {
+/** /pakalpojumi/: kartīte katram pakalpojumam ar vienu teikumu un cenu.
+ *  under: sākumlapā zem portfolio veidotāja, tāpēc h2, nevis lapas h1. */
+function ServicesOverview({ lang, under = false, eyebrow }: Props) {
   const t = servicesPage
+  const Title = under ? 'h2' : 'h1'
 
   return (
-    <article className="svc">
+    <article className={under ? 'svc svc-under' : 'svc'} id={under ? 'pakalpojumi' : undefined}>
       <header className="svc-head">
-        <h1 className="svc-title">{t.title[lang]}</h1>
+        {eyebrow && <p className="bld-eyebrow">{eyebrow}</p>}
+        <Title className="svc-title">{t.title[lang]}</Title>
         <p className="svc-lead">{t.lead[lang]}</p>
       </header>
 

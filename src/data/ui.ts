@@ -25,6 +25,8 @@ type Strings = {
   navLabel: string
   navContact: string
   services: string
+  /** protu.lv izvēlnē: bezmaksas portfolio veidotājs sākumlapas augšā. */
+  portfolio: string
   /** Blogs ir tikai latviski; angliski saiti nerāda. */
   blog: string
   /** Atvērtie konkursi (protu.lv/konkursi/) ir tikai latviski. */
@@ -88,13 +90,14 @@ export const ui: Record<Lang, Strings> = {
     navLabel: 'Sadaļas',
     navContact: 'Kontakti',
     services: 'Pakalpojumi',
+    portfolio: 'Portfolio',
     blog: 'Blogs',
     konkursi: 'Konkursi',
     aboutMe: 'Par mani',
     clientWorksLead: 'Vietnes, ko esmu uztaisījis klientiem, ar visu procesu no sākuma līdz beigām.',
-    protuTitle: 'protu.lv · mājaslapas un portfolio radošajiem',
+    protuTitle: 'protu.lv · bezmaksas portfolio lapa radošajiem',
     protuDescription:
-      'Mājaslapas, portfolio radošajiem un hostings Latvijā. Dizains, kods, serveris un pasts no vienas rokas.',
+      'Bezmaksas portfolio lapa vārds.protu.lv un pieteikuma PDF konkursiem un rezidencēm. Arī mājaslapas un hostings Latvijā.',
     footNav: 'Saites',
     contactRequest: 'Pieteikums',
     contactTopic: 'Par ko?',
@@ -142,13 +145,14 @@ export const ui: Record<Lang, Strings> = {
     navLabel: 'Sections',
     navContact: 'Contact',
     services: 'Services',
+    portfolio: 'Portfolio',
     blog: 'Blog',
     konkursi: 'Open calls',
     aboutMe: 'About me',
     clientWorksLead: 'Sites I’ve built for clients, with the whole process from start to finish.',
-    protuTitle: 'protu.lv · websites and portfolios for creatives',
+    protuTitle: 'protu.lv · free portfolio sites for creatives',
     protuDescription:
-      'Websites, portfolios for creatives and hosting in Latvia. Design, code, server and email from one person.',
+      'A free portfolio site at name.protu.lv and an application PDF for open calls and residencies. Plus websites and hosting in Latvia.',
     footNav: 'Links',
     contactRequest: 'Request',
     contactTopic: 'What about?',

@@ -1,0 +1,70 @@
+/* ── protu.lv sākumlapa: portfolio veidotājs ───────────── */
+
+.bld-eyebrow {
+  margin: 0 0 1rem;
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.bld-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin-top: 2rem;
+}
+
+.bld-actions .svc-cta { margin-top: 0; }
+
+/* Ved uz citu lapu (mans.protu.lv), tāpēc bultiņa pa labi, nevis lejup uz formu. */
+.bld-actions .svc-cta::after {
+  transform: rotate(45deg);
+  translate: -2px 0;
+}
+
+.bld-login {
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.bld-login:hover { color: var(--accent-ink); }
+
+.bld-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bld-steps h3 {
+  margin: 0.4rem 0 0.5rem;
+  font-size: 1.1875rem;
+  letter-spacing: -0.02em;
+}
+
+.bld-steps p {
+  margin: 0;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.bld-step-no {
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  color: var(--accent-ink);
+}
+
+.bld-calls-body {
+  max-width: 52ch;
+  margin: 0 0 0.75rem;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+/* Pakalpojumi zem veidotāja: virsraksts kā sadaļa, nevis lapas h1. */
+.svc-under .svc-title { font-size: clamp(2rem, 4.5vw, 3.5rem); }
