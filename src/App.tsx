@@ -9,7 +9,14 @@ import SilvaCase from './components/SilvaCase'
 import AndaCase from './components/AndaCase'
 import BlogIndex from './components/BlogIndex'
 import BuilderIntro from './components/BuilderIntro'
-import { builder, BUILDER_SIGNUP } from './data/builder'
+import {
+  builder,
+  BUILDER_LOGIN,
+  BUILDER_PRIVACY,
+  BUILDER_REPORT,
+  BUILDER_SIGNUP,
+  BUILDER_TERMS,
+} from './data/builder'
 import BlogPost from './components/BlogPost'
 import WorkRow from './components/WorkRow'
 import { BLOG_PATH, blogRoute } from './data/blog'
@@ -97,6 +104,24 @@ function App() {
   const nextWork = works.find((w) => w.id === nextId)
   const vizium = projects.find((p) => p.id === 'vizium')
 
+  // protu.lv: klientu darbi dzīvo pie pakalpojumiem; valdis.protu.lv: sākumlapā.
+  const worksHref = isPersonal ? '/#darbi' : `${SERVICES_PATH}#darbi`
+  const worksSection = (
+    <section className="section" id="darbi" aria-labelledby="darbi-title">
+      <div className="section-head">
+        <h2 id="darbi-title">{t.works}</h2>
+        <p>{isPersonal ? t.worksLead : t.clientWorksLead}</p>
+      </div>
+      <ol className="work-list">
+        {works.map((work) => (
+          <WorkRow key={work.id} work={work} lang={lang} active={skillId} />
+        ))}
+      </ol>
+    </section>
+  )
+  // protu.lv sākumlapa ir veidotāja vitrīna: kontaktforma tur, kur kāds nolīgst Valdi.
+  const showContact = isPersonal || Boolean(route || caseId)
+
   return (
     <>
       <a className="skip" href="#main">{t.skip}</a>
@@ -114,23 +139,25 @@ function App() {
             </nav>
           ) : (
             <nav className="bar-nav" aria-label={t.navLabel}>
-              <a {...homeLink('#portfolio')}>{t.portfolio}</a>
               <a
-                href={SERVICES_PATH}
-                onClick={onLinkClick}
-                aria-current={route ? (service ? 'true' : 'page') : undefined}
+                {...(subPage ? { href: '/', onClick: onLinkClick } : { href: '#top' })}
+                aria-current={subPage ? undefined : 'page'}
               >
-                {t.services}
+                {t.portfolio}
               </a>
-              <a {...homeLink('#darbi')}>{t.works}</a>
+              {pageLang === 'lv' && <a href={KONKURSI_PATH}>{t.konkursi}</a>}
               {pageLang === 'lv' && (
                 <a href={BLOG_PATH} onClick={onLinkClick} aria-current={blog ? (blog.post ? 'true' : 'page') : undefined}>
                   {t.blog}
                 </a>
               )}
-              {pageLang === 'lv' && <a href={KONKURSI_PATH}>{t.konkursi}</a>}
-              <a href="#contact">{t.navContact}</a>
-              <a href={VALDIS_URL}>{t.aboutMe}</a>
+              <a
+                href={SERVICES_PATH}
+                onClick={onLinkClick}
+                aria-current={route || caseId ? (service || caseId ? 'true' : 'page') : undefined}
+              >
+                {t.services}
+              </a>
             </nav>
           )}
           <LanguageToggle lang={pageLang} label={t.langLabel} onChange={changeLang} />
@@ -142,9 +169,14 @@ function App() {
               {t.statusMail}
             </a>
           ) : (
-            <a className="bar-cta" href={BUILDER_SIGNUP}>
-              {builder.cta[pageLang]}
-            </a>
+            <>
+              <a className="bar-login" href={BUILDER_LOGIN}>
+                {builder.login[pageLang]}
+              </a>
+              <a className="bar-cta" href={BUILDER_SIGNUP}>
+                {builder.cta[pageLang]}
+              </a>
+            </>
           )}
         </div>
       </div>
@@ -164,12 +196,15 @@ function App() {
                 onRequest={(id) => setPicked({ path, plan: id })}
               />
             ) : (
-              <ServicesOverview lang={lang} />
+              <>
+                <ServicesOverview lang={lang} />
+                {worksSection}
+              </>
             )}
           </main>
         ) : caseId ? (
           <main className="case-page" id="main">
-            <a className="case-back" href="/#darbi" onClick={onLinkClick}>
+            <a className="case-back" href={worksHref} onClick={onLinkClick}>
               {t.backToWork}
             </a>
             {caseId === 'silva' && <SilvaCase lang={lang} />}
@@ -187,21 +222,8 @@ function App() {
             {isPersonal && <ProtuCanvas lang={lang} onSkill={setSkillId} />}
 
             <main id="main" className={isPersonal ? undefined : 'case-page'}>
-              {/* protu.lv sākumlapa: vispirms bezmaksas portfolio veidotājs, zem tā pakalpojumi. */}
-              {!isPersonal && <BuilderIntro lang={lang} />}
-              {!isPersonal && <ServicesOverview lang={lang} under eyebrow={builder.customTitle[lang]} />}
-
-              <section className="section" id="darbi" aria-labelledby="darbi-title">
-                <div className="section-head">
-                  <h2 id="darbi-title">{t.works}</h2>
-                  <p>{isPersonal ? t.worksLead : t.clientWorksLead}</p>
-                </div>
-                <ol className="work-list">
-                  {works.map((work) => (
-                    <WorkRow key={work.id} work={work} lang={lang} active={skillId} />
-                  ))}
-                </ol>
-              </section>
+              {/* protu.lv sākumlapa ir tikai portfolio veidotājs; pakalpojumi un darbi ir /pakalpojumi/. */}
+              {isPersonal ? worksSection : <BuilderIntro lang={lang} />}
 
               {/* Sertifikāti ir CV daļa: tikai valdis.protu.lv. */}
               {isPersonal && (
@@ -236,29 +258,40 @@ function App() {
           </>
         )}
 
-        <ContactForm lang={pageLang} request={request} />
+        {showContact && <ContactForm lang={pageLang} request={request} />}
 
-        <footer className="foot">
-          <p>
-            <strong>Valdis Viška</strong>
-            <span>{t.availability}</span>
-          </p>
-          {isPersonal ? (
+        {isPersonal ? (
+          <footer className="foot">
+            <p>
+              <strong>Valdis Viška</strong>
+              <span>{t.availability}</span>
+            </p>
             <nav className="foot-nav" aria-label={t.footNav}>
               <a href={PROTU_URL}>protu.lv</a>
               <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
             </nav>
-          ) : (
+          </footer>
+        ) : (
+          <footer className="foot">
+            <p>
+              <strong>protu.lv</strong>
+              <span>{t.footRun}</span>
+            </p>
             <nav className="foot-nav" aria-label={t.footNav}>
-              <a href="https://mans.protu.lv/registreties/">{t.portfolio}</a>
-              <a href={SERVICES_PATH} onClick={onLinkClick}>{t.services}</a>
-              {pageLang === 'lv' && <a href={BLOG_PATH} onClick={onLinkClick}>{t.blog}</a>}
+              <a href={BUILDER_SIGNUP}>{builder.cta[pageLang]}</a>
               {pageLang === 'lv' && <a href={KONKURSI_PATH}>{t.konkursi}</a>}
+              {pageLang === 'lv' && <a href={BLOG_PATH} onClick={onLinkClick}>{t.blog}</a>}
+              <a href={SERVICES_PATH} onClick={onLinkClick}>{t.services}</a>
               <a href={VALDIS_URL}>{t.aboutMe}</a>
+            </nav>
+            <nav className="foot-nav foot-legal" aria-label={t.footLegal}>
+              <a href={BUILDER_TERMS}>{t.terms}</a>
+              <a href={BUILDER_PRIVACY}>{t.privacy}</a>
+              <a href={BUILDER_REPORT}>{t.report}</a>
               <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
             </nav>
-          )}
-        </footer>
+          </footer>
+        )}
       </div>
     </>
   )

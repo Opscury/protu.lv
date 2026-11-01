@@ -40,6 +40,12 @@ type Strings = {
   protuDescription: string
   /** Kājenes saišu grupas nosaukums ekrānlasītājiem. */
   footNav: string
+  /** protu.lv kājene: kas vietni uztur, un juridisko saišu grupa (Protu lapas lapas mans.protu.lv). */
+  footRun: string
+  footLegal: string
+  terms: string
+  privacy: string
+  report: string
   /** Virs formas, kad atnāc no pakalpojuma pieteikuma pogas. */
   contactRequest: string
   contactTopic: string
@@ -99,6 +105,11 @@ export const ui: Record<Lang, Strings> = {
     protuDescription:
       'Bezmaksas portfolio lapa vārds.protu.lv un pieteikuma PDF konkursiem un rezidencēm. Arī mājaslapas un hostings Latvijā.',
     footNav: 'Saites',
+    footRun: 'Veido un uztur Valdis Viška, Jelgavā.',
+    footLegal: 'Noteikumi un privātums',
+    terms: 'Lietošanas noteikumi',
+    privacy: 'Privātums',
+    report: 'Ziņot par pārkāpumu',
     contactRequest: 'Pieteikums',
     contactTopic: 'Par ko?',
     topics: { site: 'Mājaslapa vai projekts', job: 'Darba piedāvājums', other: 'Cits' },
@@ -154,6 +165,11 @@ export const ui: Record<Lang, Strings> = {
     protuDescription:
       'A free portfolio site at name.protu.lv and an application PDF for open calls and residencies. Plus websites and hosting in Latvia.',
     footNav: 'Links',
+    footRun: 'Made and run by Valdis Viška in Jelgava, Latvia.',
+    footLegal: 'Terms and privacy',
+    terms: 'Terms of use',
+    privacy: 'Privacy',
+    report: 'Report a site',
     contactRequest: 'Request',
     contactTopic: 'What about?',
     topics: { site: 'Website or project', job: 'Job opportunity', other: 'Something else' },

@@ -7,6 +7,16 @@
   color: var(--muted);
 }
 
+/* Hero: teksts pa kreisi, lapa + PDF pa labi; šaurā ekrānā viens zem otra. */
+.bld-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  padding: clamp(1rem, 3vw, 2rem) 0 clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--ink);
+}
+
 .bld-actions {
   display: flex;
   flex-wrap: wrap;
@@ -15,23 +25,128 @@
   margin-top: 2rem;
 }
 
-.bld-actions .svc-cta { margin-top: 0; }
+.bld-actions .svc-cta,
+.bld-end .svc-cta { margin-top: 0; }
 
 /* Ved uz citu lapu (mans.protu.lv), tāpēc bultiņa pa labi, nevis lejup uz formu. */
-.bld-actions .svc-cta::after {
+.bld .svc-cta::after {
   transform: rotate(45deg);
   translate: -2px 0;
 }
 
-.bld-login {
+.bld-link {
   font-weight: 600;
   color: var(--ink);
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
 
-.bld-login:hover { color: var(--accent-ink); }
+.bld-link:hover { color: var(--accent-ink); }
 
+/* Paraksts: pārlūka logs ar lapu un pāri tam pieteikuma PDF lapa. */
+.bld-stage {
+  position: relative;
+  margin: 0;
+  padding: 0 clamp(1.5rem, 4vw, 3rem) clamp(3rem, 6vw, 4.5rem) 0;
+}
+
+.bld-browser {
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  box-shadow: 0 1.5rem 3rem -1.5rem rgb(17 18 20 / 0.35);
+}
+
+.bld-browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--rule);
+  background: var(--frame);
+}
+
+.bld-browser-bar span {
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1.5px solid var(--rule);
+  border-radius: 50%;
+}
+
+.bld-browser-bar em {
+  margin-left: 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-style: normal;
+  color: var(--muted);
+}
+
+.bld-pdf {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 32%;
+  rotate: 3deg;
+  border: 1px solid var(--ink);
+  border-radius: 0.25rem;
+  background: var(--surface);
+  box-shadow: 0 1.25rem 2.5rem -1rem rgb(17 18 20 / 0.4);
+}
+
+.bld-pdf-tag {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  background: var(--accent-ink);
+  color: var(--surface);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+.bld-stage figcaption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  max-width: 60%;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* Ekrānuzņēmumi un vietturi */
+.bld-shot {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  background: var(--frame);
+}
+
+.bld-shot-site { aspect-ratio: 16 / 10; border-radius: 0; }
+.bld-shot-pdf { aspect-ratio: 1 / 1.414; border-radius: 0.25rem; }
+
+.bld-shot-empty {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  border: 1.5px dashed var(--rule);
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.bld-shot-site.bld-shot-empty,
+.bld-shot-pdf.bld-shot-empty { border: 0; }
+
+/* Soļi: secība ir īsta, tāpēc numuri. */
 .bld-steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
@@ -42,7 +157,7 @@
 }
 
 .bld-steps h3 {
-  margin: 0.4rem 0 0.5rem;
+  margin: 0.5rem 0;
   font-size: 1.1875rem;
   letter-spacing: -0.02em;
 }
@@ -54,20 +169,151 @@
 }
 
 .bld-step-no {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
   font-family: var(--mono);
-  font-size: 0.875rem;
-  color: var(--accent-ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
 }
 
-.bld-calls-body {
+/* Jomas */
+.bld-fields {
+  padding: clamp(2.25rem, 4.5vw, 3.5rem) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.bld-fields-head {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: 1.25rem clamp(1.5rem, 3vw, 3rem);
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.bld-fields-head h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.bld-fields-head p {
+  max-width: 60ch;
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.bld-field-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bld-field h3 {
+  margin: 0.85rem 0 0.35rem;
+  font-size: 1.0625rem;
+  letter-spacing: -0.015em;
+}
+
+/* Paraksta paraugs: tā, kā rindiņa izskatīsies zem darba. */
+.bld-caption {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.bld-layout {
+  margin: 0.4rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.bld-free {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: none;
+  column-gap: 2rem;
+}
+
+.bld-body {
   max-width: 52ch;
   margin: 0 0 0.75rem;
   font-size: 1.0625rem;
   line-height: 1.5;
 }
 
-/* Pakalpojumi zem veidotāja: virsraksts kā sadaļa, nevis lapas h1. */
-.svc-under .svc-title { font-size: clamp(2rem, 4.5vw, 3.5rem); }
+/* Jautājumi */
+.bld-faq { max-width: 62ch; }
+
+.bld-faq details { border-bottom: 1px solid var(--rule); }
+.bld-faq details:first-child { border-top: 1px solid var(--rule); }
+
+.bld-faq summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.95rem 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.bld-faq summary::-webkit-details-marker { display: none; }
+
+.bld-faq summary::after {
+  content: '+';
+  font-family: var(--mono);
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.bld-faq details[open] summary::after { content: '−'; }
+
+.bld-faq summary:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
+}
+
+.bld-faq details p {
+  margin: 0 0 1.1rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+/* Beigas */
+.bld-end {
+  display: grid;
+  justify-items: start;
+  gap: 1.25rem;
+  padding: clamp(2.5rem, 5vw, 4rem) 0 clamp(1rem, 3vw, 2rem);
+}
+
+.bld-end h2 {
+  max-width: 20ch;
+  margin: 0;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.bld-custom {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+}
 
 /* Joslā: protu.lv galvenā darbība no jebkuras lapas. */
 .bar-cta {
@@ -85,3 +331,41 @@
 }
 
 .bar-cta:hover { background: var(--accent-ink); }
+
+.bar-login {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.bar-login:hover { color: var(--accent-ink); }
+
+@media (max-width: 60rem) {
+  .bld-hero { grid-template-columns: 1fr; }
+  .bld-stage { max-width: 34rem; }
+  .bld-field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bld-fields-head { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 40rem) {
+  .bld-free { grid-template-columns: 1fr; }
+  .bld-stage figcaption { position: static; max-width: none; margin-top: 1rem; }
+  .bld-stage { padding-bottom: 0; }
+  .bld-pdf { bottom: auto; top: 30%; width: 34%; }
+  .bar-login { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar-cta, .bld-link { transition: none; }
+}
+
+/* protu.lv kājene: juridiskās saites savā rindā, klusāk. */
+.foot-legal {
+  flex-basis: 100%;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.875rem;
+}
+
+.foot-legal a { color: var(--muted); }
