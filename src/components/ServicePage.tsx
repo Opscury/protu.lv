@@ -141,7 +141,7 @@ function ServicePage({ service, lang, onRequest }: Props) {
                 {/* Blogs ir tikai latviski. */}
                 {lang === 'lv' && (
                   <li>
-                    <a href={BLOG_PATH} onClick={onLinkClick}>Raksti radošajiem</a>
+                    <a href={BLOG_PATH} onClick={onLinkClick}>Padomi</a>
                   </li>
                 )}
               </ul>

@@ -1,6 +1,7 @@
 import type { Work } from '../data/works'
 import { skills } from '../data/skills'
 import type { NodeId } from '../data/skills'
+import { isPersonal } from '../site'
 import { ui } from '../data/ui'
 import { onLinkClick } from '../router'
 import type { Lang } from '../types'
@@ -18,8 +19,8 @@ function WorkRow({ work, lang, active }: { work: Work; lang: Lang; active: strin
       <div className="work-body">
         <p className="work-label">{work.label[lang]}</p>
         <h3 className="work-title">{work.title}</h3>
-        <p className="work-spec">{work.spec}</p>
-        {proves.length > 0 && (
+        {isPersonal && <p className="work-spec">{work.spec}</p>}
+        {isPersonal && proves.length > 0 && (
           <ul className="work-skills" aria-label={t.provesLabel}>
             {proves.map((s) => (
               <li key={s.id} data-active={s.id === active || undefined}>

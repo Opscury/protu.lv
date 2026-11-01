@@ -89,7 +89,7 @@ const allWorks: Work[] = [
 
 /** protu.lv rāda tikai klientu darbus (biznesa pierādījumi);
  *  valdis.protu.lv rāda visu, arī VIZIUM un Senciems. */
-export const works: Work[] = isPersonal ? allWorks : allWorks.filter((w) => CLIENT_CASES.includes(w.id))
+export const works: Work[] = isPersonal ? allWorks : CLIENT_CASES.flatMap((id) => allWorks.filter((w) => w.id === id))
 
 /** Pilno lapu secība — "nākamais darbs" saitei. */
 export const caseIds = works.filter((w) => !w.external).map((w) => w.id)

@@ -10,45 +10,122 @@ export const BUILDER_REPORT = `${BUILDER_URL}/zinot/`
 
 type T = Record<Lang, string>
 
-/** Ekrānuzņēmums. Kamēr src nav, rāda vietturi ar label tekstu.
- *  Īstu attēlu: ieliec failu public/builder/ un ieraksti src: '/builder/fails.webp'. */
-export type Shot = { src?: string; label: T }
-
 export type Field = {
   name: T
-  /** Izkārtojums, ko joma iestata pēc noklusējuma (Protu lapas: Galerija, Kino, Stāsts, Grāmata). */
-  layout: T
+  /** Izskats, ko joma iestata pēc noklusējuma (protu-lapas: portfolio/disciplines.py). */
+  look: T
   /** Darba paraksta paraugs, kā to saliek šīs jomas lauki. */
   caption: T
-  shot: Shot
+}
+
+/** Īsta Protu lapu izvade ar izdomātu personu un AI ģenerētiem darbiem.
+ *  Faili: public/builder/<id>-*.webp (ekrānuzņēmumi), public/piemeri/<id>/ (lapa), public/piemeri/<id>.pdf. */
+export type Sample = {
+  id: string
+  /** Vārds aiz «Protu»: protu gleznot. */
+  verb: T
+  address: string
+  person: string
+  look: T
+  caption: T
+  /** Pieteikuma PDF: lappušu skaits, izmērs un faila lielums, kā tos uzrāda ģenerētais fails. */
+  pdfPages: number
+  pdfFormat: string
+  pdfSize: T
+  siteAlt: T
+  pdfAlt: T
 }
 
 export const builder = {
-  eyebrow: { lv: 'Protu lapas · agrīnā versija', en: 'Protu lapas · early version' },
+  samplesLabel: { lv: 'Izvēlies, ko proti', en: 'Pick what you do' },
+  protu: { lv: 'Protu', en: 'I can' },
+  samples: [
+    {
+      id: 'marta',
+      verb: { lv: 'gleznot', en: 'paint' },
+      address: 'marta.protu.lv',
+      person: 'Marta Zvirgzde',
+      look: { lv: 'Papīrs', en: 'Papīrs (paper)' },
+      caption: { lv: 'Kūts martā. Eļļa uz audekla, 80 × 100 cm, 2025', en: 'Oil on canvas, 80 × 100 cm, 2025' },
+      pdfPages: 6,
+      pdfFormat: 'A4',
+      pdfSize: { lv: '1,6 MB', en: '1.6 MB' },
+      siteAlt: { lv: 'Piemēra lapa: gleznotājas darbu rinda uz silta papīra toņa', en: 'Sample site: a painter’s works in a row on a warm paper tone' },
+      pdfAlt: { lv: 'Piemēra PDF lapa ar sarkanas kūts gleznu un parakstu', en: 'Sample PDF page with a painting of a red barn and its caption' },
+    },
+    {
+      id: 'kriss',
+      verb: { lv: 'fotografēt', en: 'photograph' },
+      address: 'kriss.protu.lv',
+      person: 'Krišs Vītols',
+      look: { lv: 'Tumsa', en: 'Tumsa (dark)' },
+      caption: { lv: 'Sērija «Krasts», Pāvilosta, 2024, tirāža 5', en: 'Series “Shore”, Pāvilosta, 2024, edition of 5' },
+      pdfPages: 6,
+      pdfFormat: 'A4',
+      pdfSize: { lv: '2,6 MB', en: '2.6 MB' },
+      siteAlt: { lv: 'Piemēra lapa: melnbalta krasta fotogrāfija visā platumā uz tumša fona', en: 'Sample site: a full-width black and white coast photo on a dark ground' },
+      pdfAlt: { lv: 'Piemēra PDF lapa ar melnbaltu laivas fotogrāfiju', en: 'Sample PDF page with a black and white photo of a boat' },
+    },
+    {
+      id: 'elina',
+      verb: { lv: 'projektēt', en: 'design' },
+      address: 'elina.protu.lv',
+      person: 'Elīna Rudzīte',
+      look: { lv: 'Žurnāls', en: 'Žurnāls (magazine)' },
+      caption: { lv: 'Māja pie bērziem, Jelgava, 240 m², realizēts', en: 'House by the birches, Jelgava, 240 m², built' },
+      pdfPages: 6,
+      pdfFormat: 'A3',
+      pdfSize: { lv: '3,9 MB', en: '3.9 MB' },
+      siteAlt: { lv: 'Piemēra lapa: arhitektes vārds lielos burtos un tumša koka māja', en: 'Sample site: an architect’s name in large type beside a dark timber house' },
+      pdfAlt: { lv: 'Piemēra PDF lapa ar tumšu koka māju krēslā', en: 'Sample PDF page with a dark timber house at dusk' },
+    },
+    {
+      id: 'toms',
+      verb: { lv: 'rakstīt', en: 'write' },
+      address: 'toms.protu.lv',
+      person: 'Toms Apinis',
+      look: { lv: 'Grāmata', en: 'Grāmata (book)' },
+      caption: { lv: 'Klusā osta, tulkojums FR → LV, 2024', en: 'Klusā osta, translated FR → LV, 2024' },
+      pdfPages: 3,
+      pdfFormat: 'A4',
+      pdfSize: { lv: '0,5 MB', en: '0.5 MB' },
+      siteAlt: { lv: 'Piemēra lapa: tulkotāja vārds klasiskā burtveidolā un grāmatas vāks', en: 'Sample site: a translator’s name in a classic typeface and a book cover' },
+      pdfAlt: { lv: 'Piemēra PDF lapa ar grāmatas vāku', en: 'Sample PDF page with a book cover' },
+    },
+  ] as Sample[],
+  sampleLook: { lv: 'Izskats', en: 'Look' },
+  sampleOpenSite: { lv: 'Atvērt piemēra lapu', en: 'Open the sample site' },
+  sampleOpenPdf: { lv: 'Atvērt PDF', en: 'Open the PDF' },
+  sampleNote: {
+    lv: 'Īsta Protu lapu izvade. Persona ir izdomāta, darbi ir ģenerēti ar AI.',
+    en: 'Real Protu lapas output. The person is invented and the work is AI-generated.',
+  },
+  pagesWord: { lv: 'lpp.', en: 'pages' },
+  pdfTitle: { lv: 'Tie paši darbi, gatavi iesniegšanai', en: 'The same work, ready to submit' },
+  pdfBody: {
+    lv: 'Katram pieteikumam izvēlies darbus un secību. PDF tiek pārbaudīts pēc tā, ko prasa konkrētais pieteikums, arī pēc faila lieluma.',
+    en: 'For each application, pick the works and their order. The PDF is checked against what that application asks for, including file size.',
+  },
   title: {
     lv: 'Portfolio lapa un pieteikuma PDF. Bez maksas.',
     en: 'A portfolio site and an application PDF. Free.',
   },
   lead: {
-    lv: 'Ieliec savus darbus vienreiz. No tiem top tava lapa vārds.protu.lv un PDF konkursiem, rezidencēm un studiju pieteikumiem, pārbaudīts pēc tā, ko prasa konkrētais pieteikums.',
+    lv: 'Ieliec savus darbus vienreiz. No tiem top tava lapa vards.protu.lv un PDF konkursiem, rezidencēm un studiju pieteikumiem, pārbaudīts pēc tā, ko prasa konkrētais pieteikums.',
     en: 'Add your work once. It becomes your site at name.protu.lv and a PDF for open calls, residencies and school applications, checked against what that application asks for. The editor is in Latvian.',
   },
   cta: { lv: 'Izveidot savu lapu', en: 'Create your site' },
   login: { lv: 'Ieiet', en: 'Log in' },
   hasAccount: { lv: 'Man jau ir konts', en: 'I already have an account' },
   note: {
-    lv: 'Pirmo publicēšanu pārbaudu pats, parasti 24 stundu laikā.',
-    en: 'I check every first publish myself, usually within 24 hours.',
+    lv: 'Agrīnā versija. Pirmo publicēšanu pārbaudu pats, parasti 24 stundu laikā.',
+    en: 'Early version. I check every first publish myself, usually within 24 hours.',
   },
-  heroSite: {
-    label: { lv: 'Portfolio lapa · vārds.protu.lv', en: 'Portfolio site · name.protu.lv' },
-  } as Shot,
-  heroPdf: {
-    label: { lv: 'Pieteikuma PDF', en: 'Application PDF' },
-  } as Shot,
-  heroCaption: {
-    lv: 'Viens saturs, divi rezultāti: lapa, ko vari iedot jebkuram, un PDF, ko vari iesniegt.',
-    en: 'One source, two results: a site you can send anyone and a PDF you can submit.',
+
+  looksTitle: { lv: 'Izskats nāk līdzi tavai jomai', en: 'The look comes with your field' },
+  looksBody: {
+    lv: 'Katra joma sāk ar sev piemērotu izskatu. Vēlāk vari to nomainīt, un darbi paliek tie paši.',
+    en: 'Each field starts with a look that suits it. You can change it at any time, and your work stays the same.',
   },
 
   stepsTitle: { lv: 'Kā tas strādā', en: 'How it works' },
@@ -70,7 +147,7 @@ export const builder = {
     {
       title: { lv: 'Publicē un piesakies', en: 'Publish and apply' },
       body: {
-        lv: 'Lapa iet tiešsaistē vārds.protu.lv. Katram pieteikumam saliec savu darbu komplektu un lejupielādē PDF, CV un JPG paku.',
+        lv: 'Lapa iet tiešsaistē vards.protu.lv. Katram pieteikumam saliec savu darbu komplektu un lejupielādē PDF, CV un JPG paku.',
         en: 'Your site goes live at name.protu.lv. For each application, pick a set of works and download a PDF, a CV and a JPG pack.',
       },
     },
@@ -84,61 +161,51 @@ export const builder = {
   fields: [
     {
       name: { lv: 'Glezniecība un grafika', en: 'Painting and printmaking' },
-      layout: { lv: 'Galerija', en: 'Gallery' },
+      look: { lv: 'Papīrs', en: 'Papīrs (paper)' },
       caption: { lv: 'Eļļa uz audekla, 80 × 100 cm, 2025', en: 'Oil on canvas, 80 × 100 cm, 2025' },
-      shot: { label: { lv: 'glezniecība', en: 'painting' } },
     },
     {
       name: { lv: 'Fotogrāfija', en: 'Photography' },
-      layout: { lv: 'Galerija', en: 'Gallery' },
+      look: { lv: 'Tumsa', en: 'Tumsa (dark)' },
       caption: { lv: 'Sērija «Krasts», Pāvilosta, 2024, tirāža 5', en: 'Series “Shore”, Pāvilosta, 2024, edition of 5' },
-      shot: { label: { lv: 'fotogrāfija', en: 'photography' } },
     },
     {
       name: { lv: 'Dizains', en: 'Design' },
-      layout: { lv: 'Stāsts', en: 'Story' },
+      look: { lv: 'Žurnāls', en: 'Žurnāls (magazine)' },
       caption: { lv: 'Zīmola identitāte, loma: vadošā dizainere, 2025', en: 'Brand identity, role: lead designer, 2025' },
-      shot: { label: { lv: 'dizains', en: 'design' } },
     },
     {
       name: { lv: 'Arhitektūra', en: 'Architecture' },
-      layout: { lv: 'Stāsts', en: 'Story' },
+      look: { lv: 'Žurnāls', en: 'Žurnāls (magazine)' },
       caption: { lv: 'Dzīvojamā māja, Jelgava, 240 m², realizēts', en: 'Family house, Jelgava, 240 m², built' },
-      shot: { label: { lv: 'arhitektūra', en: 'architecture' } },
     },
     {
       name: { lv: 'Kino un animācija', en: 'Film and animation' },
-      layout: { lv: 'Kino', en: 'Cinema' },
+      look: { lv: 'Tumsa', en: 'Tumsa (dark)' },
       caption: { lv: 'Stop-motion, 6 min, režisore, 2025', en: 'Stop-motion, 6 min, director, 2025' },
-      shot: { label: { lv: 'kino', en: 'film' } },
     },
     {
       name: { lv: 'Tekstils un mode', en: 'Textiles and fashion' },
-      layout: { lv: 'Kino', en: 'Cinema' },
+      look: { lv: 'Papīrs', en: 'Papīrs (paper)' },
       caption: { lv: 'Vilna, adījums, kolekcija R/Z 2025', en: 'Wool, knit, AW 2025 collection' },
-      shot: { label: { lv: 'tekstils', en: 'textiles' } },
     },
     {
       name: { lv: 'Mūzika un skaņa', en: 'Music and sound' },
-      layout: { lv: 'Grāmata', en: 'Book' },
+      look: { lv: 'Grāmata', en: 'Grāmata (book)' },
       caption: { lv: 'Kamerkorim, 12 min, pirmatskaņojums Rīgā, 2025', en: 'For chamber choir, 12 min, premiered in Rīga, 2025' },
-      shot: { label: { lv: 'mūzika', en: 'music' } },
     },
     {
       name: { lv: 'Rakstniecība un tulkošana', en: 'Writing and translation' },
-      layout: { lv: 'Grāmata', en: 'Book' },
+      look: { lv: 'Grāmata', en: 'Grāmata (book)' },
       caption: { lv: 'Tulkojums no franču, «Dienas Grāmata», 2024', en: 'Translated from French, Dienas Grāmata, 2024' },
-      shot: { label: { lv: 'rakstniecība', en: 'writing' } },
     },
   ] as Field[],
-  layoutLabel: { lv: 'Izkārtojums', en: 'Layout' },
-  shotPlaceholder: { lv: 'ekrānuzņēmums', en: 'screenshot' },
 
   freeTitle: { lv: 'Bezmaksas plānā', en: 'On the free plan' },
   free: [
     { lv: '6 projekti, katrā līdz 15 darbiem', en: '6 projects, up to 15 works each' },
     { lv: '3 pieteikumu komplekti sezonā', en: '3 application sets per season' },
-    { lv: 'Tava adrese vārds.protu.lv', en: 'Your own address at name.protu.lv' },
+    { lv: 'Tava adrese vards.protu.lv', en: 'Your own address at name.protu.lv' },
     { lv: 'Visu var eksportēt jebkurā brīdī', en: 'Export everything at any time' },
     { lv: 'Bezmaksas limiti nekad nesamazinās', en: 'Free limits never go down' },
     { lv: 'Tavi darbi netiek izmantoti AI apmācībai', en: 'Your work is never used to train AI' },
@@ -184,7 +251,7 @@ export const builder = {
     {
       q: { lv: 'Vai var savu domēnu?', en: 'Can I use my own domain?' },
       a: {
-        lv: 'Pagaidām nē, adrese ir vārds.protu.lv. Ja vajag lapu ar savu domēnu un dizainu tieši tev, to taisu pēc pasūtījuma.',
+        lv: 'Pagaidām nē, adrese ir vards.protu.lv. Ja vajag lapu ar savu domēnu un dizainu tieši tev, to taisu pēc pasūtījuma.',
         en: 'Not yet, the address is name.protu.lv. If you need your own domain and a design made just for you, I build that to order.',
       },
     },

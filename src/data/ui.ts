@@ -27,6 +27,7 @@ type Strings = {
   services: string
   /** protu.lv izvēlnē: bezmaksas portfolio veidotājs sākumlapas augšā. */
   portfolio: string
+  menu: string
   /** Blogs ir tikai latviski; angliski saiti nerāda. */
   blog: string
   /** Atvērtie konkursi (protu.lv/konkursi/) ir tikai latviski. */
@@ -96,7 +97,8 @@ export const ui: Record<Lang, Strings> = {
     navLabel: 'Sadaļas',
     navContact: 'Kontakti',
     services: 'Pakalpojumi',
-    portfolio: 'Portfolio',
+    portfolio: 'Protu lapas',
+    menu: 'Izvēlne',
     blog: 'Padomi',
     konkursi: 'Konkursi',
     aboutMe: 'Par mani',
@@ -156,7 +158,8 @@ export const ui: Record<Lang, Strings> = {
     navLabel: 'Sections',
     navContact: 'Contact',
     services: 'Services',
-    portfolio: 'Portfolio',
+    portfolio: 'Protu lapas',
+    menu: 'Menu',
     blog: 'Blog',
     konkursi: 'Open calls',
     aboutMe: 'About me',

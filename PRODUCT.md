@@ -8,68 +8,62 @@ web
 
 ## Users
 
-In priority order (confirmed 2026-10-21):
+protu.lv (confirmed 2026-11-01):
 
-1. **Grant and programme evaluators.** People who review applications for self-employment start-up grants and similar programmes. They open the site from a link in an application, usually on a desktop, and need to judge quickly that Valdis can actually deliver work on his own.
-2. **Prospective clients.** Small Latvian businesses and individuals (like Bistro Silva and Anda Viška) who need a website built or rebuilt and the server run for them.
-3. **Employers and studios.** Hiring is currently the lowest priority. Valdis is pursuing self-employment first.
+1. **Creatives and applicants.** Painters, photographers, designers, architects, film-makers, textile artists, musicians, writers and students aged 16+, mostly in Latvia, who need a portfolio site and a PDF for an open call, residency or school application. Many arrive from search or a shared link, often on a phone.
+2. **Small businesses and individuals who want a site built for them.** They are served separately at `/pakalpojumi/`; the home page gives them one quiet line.
 
-Audiences read in Latvian or English. Latvian is the default.
+The same codebase builds **valdis.protu.lv**, Valdis Viška's personal portfolio (`VITE_SITE=valdis`, `isPersonal`). Its readers are grant evaluators, clients and employers. Its "Live Canvas" design stays as documented; it is not the protu.lv home.
 
 ## Product Purpose
 
-protu.lv is Valdis Viška's portfolio and his proof of capability. It exists to show, with real shipped work, that one person can take a project from design through code to a running server and keep it running. Success means an evaluator or client finishes a visit convinced of that and knows how to get in touch.
+protu.lv is the front of Valdis's business. The home page sells **Protu lapas**, a free portfolio builder at `mans.protu.lv`: add work once and get a site at `vards.protu.lv` plus an application PDF checked against what the call asks for. Success means a visitor sees real output for their kind of work and creates a site.
+
+Paid custom work lives at `/pakalpojumi/`, open calls at `/konkursi/` (separate app, protu-admin), and tips at `/blog/` ("Padomi", Latvian only).
 
 ## Positioning
 
-- **Ships end-to-end and owns the ops.** React/TypeScript front ends, Django/Python back ends, his own VPS, and a self-hosted mail server (Stalwart with SPF, DKIM and DMARC) that he set up and maintains. Few portfolios can truthfully claim the whole chain including hosting and mail.
-- **Latvian roots, his own voice.** "protu" means "I know how to" in Latvian. The site is Latvian-first, and the work includes Senciems, a browser game about the festivals of an old Latvian village. The Latvian identity is part of who he is, not a localisation layer.
+- One source, two results: the same work becomes a site and a checked PDF.
+- Fields, not templates: each discipline gets its own caption fields, CV sections and default look.
+- A Latvian tool made by one person who answers for it: "Pirmo publicēšanu pārbaudu pats".
 
 ## Operating Context
 
-- Visitors usually arrive from a direct link in a grant application, proposal or message, not from search.
-- Each case study lives at its own URL, `/darbi/<id>`, so a single project can be linked directly.
-- Services live at `/pakalpojumi/` and `/pakalpojumi/<slug>/` (majaslapa, parcelsana, hostings, portfolio), with published prices from `src/data/services.ts`. These pages exist to be found on Google, so they are prerendered to static HTML at build time (`src/entry-server.ts`, `scripts/prerender.mjs`). Prices never appear in the home hero; the home page has only a small price-free teaser below works and certificates.
-- A Latvian-only blog for creatives lives at `/blog/` and `/blog/<slug>/`. Each post is one Markdown file in `src/content/blog/` (see `HOW-TO-ADD-A-POST.md`), prerendered with the service pages and listed in the sitemap unless `draft: true`. Every post ends with a CTA to `/pakalpojumi/portfolio/` (Umami event `blog-cta`). The EN switch on blog pages goes to the EN home page, and the blog link is hidden in EN.
-- There are two ways to make contact: a form submitted through Formspree, with a topic choice of site/project, job or other; and direct email to valdis@protu.lv. On service pages the request buttons fill the form with the chosen plan (subject `Pieteikums: <plan>`) and are tracked in Umami as `cta-<slug>`.
+- The builder source is the sibling repo `protu-lapas`. Disciplines and looks live in `portfolio/disciplines.py` and `sites/looks.py`; home-page copy about them must match.
+- Home samples are real builder output, stored in `public/builder/` (screenshots) and `public/piemeri/` (browsable sites and PDFs, noindex). The people are invented and the work is AI-generated, and the page says so wherever samples appear. Replace them with permissioned real work when available.
+- Services and blog pages are prerendered (`src/entry-server.ts`, `scripts/prerender.mjs`). The home page has its head prerendered but its content renders in the browser.
 
 ## Capabilities and Constraints
 
-- Stack: React 19, TypeScript, Vite. There is no router library; a small custom router lives in `src/router.ts`. It is deployed as a static build on his own VPS.
-- Bilingual LV/EN. The language comes from `?lang=`, then localStorage, then the browser setting. Every user-facing string is localized in `src/data/*`.
-- Content is data-driven: `src/data/works.ts`, `silva.ts`, `anda.ts`, `portfolio.ts` and `ui.ts`.
-- The case studies use interactive before/after comparison sliders (page × device), and some include video loops.
-- SEO and structured data: per-page title, description, canonical and hreflang (`src/seo.ts`), a Person JSON-LD block listing his credentials, Service/Offer JSON-LD on service pages, and a generated `sitemap.xml`.
+- React 19, TypeScript, Vite; small custom router in `src/router.ts`; static deploy to his own VPS.
+- Bilingual LV/EN, from `?lang=`, then localStorage, then the browser. Latvian is the default; the editor is Latvian only and the English page says so.
+- User-facing strings live in `src/data/*`.
 
 ## Brand Commitments
 
-- Name and domain: **protu.lv**, with the gloss "protu — Latvian for 'I know how to'" on the English version.
-- **The "PROTU ___" word mechanic is binding** (user, 2026-10-21): the brand word is completed by a skill ("protu" = "I know how to" → PROTU REACT, PROTU DJANGO…). Its rendition can change; the idea stays.
-- Logo component at `src/components/Logo.tsx`.
-- Direction pins (user, 2026-10-21, after two re-rolls): the site must feel like a crafted *website*, not a physical-object metaphor (no paper, boards, books, packets); current and confident, not retro or nostalgic; personal, carrying Valdis's own voice and story; and the PROTU ___ mechanic is the centrepiece, never a detail.
-- Avoid: generic developer-portfolio templates (dark mode, gradient blobs, skill-badge walls) and gimmicky interactions that slow an evaluator down.
-- Voice: plain and concrete, first person. It states facts and numbers instead of making claims.
+- Name and domain: **protu.lv**. "protu" means "I know how to" in Latvian.
+- **The "Protu ___" word mechanic stays** (user, 2026-10-21; reaffirmed 2026-11-01). On protu.lv the visitor's own skill completes it (Protu gleznot, Protu fotografēt) and selects the sample shown. On valdis.protu.lv it completes with Valdis's skills.
+- Current and confident, not retro; no physical-object metaphors standing in for the site.
+- Voice: plain and concrete, first person. It states facts and numbers.
+- Avoid: generic startup template rhythm, skill-badge walls, and gimmicks that slow a visitor down.
 
 ## Evidence on Hand
 
-- **Bistro Silva**: a concept rebuild of a family bistro's site, moving from WordPress to React plus a custom admin. Page weight went from 7.3 MB to 1.1 MB. It is explicitly a *concept*; bistro.lv is still the live site. Assets: `public/work/silva/` (before/after screenshots, admin demo video).
-- **Anda Viška portfolio**: real client work, live at anda.protu.lv. It moved from Canva to her own domain, and page weight went from 20.6 MB to 0.45 MB. The client approved the direction on first look. Assets: `public/work/anda/`.
-- **VIZIUM**: 2022, as a Unity/C# developer on OVERLY's team, building interactive exhibits for the Ventspils science centre. Assets: `public/work/vizium/`.
-- **Senciems**: a side project, a point-and-click game in Phaser 3 and TypeScript, live at vecasvaras.protu.lv. Assets: `public/work/senciems/`.
-- **Certificates (2026)**: Meta Back-End, Meta Full Stack, Meta Front-End and Google UX Design, each with a verification URL.
-- **Self-hosted infrastructure**: the VPS and mail.protu.lv.
-- **Absent, so never fabricate**: testimonials, client quotes beyond what is in the case data, a client count, revenue, prices other than the ones in `src/data/services.ts`, and team size (he works solo).
+- Free plan: 6 projects with up to 15 works each, 3 application sets per season, export any time, limits never go down, work never used to train AI (`src/data/builder.ts`).
+- Paid prices: only those in `src/data/services.ts`.
+- Client work: Anda Viška (live, real client) and Bistro Silva (explicitly a concept).
+- **Absent, so never fabricate:** real user portfolios, testimonials, user counts, and claims of adoption. Samples must never read as real customers.
 
 ## Product Principles
 
-1. Show, don't claim. Every capability is backed by a live link, a measured number or a working demo.
-2. One person, the whole chain. Make the end-to-end ownership (design, code, server, mail) visible, because no neighbour can copy it.
-3. Honest status. Concepts are labelled as concepts, and contributions to team work are labelled as contributions.
-4. Latvian first, fully bilingual. Neither language is an afterthought.
-5. Respect the evaluator's time. The case for his capability should land in the first minute, and depth stays one click away.
+1. Show the output before asking for an email.
+2. Honest status: early version, invented samples, concepts labelled as concepts.
+3. Images lead; the site's own chrome stays quiet.
+4. Latvian first, fully bilingual where the product is.
+5. Promises on the page must hold in the product.
 
 ## Accessibility & Inclusion
 
-- Honour `prefers-reduced-motion`; the incumbent site already stops auto-cycling when it is set.
-- Keep the document `lang` attribute in sync with the active language for screen readers.
-- Keep keyboard-operable comparison sliders and form controls.
+- Honour `prefers-reduced-motion`.
+- Keep the document `lang` in sync with the active language.
+- Every control works by keyboard and has a 44px touch target on phones; text links inside sentences are the exception.

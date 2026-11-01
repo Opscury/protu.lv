@@ -56,6 +56,9 @@ function App() {
   // Ierakstītā prasme pirmajā skatā — darbu sarakstā iekrāso tās pierādījumu.
   const [skillId, setSkillId] = useState<string | null>(null)
   const path = usePath()
+  // protu.lv šaurā ekrānā: saites izvēlnē, joslā paliek zīme un galvenā darbība.
+  const [menuFor, setMenuFor] = useState<string | null>(null)
+  const menuOpen = menuFor === path
   const caseId = caseFromPath(path)
   // Pakalpojumi un blogs dzīvo tikai protu.lv; valdis.protu.lv tos nerāda.
   const route = isPersonal ? null : serviceRoute(path)
@@ -125,11 +128,28 @@ function App() {
   return (
     <>
       <a className="skip" href="#main">{t.skip}</a>
-      <div className="bar">
+      <div className={isPersonal ? 'bar' : 'bar bar-product'} data-menu={menuOpen || undefined}>
         <a className="bar-mark" {...(subPage ? { href: '/', onClick: onLinkClick } : { href: '#top' })}>
           {isPersonal ? 'valdis.protu.lv' : 'protu.lv'}
         </a>
-        <div className="bar-center">
+        {!isPersonal && (
+          <button
+            type="button"
+            className="bar-menu"
+            aria-expanded={menuOpen}
+            aria-controls="bar-links"
+            onClick={() => setMenuFor(menuOpen ? null : path)}
+          >
+            {t.menu}
+          </button>
+        )}
+        <div
+          className="bar-center"
+          id="bar-links"
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setMenuFor(null)
+          }}
+        >
           {isPersonal ? (
             <nav className="bar-nav" aria-label={t.navLabel}>
               <a {...homeLink('#darbi')}>{t.works}</a>
@@ -157,6 +177,11 @@ function App() {
             </nav>
           )}
           <LanguageToggle lang={pageLang} label={t.langLabel} onChange={changeLang} />
+          {!isPersonal && (
+            <a className="bar-menu-login" href={BUILDER_LOGIN}>
+              {builder.login[pageLang]}
+            </a>
+          )}
         </div>
         <div className="bar-end">
           {isPersonal ? (
@@ -177,7 +202,7 @@ function App() {
         </div>
       </div>
 
-      <div id="top">
+      <div id="top" className={isPersonal ? undefined : 'site-protu'}>
         {blog ? (
           <main className="case-page" id="main">
             {blog.post ? <BlogPost key={blog.post.slug} post={blog.post} /> : <BlogIndex />}

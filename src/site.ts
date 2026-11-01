@@ -18,4 +18,4 @@ export const SITE = isPersonal ? VALDIS_URL : PROTU_URL
 export const PERSON_ID = `${VALDIS_URL}/#valdis`
 
 /** Klientu gadījuma izpētes ir biznesa pierādījums: kanoniski uz protu.lv. */
-export const CLIENT_CASES = ['silva', 'anda']
+export const CLIENT_CASES = ['anda', 'silva']
