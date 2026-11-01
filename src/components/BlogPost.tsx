@@ -35,26 +35,19 @@ function BlogPost({ post }: { post: Post }) {
       <aside className="post-cta" aria-labelledby="post-cta-title">
         <h2 id="post-cta-title">{cta.title}</h2>
         <p>{cta.text}</p>
-        <ul className="plaque-links">
-          <li>
-            <a
-              href={cta.href}
-              onClick={(e) => {
-                track(post.slug)
-                onLinkClick(e)
-              }}
-            >
-              {cta.linkLabel}
+        <p>
+          {/* Veidotājs ir mans.protu.lv: parasta pāreja, ne SPA navigācija. */}
+          <a className="action action-primary" href={cta.href} onClick={() => track(post.slug)}>
+            {cta.linkLabel}
+          </a>
+        </p>
+        {cta.secondary && (
+          <p className="post-cta-secondary">
+            <a href={cta.secondary.href} onClick={onLinkClick}>
+              {cta.secondary.label}
             </a>
-          </li>
-          {cta.example && (
-            <li>
-              <a href={cta.example.href} target="_blank" rel="noreferrer">
-                {cta.example.label}
-              </a>
-            </li>
-          )}
-        </ul>
+          </p>
+        )}
       </aside>
     </article>
   )

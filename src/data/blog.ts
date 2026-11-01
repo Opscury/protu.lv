@@ -1,4 +1,5 @@
-import { formatPrice, portfolioExample, serviceHref, services } from './services'
+import { BUILDER_SIGNUP } from './builder'
+import { formatPrice, serviceHref, services } from './services'
 
 /** Blogs: /blog/ un /blog/<slug>/. Tikai latviski.
  *  Katrs raksts ir viens .md fails mapē src/content/blog/ (kā pievienot: HOW-TO-ADD-A-POST.md).
@@ -12,13 +13,18 @@ const portfolio = services.find((s) => s.slug === 'portfolio')!
 /** Noslēguma bloks raksta beigās. Rakstā `cta: portfolio` izvēlas, kuru rādīt.
  *  Jaunu (piemēram, /parbaude/) pievieno šeit, un tas uzreiz der rakstiem. */
 export const blogCtas = {
+  // Galvenais solis pēc raksta: bezmaksas veidotājs; pakalpojums pēc pasūtījuma ir otrā saite.
   portfolio: {
-    title: 'Vajag savu portfolio lapu?',
-    // Cena un adrese nāk no pakalpojuma datiem, lai raksti nesola ko citu kā piedāvājuma lapa.
-    text: `Uztaisu tev tīru portfolio lapu adresē vards.protu.lv par ${formatPrice(portfolio.cardPrice, 'lv')}.`,
-    href: serviceHref(portfolio.slug),
-    linkLabel: 'Skatīt portfolio piedāvājumu',
-    example: { href: portfolioExample.liveHref, label: portfolioExample.liveLink.lv },
+    title: 'Saliec savu portfolio lapu bez maksas',
+    text:
+      'Ieliec darbus vienreiz, un tev būs lapa vārds.protu.lv un PDF konkursu un studiju pieteikumiem.',
+    href: BUILDER_SIGNUP,
+    linkLabel: 'Izveidot savu lapu',
+    secondary: {
+      href: serviceHref(portfolio.slug),
+      // Nosaukums un cena nāk no pakalpojuma datiem, lai raksti nesola ko citu kā piedāvājuma lapa.
+      label: `Gribi, lai uztaisu es? ${portfolio.name.lv}, ${formatPrice(portfolio.cardPrice, 'lv')}`,
+    },
   },
 } satisfies Record<string, BlogCta>
 
@@ -27,8 +33,8 @@ export type BlogCta = {
   text: string
   href: string
   linkLabel: string
-  /** Dzīvs piemērs, atveras jaunā cilnē. */
-  example?: { href: string; label: string }
+  /** Otrā, klusākā saite (piemēram, pakalpojums pēc pasūtījuma). */
+  secondary?: { href: string; label: string }
 }
 
 export type CtaId = keyof typeof blogCtas
@@ -129,16 +135,16 @@ export function formatDate(date: string) {
 }
 
 export const blogPage = {
-  title: 'Blogs',
+  title: 'Padomi',
   lead:
-    'Raksti māksliniekiem, fotogrāfiem, ilustratoriem un dizaineriem: kā parādīt savus darbus, ' +
-    'lai tos saprot un atrod klienti.',
-  seoTitle: 'Blogs radošajiem: portfolio un darbu rādīšana',
+    'Kā sagatavot portfolio, ko ielikt pieteikumā un kur rādīt savus darbus. ' +
+    'Māksliniekiem, dizaineriem, fotogrāfiem un studentiem.',
+  seoTitle: 'Padomi portfolio veidošanai: māksliniekiem un dizaineriem',
   seoDescription:
-    'Praktiski raksti latviski māksliniekiem, fotogrāfiem, ilustratoriem un dizaineriem par portfolio, ' +
-    'Instagram, Behance un to, kā parādīt darbus klientiem.',
-  empty: 'Pirmie raksti drīzumā.',
-  all: 'Visi raksti',
+    'Praktiski padomi latviski: kā izveidot portfolio, ko tajā iekļaut, Instagram vai Behance ' +
+    'pret savu lapu, un kā sagatavoties konkursu un studiju pieteikumiem.',
+  empty: 'Pirmie padomi drīzumā.',
+  all: 'Visi padomi',
   read: 'Lasīt',
   draft: 'Melnraksts: nav sarakstā, sitemap un meklētājos',
 }

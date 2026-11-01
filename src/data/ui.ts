@@ -97,7 +97,7 @@ export const ui: Record<Lang, Strings> = {
     navContact: 'Kontakti',
     services: 'Pakalpojumi',
     portfolio: 'Portfolio',
-    blog: 'Blogs',
+    blog: 'Padomi',
     konkursi: 'Konkursi',
     aboutMe: 'Par mani',
     clientWorksLead: 'Vietnes, ko esmu uztaisījis klientiem, ar visu procesu no sākuma līdz beigām.',

@@ -162,3 +162,33 @@
 }
 
 .post-cta .plaque-links { flex-direction: column; gap: 0.7rem; }
+
+.post-cta .action { color: var(--surface); }
+
+.post-cta .post-cta-secondary { margin-top: 0; font-size: 0.9375rem; }
+
+.post-cta-secondary a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.post-cta-secondary a:hover { color: var(--accent-ink); }
+
+/* Sākumlapā zem jautājumiem: saites uz padomiem. */
+.bld-tips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+}
+
+.bld-tips-label {
+  margin: 1.5rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}

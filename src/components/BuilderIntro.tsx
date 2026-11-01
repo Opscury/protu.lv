@@ -1,3 +1,4 @@
+import { blogPage, postHref, publishedPosts } from '../data/blog'
 import { builder, BUILDER_LOGIN, BUILDER_SIGNUP, type Shot } from '../data/builder'
 import { SERVICES_PATH } from '../data/services'
 import { onLinkClick } from '../router'
@@ -124,6 +125,21 @@ function BuilderIntro({ lang }: Props) {
               <p>{item.a[lang]}</p>
             </details>
           ))}
+          {/* Padomi ir tikai latviski. */}
+          {lang === 'lv' && publishedPosts.length > 0 && (
+            <>
+              <p className="bld-tips-label">{blogPage.title}</p>
+              <ul className="bld-tips">
+                {publishedPosts.slice(0, 3).map((post) => (
+                  <li key={post.slug}>
+                    <a className="bld-link" href={postHref(post.slug)} onClick={onLinkClick}>
+                      {post.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </section>
 

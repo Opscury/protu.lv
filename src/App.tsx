@@ -146,11 +146,7 @@ function App() {
                 {t.portfolio}
               </a>
               {pageLang === 'lv' && <a href={KONKURSI_PATH}>{t.konkursi}</a>}
-              {pageLang === 'lv' && (
-                <a href={BLOG_PATH} onClick={onLinkClick} aria-current={blog ? (blog.post ? 'true' : 'page') : undefined}>
-                  {t.blog}
-                </a>
-              )}
+              {/* Padomi (blogs) nav galvenajā izvēlnē: tie ir kājenē un sākumlapā zem jautājumiem. */}
               <a
                 href={SERVICES_PATH}
                 onClick={onLinkClick}
