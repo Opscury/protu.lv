@@ -4,8 +4,20 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light" />
-    <meta name="theme-color" content="#e9eaed" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#121318" />
+    <!-- Dark studio from the first paint (no light flash before CSS/React).
+         valdis.protu.lv uses the same index.html but stays light. -->
+    <script>
+      if ('%MODE%' === 'valdis' || location.hostname.indexOf('valdis.') === 0) {
+        document.documentElement.classList.add('site-valdis')
+        document.querySelector('meta[name="color-scheme"]').content = 'light'
+        document.querySelector('meta[name="theme-color"]').content = '#e9eaed'
+      }
+    </script>
+    <style>
+      html:not(.site-valdis) { background: #121318; color: #f3eee6; color-scheme: dark; }
+    </style>
     <title>Valdis Viška · protu.lv</title>
     <meta
       name="description"
