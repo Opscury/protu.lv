@@ -191,11 +191,9 @@ function App() {
             </a>
           ) : (
             <>
+              {/* Galvenā darbība dzīvo gaismā lapas vidū, nevis joslā. */}
               <a className="bar-login" href={BUILDER_LOGIN}>
                 {builder.login[pageLang]}
-              </a>
-              <a className="bar-cta" href={BUILDER_SIGNUP}>
-                {builder.cta[pageLang]}
               </a>
             </>
           )}

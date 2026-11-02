@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import { blogPage, postHref, publishedPosts } from '../data/blog'
 import { builder, BUILDER_LOGIN, BUILDER_SIGNUP } from '../data/builder'
 import { SERVICES_PATH } from '../data/services'
@@ -11,106 +12,161 @@ type Props = { lang: Lang }
 
 /** PDF lapa pirmajā skatā: pirmā lapa aiz vāka ar spēcīgu darbu. */
 const HERO_PDF_PAGE: Record<string, number> = { marta: 2, kriss: 2, elina: 2, toms: 1 }
-/** Pele ceļā uz pogu šķērso vārdus: tikai apstājoties uz vārda, tas mainās. */
-const HOVER_INTENT_MS = 140
+/** Pavilkšana pa lenti: tik pikseļu, lai to neuztvertu kā pieskārienu. */
+const SWIPE_PX = 40
+/** Putekļi gaismas konusā: vieta (% no konusa), izmērs un cikla garums. Tikai rotājums. */
+const MOTES = [
+  [12, 62, 2, 19], [18, 34, 1.5, 23], [24, 78, 2, 17], [31, 52, 1, 27], [69, 46, 1.5, 21],
+  [74, 70, 2, 18], [81, 38, 1, 25], [86, 64, 1.5, 22], [40, 88, 1, 29], [60, 84, 1.5, 24],
+]
+
+/** Attālums no izvēlētā parauga lentē, apļveidā: -1 pa kreisi, 1 pa labi, 0 gaismā. */
+function offsetOf(i: number, picked: number, n: number) {
+  let o = (((i - picked) % n) + n) % n
+  if (o > n / 2) o -= n
+  return o
+}
 
 /** protu.lv sākumlapa: bezmaksas portfolio veidotājs (Protu lapas, mans.protu.lv). */
 function BuilderIntro({ lang }: Props) {
   const t = builder
-  const [picked, setPicked] = useState(t.samples[0].id)
-  const sample = t.samples.find((s) => s.id === picked) ?? t.samples[0]
-  const hoverTimer = useRef<number | undefined>(undefined)
-  useEffect(() => () => window.clearTimeout(hoverTimer.current), [])
+  const n = t.samples.length
+  // Iepriekšējais paraugs: lai zinātu, kurš lentē pārlec no viena gala uz otru.
+  const [{ pickedIndex, prevIndex }, setPick] = useState({ pickedIndex: 0, prevIndex: 0 })
+  const sample = t.samples[pickedIndex]
+  const verbRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const swipeX = useRef<number | null>(null)
+  // Paraugs, kas lentē pārlec no viena gala uz otru, nedrīkst slīdēt pāri gaismai.
+  const offsets = t.samples.map((_, i) => offsetOf(i, pickedIndex, n))
+  const jumps = offsets.map((o, i) => Math.abs(o - offsetOf(i, prevIndex, n)) > n / 2)
+
+  const pick = (i: number, focus = false) => {
+    const next = ((i % n) + n) % n
+    setPick({ pickedIndex: next, prevIndex: pickedIndex })
+    if (focus) verbRefs.current[next]?.focus()
+  }
 
   return (
     <article className="svc bld" id="portfolio" aria-labelledby="bld-title">
-      <header className="bld-hero">
-        <div className="bld-verbs" role="group" aria-label={t.samplesLabel[lang]}>
-          <span className="bld-protu">{t.protu[lang]}</span>
-          {t.samples.map((s) => (
-            <button
-              key={s.id}
-              type="button"
-              className="bld-verb"
-              aria-pressed={s.id === sample.id}
-              onClick={() => setPicked(s.id)}
-              onPointerEnter={(e) => {
-                if (e.pointerType !== 'mouse') return
-                window.clearTimeout(hoverTimer.current)
-                hoverTimer.current = window.setTimeout(() => setPicked(s.id), HOVER_INTENT_MS)
-              }}
-              onPointerLeave={() => window.clearTimeout(hoverTimer.current)}
-            >
-              {s.verb[lang]}
-            </button>
+      <header className="lt-hero">
+        <div className="lt-cone" aria-hidden="true">
+          {MOTES.map(([x, y, size, dur], i) => (
+            <span
+              key={i}
+              style={{ left: `${x}%`, top: `${y}%`, width: size, height: size, animationDuration: `${dur}s`, animationDelay: `${-i * 2.3}s` }}
+            />
           ))}
-          <p className="bld-verbs-hint">{t.samplesLabel[lang]}</p>
         </div>
 
-        <div className="bld-offer">
-          <h1 id="bld-title">{t.title[lang]}</h1>
-          <p className="bld-lead">{t.lead[lang]}</p>
-          <div className="bld-actions">
-            <a className="action action-primary svc-cta" href={BUILDER_SIGNUP}>
-              {t.cta[lang]}
-            </a>
-            <a className="bld-link" href={BUILDER_LOGIN}>
-              {t.hasAccount[lang]}
-            </a>
-          </div>
-          <p className="svc-cta-note">{t.note[lang]}</p>
-        </div>
+        <p className="lt-protu">
+          {t.protu[lang]}{' '}
+          <span className="lt-protu-verb" key={sample.id}>
+            {sample.verb[lang]}
+          </span>
+        </p>
+        <h1 id="bld-title" className="lt-title">
+          {t.title[lang]}
+        </h1>
+        <a className="lt-cta" href={BUILDER_SIGNUP}>
+          {t.cta[lang]}
+        </a>
 
-        {/* Paraksts: viens saturs → lapa + PDF. Attēli stāv kaudzē, lai maiņa nemirgo. */}
-        <figure className="bld-stage">
-          <div className="bld-stack">
-            <div className="bld-browser">
-              <div className="bld-browser-bar" aria-hidden="true">
-                <span>{sample.address}</span>
-              </div>
-              <div className="bld-frames">
-                {t.samples.map((s) => (
+        {/* Lente: vārds un viņa lapa kustas kopā; izvēlētais pāris nonāk gaismā. */}
+        <div
+          className="lt-reel"
+          role="group"
+          aria-label={t.samplesLabel[lang]}
+          onKeyDown={(e) => {
+            if (e.key === 'ArrowRight') pick(pickedIndex + 1, true)
+            else if (e.key === 'ArrowLeft') pick(pickedIndex - 1, true)
+            else return
+            e.preventDefault()
+          }}
+          onPointerDown={(e) => {
+            swipeX.current = e.clientX
+          }}
+          onPointerUp={(e) => {
+            if (swipeX.current === null) return
+            const dx = e.clientX - swipeX.current
+            swipeX.current = null
+            if (Math.abs(dx) > SWIPE_PX) pick(pickedIndex + (dx < 0 ? 1 : -1))
+          }}
+        >
+          {t.samples.map((s, i) => {
+            const active = i === pickedIndex
+            const o = offsets[i]
+            return (
+              <div
+                key={s.id}
+                className="lt-slide"
+                data-active={active || undefined}
+                data-side={o < 0 ? 'left' : o > 0 ? 'right' : undefined}
+                data-far={Math.abs(o) > 1 || undefined}
+                data-jump={jumps[i] || undefined}
+                style={{ '--o': o } as CSSProperties}
+              >
+                <p className="lt-addr" aria-hidden="true">
+                  {s.address}
+                </p>
+                <div className="lt-frame" onClick={() => !active && pick(i)}>
                   <img
-                    key={s.id}
                     src={`/builder/${s.id}-site.webp`}
                     width={1920}
                     height={1200}
-                    alt={s.id === sample.id ? s.siteAlt[lang] : ''}
-                    data-active={s.id === sample.id || undefined}
+                    alt={active ? s.siteAlt[lang] : ''}
+                    draggable={false}
                   />
-                ))}
+                  <img
+                    className="lt-pdf"
+                    src={`/builder/${s.id}-pdf-${HERO_PDF_PAGE[s.id] ?? 1}.webp`}
+                    width={960}
+                    height={679}
+                    alt={active ? s.pdfAlt[lang] : ''}
+                    draggable={false}
+                  />
+                </div>
+                <button
+                  ref={(el) => {
+                    verbRefs.current[i] = el
+                  }}
+                  type="button"
+                  className="lt-verb"
+                  aria-pressed={active}
+                  tabIndex={active ? 0 : -1}
+                  onClick={() => pick(i)}
+                >
+                  {s.verb[lang]}
+                </button>
               </div>
-            </div>
-            <div className="bld-pdf">
-              {t.samples.map((s) => (
-                <img
-                  key={s.id}
-                  src={`/builder/${s.id}-pdf-${HERO_PDF_PAGE[s.id]}.webp`}
-                  width={960}
-                  height={679}
-                  alt={s.id === sample.id ? s.pdfAlt[lang] : ''}
-                  data-active={s.id === sample.id || undefined}
-                />
-              ))}
-              <span className="bld-pdf-tag" aria-hidden="true">PDF</span>
-            </div>
-          </div>
-          <figcaption>
-            <p className="bld-caption">{sample.caption[lang]}</p>
-            <p className="bld-sample-links">
-              <a className="bld-link" href={`/piemeri/${sample.id}/`}>
-                {t.sampleOpenSite[lang]}
-              </a>
-              <a className="bld-link" href={`/piemeri/${sample.id}.pdf`}>
-                {t.sampleOpenPdf[lang]}
-              </a>
-            </p>
-            <p className="bld-note">
-              {sample.person} · {t.sampleLook[lang]}: {sample.look[lang]}. {t.sampleNote[lang]}
-            </p>
-          </figcaption>
-        </figure>
+            )
+          })}
+        </div>
+
+        <div className="lt-sample">
+          <p className="bld-caption">{sample.caption[lang]}</p>
+          <p className="bld-sample-links">
+            <a className="bld-link" href={`/piemeri/${sample.id}/`}>
+              {t.sampleOpenSite[lang]}
+            </a>
+            <a className="bld-link" href={`/piemeri/${sample.id}.pdf`}>
+              {t.sampleOpenPdf[lang]}
+            </a>
+          </p>
+          <p className="bld-note">
+            {sample.person} · {t.sampleLook[lang]}: {sample.look[lang]}. {t.sampleNote[lang]}
+          </p>
+        </div>
       </header>
+
+      <div className="bld-intro">
+        <p className="bld-lead">{t.lead[lang]}</p>
+        <p className="bld-note">
+          {t.note[lang]}{' '}
+          <a className="bld-link" href={BUILDER_LOGIN}>
+            {t.hasAccount[lang]}
+          </a>
+        </p>
+      </div>
 
       <section className="bld-pdfs" aria-labelledby="bld-pdfs">
         <div className="bld-pdfs-head">

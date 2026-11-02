@@ -474,3 +474,106 @@
 
 /* Pieteikuma poga ritina līdz formai: lai tā nepaslēpjas zem lipīgās joslas. */
 .contact-form { scroll-margin-top: calc(var(--bar-h) + 2.5rem); }
+
+/* ── protu.lv tumšā studija: Pakalpojumi ─────────────── */
+
+/* Galvas apakšmala ir tā pati gaismas līnija, kas zem joslas, tikai īsāka. */
+.site-protu .svc-head {
+  position: relative;
+  border-bottom: 0;
+}
+
+.site-protu .svc-head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: min(36rem, 70%);
+  height: 1px;
+  background: linear-gradient(90deg, rgb(255 214 168 / 0.85), rgb(var(--light) / 0));
+  box-shadow: 0 0 10px 0 rgb(var(--light) / 0.3);
+}
+
+/* Gaisma krīt uz to pakalpojumu, uz kuru skaties; kad neskaties nevienu, uz pirmo. */
+.site-protu .svc-cards {
+  margin-top: clamp(5.5rem, 10vw, 8.5rem);
+}
+
+.site-protu .svc-card {
+  border: 1px solid var(--glass);
+  background: rgb(255 255 255 / 0.025);
+  box-shadow: 0 1.5rem 3rem -1.75rem rgb(0 0 0 / 0.8);
+  transition:
+    background-color 520ms var(--ease-out),
+    border-color 520ms var(--ease-out),
+    box-shadow 520ms var(--ease-out);
+}
+
+.site-protu .svc-card::before {
+  content: '';
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 100%;
+  height: clamp(5rem, 9vw, 8rem);
+  background: linear-gradient(0deg, rgb(var(--light) / 0.26), rgb(255 214 168 / 0.04));
+  clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+  filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 520ms var(--ease-out);
+}
+
+.site-protu .svc-card:hover,
+.site-protu .svc-card:focus-within,
+.site-protu .svc-cards:not(:hover, :focus-within) .svc-card:first-child {
+  transform: none;
+  border-color: rgb(255 214 168 / 0.4);
+  background: rgb(var(--light) / 0.07);
+  box-shadow:
+    0 -1px 0 rgb(255 214 168 / 0.45),
+    0 2rem 4rem -2rem rgb(var(--light) / 0.4),
+    0 1.5rem 3rem -1.75rem rgb(0 0 0 / 0.8);
+}
+
+.site-protu .svc-card:hover::before,
+.site-protu .svc-card:focus-within::before,
+.site-protu .svc-cards:not(:hover, :focus-within) .svc-card:first-child::before { opacity: 1; }
+
+.site-protu .svc-card .svc-card-price {
+  font-size: 1.0625rem;
+  color: var(--accent-ink);
+}
+
+.site-protu .svc-card-more {
+  border: 1px solid var(--glass);
+  background: transparent;
+  color: var(--ink);
+  transition: border-color 320ms var(--ease-out), color 320ms var(--ease-out), background-color 320ms var(--ease-out);
+}
+
+.site-protu .svc-card:hover .svc-card-more,
+.site-protu .svc-card:focus-within .svc-card-more,
+.site-protu .svc-cards:not(:hover, :focus-within) .svc-card:first-child .svc-card-more {
+  border-color: rgb(var(--light) / 0.9);
+  background: rgb(var(--light) / 0.12);
+  color: var(--accent-ink);
+}
+
+.site-protu .svc-steps li { border-top-color: var(--rule); }
+
+/* Cenu kartes un piemēri: stikls, nevis balts papīrs. */
+.site-protu .svc-plan,
+.site-protu .svc-example-media {
+  border-color: var(--glass);
+  background: rgb(255 255 255 / 0.03);
+  box-shadow: 0 1.5rem 3rem -1.75rem rgb(0 0 0 / 0.8);
+}
+
+.site-protu .svc-price-amount { color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-protu .svc-card,
+  .site-protu .svc-card::before,
+  .site-protu .svc-card-more { transition: none; }
+}
