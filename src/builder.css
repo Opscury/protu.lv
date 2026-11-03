@@ -784,7 +784,8 @@
   height: min(64rem, 100%);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 1.8s var(--ease-out);
+  /* Short: the shader does the real switch-on (beams grow down from the bar). */
+  transition: opacity 0.3s var(--ease-out);
   mask-image: linear-gradient(180deg, #000 50%, transparent 96%);
 }
 
@@ -799,7 +800,9 @@
 /* The CSS cone hands over to the shader; the dust stays and drifts in the beam. */
 .lt-cone::before,
 .lt-cone::after { transition: opacity 1.8s var(--ease-out); }
-.lt-hero[data-rays] .lt-cone::before { opacity: 0; }
+.lt-hero[data-rays] .lt-cone::before,
+html[data-rays="pending"] .lt-cone::before { opacity: 0; }
+html[data-rays="pending"] .lt-cone::after { opacity: 0.45; }
 .lt-hero[data-rays] .lt-cone::after { opacity: 0.45; }
 .lt-hero[data-rays] .lt-cone {
   translate: calc(-50% + var(--ray-sway) * 1.5rem) 0;

@@ -36,6 +36,8 @@ export type RaysSettings = {
   occlusion: number
   /** How long the shadows they cast down the beam are (share of hero height). */
   occReach: number
+  /** Seconds for the beams to grow down from the bar when the light switches on (0 = instant). */
+  revealTime: number
 }
 
 /** Wide and tall screens need different cone widths, so each shape has its own settings. */
@@ -68,6 +70,7 @@ const LANDSCAPE: RaysSettings = {
   rayContrast: 2.5,
   occlusion: 0.85,
   occReach: 0.35,
+  revealTime: 2.4,
 }
 
 // On a narrow screen the same share of width is a thin beam, so portrait is wider.

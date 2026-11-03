@@ -58,16 +58,14 @@ function BuilderIntro({ lang }: Props) {
   // Light rays start once the page has loaded; reduced motion keeps the static cone.
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let timer = 0
-    const go = () => {
-      timer = window.setTimeout(() => setRaysOn(true), 150)
+    // Start once the page is idle (not after every image has loaded), so the beam switches on quickly.
+    const start = () => setRaysOn(true)
+    if (typeof window.requestIdleCallback === 'function') {
+      const id = window.requestIdleCallback(start, { timeout: 400 })
+      return () => window.cancelIdleCallback(id)
     }
-    if (document.readyState === 'complete') go()
-    else window.addEventListener('load', go, { once: true })
-    return () => {
-      window.removeEventListener('load', go)
-      window.clearTimeout(timer)
-    }
+    const timer = window.setTimeout(start, 120)
+    return () => window.clearTimeout(timer)
   }, [])
   // Paraugs, kas lentē pārlec no viena gala uz otru, nedrīkst slīdēt pāri gaismai.
   const offsets = t.samples.map((_, i) => offsetOf(i, pickedIndex, n))
@@ -89,6 +87,8 @@ function BuilderIntro({ lang }: Props) {
               target={heroRef}
               onReady={() => setRaysLive(true)}
               onFail={() => {
+                // No WebGL after all: bring the static CSS cone back.
+                document.documentElement.removeAttribute('data-rays')
                 setRaysOn(false)
                 setRaysLive(false)
               }}

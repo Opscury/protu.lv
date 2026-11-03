@@ -22,6 +22,7 @@ const SLIDERS: [NumKey, number, number, number][] = [
   ['rayContrast', 0.5, 6, 0.05],
   ['occlusion', 0, 1, 0.01],
   ['occReach', 0, 1, 0.01],
+  ['revealTime', 0, 6, 0.1],
   ['length', 0.2, 2, 0.01],
   ['speed', 0, 3, 0.01],
   ['sway', 0, 0.5, 0.005],
@@ -133,6 +134,9 @@ function RaysTuner({ value, orient, onChange }: Props) {
           }}
         >
           {copied ? 'Copied both' : 'Copy values'}
+        </button>
+        <button type="button" onClick={() => window.dispatchEvent(new Event('rays-replay'))}>
+          Replay
         </button>
         <button type="button" onClick={() => set(RAYS_DEFAULTS[orient])}>
           Reset {orient}

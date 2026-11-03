@@ -37,6 +37,7 @@ uniform float rayContrast;
 uniform sampler2D occ;
 uniform float occAmount;
 uniform float occReach;
+uniform float reveal;
 
 float noise(vec2 st) {
   return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453123);
@@ -103,6 +104,12 @@ void main() {
   vec2 hot = (coord - vec2(centerX, 0.0)) / vec2(iResolution.x * coneTop * 1.1, iResolution.y * 0.16);
   light += exp(-dot(hot, hot)) * 0.3;
   if (occAmount > 0.0) light *= 1.0 - occAmount * shadowAt(coord);
+  // Switch-on: the beam grows down from the bar line with a soft leading edge.
+  if (reveal < 1.0) {
+    float front = reveal * 1.35;
+    light *= 1.0 - smoothstep(front - 0.35, front, y);
+    light *= min(1.0, reveal * 4.0);
+  }
 
   vec3 c = vec3(light);
   if (noiseAmount > 0.0) {
@@ -246,6 +253,7 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
         occ: { value: occTex },
         occAmount: { value: 0 },
         occReach: { value: 0.4 },
+        reveal: { value: 0 },
       },
     })
     const mesh = new Mesh(gl, { geometry: new Triangle(gl), program })
@@ -290,6 +298,12 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
     let visible = true
     let ready = false
     let color = live.current.color
+    let startedAt = -1
+    // Dev tuner's "Replay" button restarts the switch-on.
+    const replay = () => {
+      startedAt = -1
+    }
+    window.addEventListener('rays-replay', replay)
 
     const loop = (now: number) => {
       raf = 0
@@ -322,6 +336,9 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
       u.rayContrast.value = s.rayContrast
       u.occAmount.value = s.occlusion
       u.occReach.value = s.occReach
+      if (startedAt < 0) startedAt = t
+      const p = s.revealTime > 0 ? Math.min(1, (t - startedAt) / s.revealTime) : 1
+      u.reveal.value = 1 - Math.pow(1 - p, 3) // ease-out: fast start, gentle settle
       placeApex()
       renderer.render({ scene: mesh })
 
@@ -355,6 +372,7 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
     return () => {
       cancelAnimationFrame(raf)
       cancelAnimationFrame(redrawRaf)
+      window.removeEventListener('rays-replay', replay)
       mo.disconnect()
       heroEl?.removeEventListener('animationend', redraw)
       heroEl?.removeEventListener('transitionend', redraw)
