@@ -23,7 +23,6 @@ uniform vec2 rayPos;
 uniform vec2 rayDir;
 uniform vec3 raysColor;
 uniform float raysSpeed;
-uniform float lightSpread;
 uniform float rayLength;
 uniform float noiseAmount;
 uniform float distortion;
@@ -33,46 +32,42 @@ uniform float coneBottom;
 uniform float softness;
 uniform float fill;
 uniform float streaks;
+uniform float rayCount;
+uniform float rayContrast;
 
 float noise(vec2 st) {
   return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453123);
 }
 
-float rayStrength(vec2 source, vec2 refDir, vec2 coord, float seedA, float seedB, float speed) {
-  vec2 toCoord = coord - source;
-  float dist = length(toCoord);
-  float cosAngle = dot(normalize(toCoord), refDir);
-  float angle = cosAngle + distortion * sin(iTime * 2.0 + dist * 0.01) * 0.2;
-  float spreadFactor = pow(max(angle, 0.0), 1.0 / max(lightSpread, 0.001));
-  // Tall phone screens measure by height, so the beam still reaches the frame.
-  float maxDist = max(iResolution.x, iResolution.y * 1.1) * rayLength;
-  float lengthFalloff = clamp((maxDist - dist) / maxDist, 0.0, 1.0);
-  float base = clamp(
-    (0.45 + 0.15 * sin(angle * seedA + iTime * speed)) +
-    (0.3 + 0.2 * cos(-angle * seedB + iTime * speed)),
-    0.0, 1.0);
-  return base * lengthFalloff * spreadFactor;
-}
-
 void main() {
   vec2 coord = vec2(gl_FragCoord.x, iResolution.y - gl_FragCoord.y);
-  float a = rayStrength(rayPos, rayDir, coord, 36.2214, 21.11349, 1.5 * raysSpeed);
-  float b = rayStrength(rayPos, rayDir, coord, 22.3991, 18.0234, 1.1 * raysSpeed);
-  float rays = a * 0.5 + b * 0.4;
-
   // Spotlight cone: a wide source on the bar line that opens into a trapezoid.
-  // Its edges point back to rayPos (the virtual apex above the page), so streaks run along it.
+  // Its edges point back to rayPos (the virtual apex above the page), so rays run along it.
   float y = coord.y / iResolution.y;
   float centerX = rayPos.x + rayDir.x / max(rayDir.y, 0.2) * (coord.y - rayPos.y);
   float halfW = iResolution.x * mix(coneTop, coneBottom, y);
-  float d = abs(coord.x - centerX) / halfW;
+  float across = (coord.x - centerX) / halfW;
+  float d = abs(across);
+
+  // Rays: bands measured across the cone, so each one fans out with it.
+  // Three drifting frequencies keep them uneven, like light through dusty air.
+  float t = iTime * raysSpeed;
+  float wob = sin(across * 2.1 + t * 0.4) * distortion * 3.0;
+  float k = rayCount;
+  float r1 = 0.5 + 0.5 * sin(across * 7.3 * k + t * 0.9 + wob);
+  float r2 = 0.5 + 0.5 * sin(across * 12.7 * k - t * 0.6 + 1.7);
+  float r3 = 0.5 + 0.5 * sin(across * 21.9 * k + t * 1.3 + 4.1 - wob);
+  float rays = pow(r1 * 0.5 + r2 * 0.32 + r3 * 0.18, rayContrast) * (1.0 + rayContrast * 0.35);
+  float lengthFade = clamp(1.0 - y / max(rayLength, 0.05), 0.0, 1.0);
+  rays *= lengthFade;
   float inside = 1.0 - smoothstep(1.0 - softness, 1.0 + softness * 0.35, d);
   float halo = (1.0 - smoothstep(1.0, 1.0 + softness * 6.0 + 0.3, d)) * 0.12;
   // Brighter down the middle, like real haze in a beam.
   float core = 0.75 + 0.25 * (1.0 - d * d);
 
-  float body = fill * (1.0 - 0.72 * y) * core;
-  float light = (body + streaks * rays * (1.0 - 0.5 * y)) * inside + halo * (1.0 - y);
+  // Strong rays darken the haze between them, so the beams read as separate.
+  float body = fill * (1.0 - 0.72 * y) * core * (1.0 - streaks * 0.45);
+  float light = (body + streaks * rays * (1.0 - 0.45 * y)) * inside + halo * (1.0 - y);
   // Hot spot where the light leaves the source.
   vec2 hot = (coord - vec2(centerX, 0.0)) / vec2(iResolution.x * coneTop * 1.1, iResolution.y * 0.16);
   light += exp(-dot(hot, hot)) * 0.3;
@@ -153,7 +148,6 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
         rayDir: { value: [0, 1] },
         raysColor: { value: hexToRgb(live.current.color) },
         raysSpeed: { value: 1 },
-        lightSpread: { value: 1 },
         rayLength: { value: 1 },
         noiseAmount: { value: 0 },
         distortion: { value: 0 },
@@ -163,6 +157,8 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
         softness: { value: 0.08 },
         fill: { value: 0.5 },
         streaks: { value: 0.5 },
+        rayCount: { value: 1 },
+        rayContrast: { value: 2.5 },
       },
     })
     const mesh = new Mesh(gl, { geometry: new Triangle(gl), program })
@@ -208,7 +204,6 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
       u.iTime.value = t
       u.rayDir.value = [Math.sin(angle), Math.cos(angle)]
       u.raysSpeed.value = s.speed
-      u.lightSpread.value = s.spread
       u.rayLength.value = s.length
       u.noiseAmount.value = s.noise
       u.distortion.value = s.distortion
@@ -218,6 +213,8 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
       u.softness.value = s.softness
       u.fill.value = s.fill
       u.streaks.value = s.streaks
+      u.rayCount.value = s.rayCount
+      u.rayContrast.value = s.rayContrast
       placeApex()
       renderer.render({ scene: mesh })
 
