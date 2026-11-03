@@ -20,6 +20,8 @@ const SLIDERS: [NumKey, number, number, number][] = [
   ['streaks', 0, 1.5, 0.01],
   ['rayCount', 0.3, 3, 0.01],
   ['rayContrast', 0.5, 6, 0.05],
+  ['occlusion', 0, 1, 0.01],
+  ['occReach', 0, 1, 0.01],
   ['length', 0.2, 2, 0.01],
   ['speed', 0, 3, 0.01],
   ['sway', 0, 0.5, 0.005],

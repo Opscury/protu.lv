@@ -32,6 +32,10 @@ export type RaysSettings = {
   rayCount: number
   /** How crisp the rays are against the haze between them. */
   rayContrast: number
+  /** How much the headline, subtitle and button block the light (0 = light passes through). */
+  occlusion: number
+  /** How long the shadows they cast down the beam are (share of hero height). */
+  occReach: number
 }
 
 /** Wide and tall screens need different cone widths, so each shape has its own settings. */
@@ -62,6 +66,8 @@ const LANDSCAPE: RaysSettings = {
   streaks: 0.75,
   rayCount: 1,
   rayContrast: 2.5,
+  occlusion: 0.85,
+  occReach: 0.35,
 }
 
 // On a narrow screen the same share of width is a thin beam, so portrait is wider.

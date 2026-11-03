@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { RefObject } from 'react'
-import { Mesh, Program, Renderer, Triangle } from 'ogl'
+import { Mesh, Program, Renderer, Texture, Triangle } from 'ogl'
 import type { RaysSettings } from '../lightRaysSettings'
 
 /*
@@ -34,9 +34,40 @@ uniform float fill;
 uniform float streaks;
 uniform float rayCount;
 uniform float rayContrast;
+uniform sampler2D occ;
+uniform float occAmount;
+uniform float occReach;
 
 float noise(vec2 st) {
   return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453123);
+}
+
+float occAt(vec2 p) {
+  return texture2D(occ, p / iResolution).a;
+}
+
+// How much the headline and button block the light reaching this pixel:
+// march back towards the light source; anything solid on the way casts a streak down the haze.
+// A small ring of taps around the pixel adds a soft dark aura right behind the letters.
+float shadowAt(vec2 coord) {
+  vec2 toSrc = rayPos - coord;
+  float len = length(toSrc);
+  vec2 dir = toSrc / max(len, 1.0);
+  float reach = min(occReach * iResolution.y, len);
+  float streak = 0.0;
+  // Per-pixel jitter of the sample spacing turns stepped copies of the letters into smooth streaks.
+  float jit = noise(coord + fract(iTime) * 37.0);
+  for (int i = 1; i <= 20; i++) {
+    float f = (float(i) - jit) / 20.0;
+    streak += occAt(coord + dir * reach * f * f) * (1.0 - f * 0.65);
+  }
+  float r = iResolution.y * 0.022;
+  float aura = 0.0;
+  for (int j = 0; j < 6; j++) {
+    float a = float(j) * 1.0472;
+    aura += occAt(coord + vec2(cos(a), sin(a)) * r);
+  }
+  return clamp(streak / 7.0 + aura / 6.0 * 0.6, 0.0, 1.0);
 }
 
 void main() {
@@ -71,6 +102,7 @@ void main() {
   // Hot spot where the light leaves the source.
   vec2 hot = (coord - vec2(centerX, 0.0)) / vec2(iResolution.x * coneTop * 1.1, iResolution.y * 0.16);
   light += exp(-dot(hot, hot)) * 0.3;
+  if (occAmount > 0.0) light *= 1.0 - occAmount * shadowAt(coord);
 
   vec3 c = vec3(light);
   if (noiseAmount > 0.0) {
@@ -84,6 +116,9 @@ void main() {
   gl_FragColor = vec4(c, alpha);
 }
 `
+
+/** Elements inside the hero that stand in the beam and cast shadows. */
+const OCCLUDERS = '.lt-protu, .lt-title, .lt-cta'
 
 function hexToRgb(hex: string): [number, number, number] {
   const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex)
@@ -137,6 +172,55 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
     gl.clearColor(0, 0, 0, 0)
     el.appendChild(gl.canvas)
 
+    // Occluder mask: the headline, subtitle and button drawn as white shapes on a half-res canvas,
+    // positioned exactly where they sit over the light. The shader reads it to cast shadows.
+    const occCanvas = document.createElement('canvas')
+    occCanvas.width = occCanvas.height = 1
+    const octx = occCanvas.getContext('2d')
+    const occTex = new Texture(gl, { image: occCanvas, generateMipmaps: false, flipY: false })
+
+    const drawOccluders = () => {
+      const host = target.current
+      if (!host || !octx) return
+      const scale = 0.5
+      const box = el.getBoundingClientRect()
+      occCanvas.width = Math.max(1, Math.round(box.width * scale))
+      occCanvas.height = Math.max(1, Math.round(box.height * scale))
+      octx.setTransform(scale, 0, 0, scale, -box.left * scale, -box.top * scale)
+      octx.fillStyle = '#fff'
+      octx.textBaseline = 'middle'
+      // Soft shapes cast soft shadows; crisp ones would print ghost copies of the words.
+      octx.filter = 'blur(5px)'
+
+      host.querySelectorAll<HTMLElement>(OCCLUDERS).forEach((node) => {
+        if (node.matches('a')) {
+          // The button is a solid pill.
+          const r = node.getBoundingClientRect()
+          octx.beginPath()
+          octx.roundRect(r.left, r.top, r.width, r.height, r.height / 2)
+          octx.fill()
+          return
+        }
+        // Text: draw word by word at its real position, so wrapped lines land right.
+        const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT)
+        for (let t = walker.nextNode(); t; t = walker.nextNode()) {
+          const text = t.textContent ?? ''
+          const cs = getComputedStyle(t.parentElement ?? node)
+          octx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`
+          octx.letterSpacing = cs.letterSpacing === 'normal' ? '0px' : cs.letterSpacing
+          const range = document.createRange()
+          for (const m of text.matchAll(/\S+/g)) {
+            range.setStart(t, m.index)
+            range.setEnd(t, m.index + m[0].length)
+            const r = range.getBoundingClientRect()
+            if (r.width) octx.fillText(m[0], r.left, r.top + r.height / 2)
+          }
+        }
+      })
+      occTex.image = occCanvas
+      occTex.needsUpdate = true
+    }
+
     const program = new Program(gl, {
       vertex,
       fragment,
@@ -159,6 +243,9 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
         streaks: { value: 0.5 },
         rayCount: { value: 1 },
         rayContrast: { value: 2.5 },
+        occ: { value: occTex },
+        occAmount: { value: 0 },
+        occReach: { value: 0.4 },
       },
     })
     const mesh = new Mesh(gl, { geometry: new Triangle(gl), program })
@@ -175,9 +262,27 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
       renderer.setSize(el.clientWidth || 1, el.clientHeight || 1)
       u.iResolution.value = [gl.drawingBufferWidth, gl.drawingBufferHeight]
       placeApex()
+      redraw()
+    }
+
+    // Redraw the occluder mask (batched to one per frame) whenever the words could have moved:
+    // resize, a new verb, its entrance animation ending, web fonts arriving.
+    let redrawRaf = 0
+    const redraw = () => {
+      if (redrawRaf) return
+      redrawRaf = requestAnimationFrame(() => {
+        redrawRaf = 0
+        drawOccluders()
+      })
     }
     const ro = new ResizeObserver(resize)
     ro.observe(el)
+    const heroEl = target.current
+    const mo = new MutationObserver(redraw)
+    heroEl?.querySelectorAll(OCCLUDERS).forEach((n) => mo.observe(n, { childList: true, subtree: true, characterData: true }))
+    heroEl?.addEventListener('animationend', redraw)
+    heroEl?.addEventListener('transitionend', redraw)
+    void document.fonts?.ready.then(redraw)
     resize()
 
     let raf = 0
@@ -215,6 +320,8 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
       u.streaks.value = s.streaks
       u.rayCount.value = s.rayCount
       u.rayContrast.value = s.rayContrast
+      u.occAmount.value = s.occlusion
+      u.occReach.value = s.occReach
       placeApex()
       renderer.render({ scene: mesh })
 
@@ -247,6 +354,10 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
 
     return () => {
       cancelAnimationFrame(raf)
+      cancelAnimationFrame(redrawRaf)
+      mo.disconnect()
+      heroEl?.removeEventListener('animationend', redraw)
+      heroEl?.removeEventListener('transitionend', redraw)
       ro.disconnect()
       io.disconnect()
       document.removeEventListener('visibilitychange', wake)

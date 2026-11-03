@@ -806,30 +806,36 @@
   opacity: calc(0.55 + var(--ray-pulse) * 0.45);
 }
 
-/* Headline: a soft shadow cast down and away from the beam, a warm halo that breathes. */
+/* Headline as a solid object standing in the beam: lit from above (bright top, deeper base),
+   with a tight contact shadow. Its letters also block the shader light (see LightRays occluders),
+   so the haze darkens behind and below the words instead of washing over them.
+   The padding gives descenders (g, j) room inside the clipped background; the negative margin keeps layout. */
 .lt-hero[data-rays] .lt-protu {
-  text-shadow:
-    calc(var(--ray-sway) * -0.09em) 0.12em 0.3em rgb(0 0 0 / 0.55),
-    0 0 2.5rem rgb(var(--light) / calc(0.1 + var(--ray-pulse) * 0.25));
-}
-
-/* The verb carries a highlight that slides with the light. */
-.lt-hero[data-rays] .lt-protu-verb {
-  background: linear-gradient(100deg,
-    var(--accent-ink) 0 38%,
-    #ffe9cc 50%,
-    var(--accent-ink) 62% 100%);
-  background-size: 260% 100%;
-  background-position: calc(50% - var(--ray-sway) * 45%) 0;
+  padding-block: 0.06em 0.16em;
+  margin-block: -0.06em -0.16em;
+  background: linear-gradient(180deg, #fff 30%, #e6dccf 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   text-shadow: none;
-  filter: drop-shadow(0 0 1.6rem rgb(var(--light) / calc(0.2 + var(--ray-pulse) * 0.35)));
+  filter:
+    drop-shadow(0 0.03em 0.02em rgb(0 0 0 / 0.55))
+    drop-shadow(0 0.14em 0.45em rgb(0 0 0 / 0.4));
+}
+
+.lt-hero[data-rays] .lt-protu-verb {
+  padding-block: 0.06em 0.16em;
+  margin-block: -0.06em -0.16em;
+  background: linear-gradient(180deg, #ffe2bd 0%, #f7aa58 46%, #dc8432 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
 }
 
 .lt-hero[data-rays] .lt-title {
-  text-shadow: calc(var(--ray-sway) * -2px) 2px 10px rgb(0 0 0 / 0.5);
+  color: #fbf6ee;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.55), 0 0 1.4rem rgb(12 12 16 / 0.55);
 }
 
 /* Button: the rim glows with the pulse, and the light lands on its top edge where the beam is. */
