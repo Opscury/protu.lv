@@ -1,5 +1,7 @@
-import { useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
+import { RAYS_DEFAULTS } from '../lightRaysSettings'
+import RaysTuner from './RaysTuner'
 import { blogPage, postHref, publishedPosts } from '../data/blog'
 import { builder, BUILDER_LOGIN, BUILDER_SIGNUP } from '../data/builder'
 import { SERVICES_PATH } from '../data/services'
@@ -9,6 +11,9 @@ import '../services.css'
 import '../builder.css'
 
 type Props = { lang: Lang }
+
+// Shader + ogl load in their own chunk, after the page.
+const LightRays = lazy(() => import('./LightRays'))
 
 /** PDF lapa pirmajā skatā: pirmā lapa aiz vāka ar spēcīgu darbu. */
 const HERO_PDF_PAGE: Record<string, number> = { marta: 2, kriss: 2, elina: 2, toms: 1 }
@@ -36,6 +41,25 @@ function BuilderIntro({ lang }: Props) {
   const sample = t.samples[pickedIndex]
   const verbRefs = useRef<(HTMLButtonElement | null)[]>([])
   const swipeX = useRef<number | null>(null)
+  const heroRef = useRef<HTMLElement>(null)
+  const [rays, setRays] = useState(RAYS_DEFAULTS)
+  const [raysOn, setRaysOn] = useState(false)
+  const [raysLive, setRaysLive] = useState(false)
+
+  // Light rays start once the page has loaded; reduced motion keeps the static cone.
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let timer = 0
+    const go = () => {
+      timer = window.setTimeout(() => setRaysOn(true), 150)
+    }
+    if (document.readyState === 'complete') go()
+    else window.addEventListener('load', go, { once: true })
+    return () => {
+      window.removeEventListener('load', go)
+      window.clearTimeout(timer)
+    }
+  }, [])
   // Paraugs, kas lentē pārlec no viena gala uz otru, nedrīkst slīdēt pāri gaismai.
   const offsets = t.samples.map((_, i) => offsetOf(i, pickedIndex, n))
   const jumps = offsets.map((o, i) => Math.abs(o - offsetOf(i, prevIndex, n)) > n / 2)
@@ -48,7 +72,20 @@ function BuilderIntro({ lang }: Props) {
 
   return (
     <article className="svc bld" id="portfolio" aria-labelledby="bld-title">
-      <header className="lt-hero">
+      <header className="lt-hero" ref={heroRef} data-rays={raysLive || undefined}>
+        {raysOn && (
+          <Suspense fallback={null}>
+            <LightRays
+              settings={rays}
+              target={heroRef}
+              onReady={() => setRaysLive(true)}
+              onFail={() => {
+                setRaysOn(false)
+                setRaysLive(false)
+              }}
+            />
+          </Suspense>
+        )}
         <div className="lt-cone" aria-hidden="true">
           {MOTES.map(([x, y, size, dur], i) => (
             <span
@@ -295,6 +332,8 @@ function BuilderIntro({ lang }: Props) {
           </a>
         </p>
       </section>
+      {/* MODE, not DEV: NODE_ENV=production on Valdis's PC flips DEV off even in `npm run dev`. */}
+      {import.meta.env.MODE === 'development' && <RaysTuner value={rays} onChange={setRays} />}
     </article>
   )
 }
