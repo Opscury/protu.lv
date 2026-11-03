@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
-import { RAYS_DEFAULTS } from '../lightRaysSettings'
+import { currentOrientation, PORTRAIT_QUERY, RAYS_DEFAULTS } from '../lightRaysSettings'
 import RaysTuner from './RaysTuner'
 import { blogPage, postHref, publishedPosts } from '../data/blog'
 import { builder, BUILDER_LOGIN, BUILDER_SIGNUP } from '../data/builder'
@@ -43,6 +43,15 @@ function BuilderIntro({ lang }: Props) {
   const swipeX = useRef<number | null>(null)
   const heroRef = useRef<HTMLElement>(null)
   const [rays, setRays] = useState(RAYS_DEFAULTS)
+  const [orient, setOrient] = useState(currentOrientation)
+
+  // Wide and tall screens each get their own light settings.
+  useEffect(() => {
+    const mq = window.matchMedia(PORTRAIT_QUERY)
+    const update = () => setOrient(currentOrientation())
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
   const [raysOn, setRaysOn] = useState(false)
   const [raysLive, setRaysLive] = useState(false)
 
@@ -76,7 +85,7 @@ function BuilderIntro({ lang }: Props) {
         {raysOn && (
           <Suspense fallback={null}>
             <LightRays
-              settings={rays}
+              settings={rays[orient]}
               target={heroRef}
               onReady={() => setRaysLive(true)}
               onFail={() => {
@@ -333,7 +342,7 @@ function BuilderIntro({ lang }: Props) {
         </p>
       </section>
       {/* MODE, not DEV: NODE_ENV=production on Valdis's PC flips DEV off even in `npm run dev`. */}
-      {import.meta.env.MODE === 'development' && <RaysTuner value={rays} onChange={setRays} />}
+      {import.meta.env.MODE === 'development' && <RaysTuner value={rays} orient={orient} onChange={setRays} />}
     </article>
   )
 }

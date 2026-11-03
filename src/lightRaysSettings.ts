@@ -34,7 +34,18 @@ export type RaysSettings = {
   rayContrast: number
 }
 
-export const RAYS_DEFAULTS: RaysSettings = {
+/** Wide and tall screens need different cone widths, so each shape has its own settings. */
+export type Orientation = 'landscape' | 'portrait'
+export type RaysProfiles = Record<Orientation, RaysSettings>
+
+export const PORTRAIT_QUERY = '(orientation: portrait)'
+
+export function currentOrientation(): Orientation {
+  if (typeof window === 'undefined') return 'landscape'
+  return window.matchMedia(PORTRAIT_QUERY).matches ? 'portrait' : 'landscape'
+}
+
+const LANDSCAPE: RaysSettings = {
   color: '#ffc48a',
   speed: 0.6,
   length: 1.1,
@@ -52,3 +63,14 @@ export const RAYS_DEFAULTS: RaysSettings = {
   rayCount: 1,
   rayContrast: 2.5,
 }
+
+// On a narrow screen the same share of width is a thin beam, so portrait starts wider.
+const PORTRAIT: RaysSettings = {
+  ...LANDSCAPE,
+  coneTop: 0.34,
+  coneBottom: 0.8,
+  rayCount: 0.7,
+  length: 0.9,
+}
+
+export const RAYS_DEFAULTS: RaysProfiles = { landscape: LANDSCAPE, portrait: PORTRAIT }
