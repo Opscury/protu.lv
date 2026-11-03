@@ -221,7 +221,8 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
       // The page only needs ~30 updates a second.
       const host = target.current
       if (host && frame++ % 2 === 0) {
-        host.style.setProperty('--ray-sway', sway.toFixed(3))
+        // Scaled by the sway setting, so with sway 0 the shadows and highlights hold still too.
+        host.style.setProperty('--ray-sway', (sway * Math.min(1, s.sway / 0.14)).toFixed(3))
         host.style.setProperty('--ray-pulse', (1 - s.flicker + s.flicker * pulse).toFixed(3))
       }
       if (!ready) {

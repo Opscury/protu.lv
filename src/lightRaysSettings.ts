@@ -49,14 +49,14 @@ const LANDSCAPE: RaysSettings = {
   color: '#ffc48a',
   speed: 0.6,
   length: 1.1,
-  sway: 0.14,
+  sway: 0,
   swaySpeed: 0.32,
   flicker: 0.3,
   intensity: 0.85,
   noise: 0.08,
   distortion: 0.06,
-  coneTop: 0.2,
-  coneBottom: 0.5,
+  coneTop: 0.205,
+  coneBottom: 0.375,
   softness: 0.06,
   fill: 0.4,
   streaks: 0.75,
@@ -64,11 +64,12 @@ const LANDSCAPE: RaysSettings = {
   rayContrast: 2.5,
 }
 
-// On a narrow screen the same share of width is a thin beam, so portrait starts wider.
+// On a narrow screen the same share of width is a thin beam, so portrait is wider.
+// Values dialled in by Valdis, 3 Nov 2026.
 const PORTRAIT: RaysSettings = {
   ...LANDSCAPE,
-  coneTop: 0.34,
-  coneBottom: 0.8,
+  coneTop: 0.31,
+  coneBottom: 0.66,
   rayCount: 0.7,
   length: 0.9,
 }
