@@ -28,6 +28,11 @@ uniform float rayLength;
 uniform float noiseAmount;
 uniform float distortion;
 uniform float intensity;
+uniform float coneTop;
+uniform float coneBottom;
+uniform float softness;
+uniform float fill;
+uniform float streaks;
 
 float noise(vec2 st) {
   return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453123);
@@ -53,14 +58,32 @@ void main() {
   vec2 coord = vec2(gl_FragCoord.x, iResolution.y - gl_FragCoord.y);
   float a = rayStrength(rayPos, rayDir, coord, 36.2214, 21.11349, 1.5 * raysSpeed);
   float b = rayStrength(rayPos, rayDir, coord, 22.3991, 18.0234, 1.1 * raysSpeed);
-  vec3 c = vec3(a * 0.5 + b * 0.4);
+  float rays = a * 0.5 + b * 0.4;
+
+  // Spotlight cone: a wide source on the bar line that opens into a trapezoid.
+  // Its edges point back to rayPos (the virtual apex above the page), so streaks run along it.
+  float y = coord.y / iResolution.y;
+  float centerX = rayPos.x + rayDir.x / max(rayDir.y, 0.2) * (coord.y - rayPos.y);
+  float halfW = iResolution.x * mix(coneTop, coneBottom, y);
+  float d = abs(coord.x - centerX) / halfW;
+  float inside = 1.0 - smoothstep(1.0 - softness, 1.0 + softness * 0.35, d);
+  float halo = (1.0 - smoothstep(1.0, 1.0 + softness * 6.0 + 0.3, d)) * 0.12;
+  // Brighter down the middle, like real haze in a beam.
+  float core = 0.75 + 0.25 * (1.0 - d * d);
+
+  float body = fill * (1.0 - 0.72 * y) * core;
+  float light = (body + streaks * rays * (1.0 - 0.5 * y)) * inside + halo * (1.0 - y);
+  // Hot spot where the light leaves the source.
+  vec2 hot = (coord - vec2(centerX, 0.0)) / vec2(iResolution.x * coneTop * 1.1, iResolution.y * 0.16);
+  light += exp(-dot(hot, hot)) * 0.3;
+
+  vec3 c = vec3(light);
   if (noiseAmount > 0.0) {
     float n = noise(coord * 0.01 + iTime * 0.1);
     c *= 1.0 - noiseAmount + noiseAmount * n;
   }
-  // Hotter and whiter near the source, warmer and dimmer further down.
-  float near = 1.0 - coord.y / iResolution.y;
-  c *= raysColor * (0.35 + near * 0.75);
+  // Whiter near the source, warmer further down.
+  c *= mix(vec3(1.0, 0.93, 0.85), raysColor, clamp(y * 1.6, 0.0, 1.0));
   c *= intensity;
   float alpha = clamp(max(c.r, max(c.g, c.b)), 0.0, 1.0);
   gl_FragColor = vec4(c, alpha);
@@ -135,18 +158,27 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
         noiseAmount: { value: 0 },
         distortion: { value: 0 },
         intensity: { value: 1 },
+        coneTop: { value: 0.2 },
+        coneBottom: { value: 0.5 },
+        softness: { value: 0.08 },
+        fill: { value: 0.5 },
+        streaks: { value: 0.5 },
       },
     })
     const mesh = new Mesh(gl, { geometry: new Triangle(gl), program })
     const u = program.uniforms
 
+    // The cone's edges meet above the page; rays start there so they fan along the edges.
+    const placeApex = () => {
+      const s = live.current
+      const widen = Math.max(s.coneBottom - s.coneTop, 0.02)
+      u.rayPos.value = [gl.drawingBufferWidth * 0.5, -gl.drawingBufferHeight * (s.coneTop / widen) - 1]
+    }
+
     const resize = () => {
       renderer.setSize(el.clientWidth || 1, el.clientHeight || 1)
-      const w = gl.drawingBufferWidth
-      const h = gl.drawingBufferHeight
-      u.iResolution.value = [w, h]
-      // Source sits on the glowing line under the top bar, just above the hero.
-      u.rayPos.value = [w * 0.5, -h * 0.04]
+      u.iResolution.value = [gl.drawingBufferWidth, gl.drawingBufferHeight]
+      placeApex()
     }
     const ro = new ResizeObserver(resize)
     ro.observe(el)
@@ -181,6 +213,12 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
       u.noiseAmount.value = s.noise
       u.distortion.value = s.distortion
       u.intensity.value = s.intensity * (1 - s.flicker + s.flicker * pulse)
+      u.coneTop.value = s.coneTop
+      u.coneBottom.value = s.coneBottom
+      u.softness.value = s.softness
+      u.fill.value = s.fill
+      u.streaks.value = s.streaks
+      placeApex()
       renderer.render({ scene: mesh })
 
       // The page only needs ~30 updates a second.

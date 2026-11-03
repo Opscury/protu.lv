@@ -792,6 +792,10 @@
 
 .lt-hero[data-rays] .lt-rays { opacity: 1; }
 
+/* Own layer for the reel: without it Chromium drops the dimming filter on side slides
+   while the WebGL canvas is composited behind them. */
+.lt-hero[data-rays] .lt-reel { position: relative; z-index: 0; isolation: isolate; }
+
 /* The CSS cone hands over to the shader; the dust stays and drifts in the beam. */
 .lt-cone::before,
 .lt-cone::after { transition: opacity 1.8s var(--ease-out); }
@@ -863,9 +867,6 @@
   opacity: calc(0.45 + var(--ray-pulse) * 0.55);
 }
 
-/* Neighbours catch more of the spill when the beam leans their way. */
-.lt-hero[data-rays] .lt-slide[data-side="left"] { filter: brightness(calc(0.3 + max(0, -1 * var(--ray-sway)) * 0.12)) saturate(0.55); }
-.lt-hero[data-rays] .lt-slide[data-side="right"] { filter: brightness(calc(0.3 + max(0, var(--ray-sway)) * 0.12)) saturate(0.55); }
 
 /* protu.lv kājene: juridiskās saites savā rindā, klusāk. */
 .foot-legal {

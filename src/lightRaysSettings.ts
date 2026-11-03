@@ -20,6 +20,16 @@ export type RaysSettings = {
   noise: number
   /** Wobble of the ray edges. */
   distortion: number
+  /** Cone half-width where it leaves the bar line (share of page width). */
+  coneTop: number
+  /** Cone half-width at the bottom of the hero. */
+  coneBottom: number
+  /** Edge softness of the cone: 0 = razor edge. */
+  softness: number
+  /** Brightness of the haze filling the cone. */
+  fill: number
+  /** How strong the moving streaks inside the cone are. */
+  streaks: number
 }
 
 export const RAYS_DEFAULTS: RaysSettings = {
@@ -30,7 +40,12 @@ export const RAYS_DEFAULTS: RaysSettings = {
   sway: 0.14,
   swaySpeed: 0.32,
   flicker: 0.3,
-  intensity: 1,
+  intensity: 0.85,
   noise: 0.08,
   distortion: 0.06,
+  coneTop: 0.2,
+  coneBottom: 0.5,
+  softness: 0.06,
+  fill: 0.4,
+  streaks: 0.4,
 }

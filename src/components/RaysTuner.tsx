@@ -10,6 +10,11 @@ const KEY = 'protu-rays-tuner'
 type NumKey = Exclude<keyof RaysSettings, 'color'>
 const SLIDERS: [NumKey, number, number, number][] = [
   ['intensity', 0, 2.5, 0.01],
+  ['coneTop', 0.02, 0.5, 0.005],
+  ['coneBottom', 0.1, 1, 0.005],
+  ['softness', 0, 0.5, 0.005],
+  ['fill', 0, 1.5, 0.01],
+  ['streaks', 0, 1.5, 0.01],
   ['spread', 0.1, 2, 0.01],
   ['length', 0.3, 3, 0.01],
   ['speed', 0, 3, 0.01],
@@ -26,6 +31,8 @@ const panel: CSSProperties = {
   right: 12,
   bottom: 12,
   width: 260,
+  maxHeight: 'calc(100vh - 24px)',
+  overflowY: 'auto',
   padding: '10px 12px',
   borderRadius: 10,
   background: 'rgb(10 10 14 / 0.92)',
