@@ -138,9 +138,15 @@ function App() {
             className="bar-menu"
             aria-expanded={menuOpen}
             aria-controls="bar-links"
+            aria-label={t.menu}
             onClick={() => setMenuFor(menuOpen ? null : path)}
           >
-            {t.menu}
+            {/* Three lines that fold into an X when the menu is open. */}
+            <span className="bar-burger" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
           </button>
         )}
         <div
@@ -148,6 +154,10 @@ function App() {
           id="bar-links"
           onKeyDown={(e) => {
             if (e.key === 'Escape') setMenuFor(null)
+          }}
+          // Tapping any link closes the phone menu, including #anchors on the same page.
+          onClick={(e) => {
+            if ((e.target as HTMLElement).closest('a')) setMenuFor(null)
           }}
         >
           {isPersonal ? (
