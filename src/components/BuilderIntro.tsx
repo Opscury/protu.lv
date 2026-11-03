@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { blogPage, postHref, publishedPosts } from '../data/blog'
 import { builder, BUILDER_LOGIN, BUILDER_SIGNUP } from '../data/builder'
@@ -20,6 +20,32 @@ const MOTES = [
   [74, 70, 2, 18], [81, 38, 1, 25], [86, 64, 1.5, 22], [40, 88, 1, 29], [60, 84, 1.5, 24],
 ]
 
+/** Stari konusā: leņķis (grādi), platums (% no konusa), šūpošanās cikls (s), aizture (s), spilgtums. */
+const RAYS = [
+  [-19, 5, 17, -3, 0.5], [-12, 7, 23, -11, 0.42], [-6, 4, 13, -7, 0.55], [-1, 8, 29, -2, 0.38],
+  [5, 4.5, 19, -15, 0.5], [11, 6.5, 25, -6, 0.44], [18, 5, 21, -9, 0.5],
+]
+
+/**
+ * Gaisma krīt no joslas vidus, tāpēc stars ar leņķi a trāpa elementam y pikseļu zemāk
+ * pie x = centrs − tan(a)·y. CSS to rēķina pats; šeit tikai izmēra, kur kas atrodas.
+ */
+function placeLight(hero: HTMLElement) {
+  const h = hero.getBoundingClientRect()
+  const mid = h.left + h.width / 2
+  hero.querySelectorAll<HTMLElement>('[data-ray]').forEach((el) => {
+    const r = el.getBoundingClientRect()
+    el.style.setProperty('--y', `${Math.round(r.top + r.height / 2 - h.top)}px`)
+    el.style.setProperty('--cx', `${Math.round(mid - r.left)}px`)
+  })
+  // Vārds aiz "Protu" mainās, tāpēc tā atskaites punktu glabā virsrakstā.
+  const verb = hero.querySelector<HTMLElement>('.lt-protu-verb')
+  if (verb) hero.style.setProperty('--vx', `${Math.round(mid - verb.getBoundingClientRect().left)}px`)
+  // Gaismā esošais rāmis vienmēr ir centrā; vajag tikai tā augšmalas dziļumu.
+  const frame = hero.querySelector<HTMLElement>('.lt-slide[data-active] .lt-frame')
+  if (frame) hero.style.setProperty('--fy', `${Math.round(frame.getBoundingClientRect().top - h.top)}px`)
+}
+
 /** Attālums no izvēlētā parauga lentē, apļveidā: -1 pa kreisi, 1 pa labi, 0 gaismā. */
 function offsetOf(i: number, picked: number, n: number) {
   let o = (((i - picked) % n) + n) % n
@@ -36,6 +62,29 @@ function BuilderIntro({ lang }: Props) {
   const sample = t.samples[pickedIndex]
   const verbRefs = useRef<(HTMLButtonElement | null)[]>([])
   const swipeX = useRef<number | null>(null)
+  const heroRef = useRef<HTMLElement | null>(null)
+
+  // Gaismas ģeometrija: pēc izmēra maiņas un fontu ielādes; ārpus ekrāna stari apstājas.
+  useEffect(() => {
+    const hero = heroRef.current
+    if (!hero) return
+    const place = () => placeLight(hero)
+    place()
+    document.fonts?.ready.then(place)
+    const ro = new ResizeObserver(place)
+    ro.observe(hero)
+    const io = new IntersectionObserver(([e]) => hero.toggleAttribute('data-off', !e.isIntersecting))
+    io.observe(hero)
+    return () => {
+      ro.disconnect()
+      io.disconnect()
+    }
+  }, [])
+
+  // Cits vārds = cits virsraksta platums: pārmēra pēc katras izvēles.
+  useEffect(() => {
+    if (heroRef.current) placeLight(heroRef.current)
+  }, [pickedIndex])
   // Paraugs, kas lentē pārlec no viena gala uz otru, nedrīkst slīdēt pāri gaismai.
   const offsets = t.samples.map((_, i) => offsetOf(i, pickedIndex, n))
   const jumps = offsets.map((o, i) => Math.abs(o - offsetOf(i, prevIndex, n)) > n / 2)
@@ -48,8 +97,17 @@ function BuilderIntro({ lang }: Props) {
 
   return (
     <article className="svc bld" id="portfolio" aria-labelledby="bld-title">
-      <header className="lt-hero">
+      <header className="lt-hero" ref={heroRef}>
         <div className="lt-cone" aria-hidden="true">
+          <div className="lt-rays">
+            {RAYS.map(([a, w, d, dl, o], i) => (
+              <i
+                key={i}
+                style={{ '--a': `${a}deg`, '--w': `${w}%`, '--d': `${d}s`, '--dl': `${dl}s`, '--o': o } as CSSProperties}
+              />
+            ))}
+            <i className="lt-ray-lead" />
+          </div>
           {MOTES.map(([x, y, size, dur], i) => (
             <span
               key={i}
@@ -58,7 +116,7 @@ function BuilderIntro({ lang }: Props) {
           ))}
         </div>
 
-        <p className="lt-protu">
+        <p className="lt-protu" data-ray>
           {t.protu[lang]}{' '}
           <span className="lt-protu-verb" key={sample.id}>
             {sample.verb[lang]}
@@ -67,7 +125,7 @@ function BuilderIntro({ lang }: Props) {
         <h1 id="bld-title" className="lt-title">
           {t.title[lang]}
         </h1>
-        <a className="lt-cta" href={BUILDER_SIGNUP}>
+        <a className="lt-cta" href={BUILDER_SIGNUP} data-ray>
           {t.cta[lang]}
         </a>
 

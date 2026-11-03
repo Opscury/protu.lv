@@ -818,3 +818,180 @@
 
 .site-protu .contact-status.succeeded { color: #7bd3a0; }
 .site-protu .contact-status.failed { color: #ff8a7a; }
+
+/* ---------------------------------------------------------------------------
+   Kustīgā gaisma (2026-11-03). Visa pirmā skata gaisma seko diviem lielumiem:
+   --ray-a: kur šobrīd rāda vadošais stars (leņķis no joslas vidus);
+   --beam:  cik spoža gaisma ir šobrīd (lēna elpa ap 1).
+   Stars ar leņķi a trāpa elementam --y pikseļu zem joslas pie x = --cx − tan(a)·--y.
+   --y un --cx izmēra BuilderIntro (placeLight); CSS tikai zīmē.
+   --------------------------------------------------------------------------- */
+@property --ray-a { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
+@property --beam { syntax: '<number>'; inherits: true; initial-value: 1; }
+
+.lt-hero {
+  animation: lt-roam 30s ease-in-out infinite, lt-beam 9s ease-in-out infinite;
+}
+
+@keyframes lt-roam {
+  0%, 100% { --ray-a: -12deg; }
+  20% { --ray-a: 5deg; }
+  38% { --ray-a: 14deg; }
+  57% { --ray-a: -1deg; }
+  76% { --ray-a: -16deg; }
+}
+
+@keyframes lt-beam {
+  0%, 100% { --beam: 0.8; }
+  28% { --beam: 1; }
+  44% { --beam: 0.9; }
+  63% { --beam: 1.1; }
+  82% { --beam: 0.85; }
+}
+
+/* Tā pati elpa kā --beam, bet kā opacity, lai lielos izpludinātos laukumus nepārzīmētu katrā kadrā. */
+@keyframes lt-beam-op {
+  0%, 100% { opacity: 0.8; }
+  28% { opacity: 0.95; }
+  44% { opacity: 0.88; }
+  63% { opacity: 1; }
+  82% { opacity: 0.84; }
+}
+
+.lt-cone::before,
+.lt-cone::after { animation: lt-beam-op 9s ease-in-out infinite; }
+
+/* Stari: šauri ķīļi no joslas vidus, katrs šūpojas un elpo savā ritmā. */
+.lt-rays {
+  position: absolute;
+  inset: 0 -10% -6%;
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(62% 100% at 50% 0%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(62% 100% at 50% 0%, #000 30%, transparent 100%);
+}
+
+.lt-rays i {
+  position: absolute;
+  top: -2%;
+  left: 50%;
+  width: var(--w);
+  height: 108%;
+  margin-left: calc(var(--w) / -2);
+  transform-origin: 50% 0;
+  background: linear-gradient(180deg,
+    rgb(255 224 186 / 0.55) 0%,
+    rgb(var(--light) / 0.2) 42%,
+    rgb(var(--light) / 0) 92%);
+  clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
+  filter: blur(var(--b, 13px));
+  opacity: var(--o);
+  animation:
+    lt-sway var(--d) ease-in-out var(--dl) infinite alternate,
+    lt-flick calc(var(--d) * 0.6) ease-in-out var(--dl) infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes lt-sway {
+  from { transform: rotate(calc(var(--a) - 4.5deg)); }
+  to { transform: rotate(calc(var(--a) + 4.5deg)); }
+}
+
+@keyframes lt-flick {
+  from { opacity: calc(var(--o) * 0.35); }
+  to { opacity: var(--o); }
+}
+
+/* Vadošais stars: platāks un spožāks; tieši tas "iedegas" uz virsraksta, pogas un rāmja. */
+.lt-rays .lt-ray-lead {
+  --w: 12%;
+  --b: 16px;
+  background: linear-gradient(180deg,
+    rgb(255 240 220 / 0.95) 0%,
+    rgb(255 200 140 / 0.42) 40%,
+    rgb(var(--light) / 0) 95%);
+  opacity: calc(0.6 + 0.4 * var(--beam));
+  transform: rotate(var(--ray-a));
+  animation: none;
+}
+
+/* Virsraksts: kur stars krīt, burti kļūst siltāki un gaišāki; mirdzums elpo līdzi. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .lt-protu,
+  .lt-protu-verb {
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
+  }
+
+  .lt-protu {
+    background-image: radial-gradient(
+      9rem 10rem at calc(var(--cx, 50%) - tan(var(--ray-a)) * var(--y, 0px)) 10%,
+      #fff6e6 0%, #f1e9de 40%, #d6cfc6 100%);
+    filter: drop-shadow(0 0 1.4rem rgb(var(--light) / calc(0.24 * var(--beam))));
+  }
+
+  .lt-protu-verb {
+    background-image: radial-gradient(
+      8rem 10rem at calc(var(--vx, 50%) - tan(var(--ray-a)) * var(--y, 0px)) 10%,
+      #ffead0 0%, var(--accent-ink) 45%, #dc8840 100%);
+  }
+}
+
+/* Poga: stars pārslīd pāri kā silts atspīdums, mala un mirdzums elpo. */
+.lt-hero .lt-cta:not(:hover) {
+  border-color: rgb(var(--light) / calc(0.7 + 0.25 * var(--beam)));
+  background:
+    radial-gradient(7rem 3.2rem at calc(var(--cx, 50%) - tan(var(--ray-a)) * var(--y, 0px)) 0%,
+      rgb(255 214 168 / 0.24), rgb(var(--light) / 0) 100%),
+    rgb(18 19 24 / 0.55);
+  box-shadow:
+    0 0 calc(1.6rem * var(--beam)) -0.3rem rgb(var(--light) / calc(0.3 * var(--beam))),
+    inset 0 1px 0 rgb(255 226 190 / calc(0.12 * var(--beam)));
+}
+
+/* Gaismā esošais rāmis: stars noķer stikla augšmalu un aizslīd pa to; atblāzma elpo. */
+.lt-slide[data-active] .lt-frame::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    12rem 5rem at calc(50% - tan(var(--ray-a)) * var(--fy, 0px)) 0%,
+    rgb(255 232 204 / 0.95), rgb(var(--light) / 0.35) 45%, rgb(var(--light) / 0) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: calc(0.65 + 0.35 * var(--beam));
+  pointer-events: none;
+}
+
+.lt-slide[data-active] .lt-frame {
+  box-shadow:
+    0 -1px 0 rgb(255 214 168 / calc(0.4 * var(--beam))),
+    0 2rem 4.5rem -1.5rem rgb(var(--light) / calc(0.36 * var(--beam))),
+    0 1.5rem 3rem -1.5rem rgb(0 0 0 / 0.8);
+}
+
+.lt-slide[data-active] .lt-frame::after { opacity: var(--beam); }
+
+/* Kaimiņu malas pret gaismu arī elpo līdzi. */
+.lt-slide[data-side="left"] .lt-frame { box-shadow: inset -2px 0 0 rgb(var(--light) / calc(0.45 * var(--beam))), 0 1.5rem 3rem -1.5rem rgb(0 0 0 / 0.8); }
+.lt-slide[data-side="right"] .lt-frame { box-shadow: inset 2px 0 0 rgb(var(--light) / calc(0.45 * var(--beam))), 0 1.5rem 3rem -1.5rem rgb(0 0 0 / 0.8); }
+
+/* Ārpus ekrāna gaisma apstājas (nevajag zīmēt to, ko neviens neredz). */
+.lt-hero[data-off],
+.lt-hero[data-off] .lt-cone::before,
+.lt-hero[data-off] .lt-cone::after,
+.lt-hero[data-off] .lt-rays i { animation-play-state: paused; }
+
+/* Mazāka kustība: gaisma stāv uz vietas, stari nešūpojas, vadošā stara nav. */
+@media (prefers-reduced-motion: reduce) {
+  .lt-hero,
+  .lt-cone::before,
+  .lt-cone::after,
+  .lt-rays i { animation: none; }
+  .lt-rays .lt-ray-lead { display: none; }
+}
