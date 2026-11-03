@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react'
 import { currentOrientation, PORTRAIT_QUERY, RAYS_DEFAULTS } from '../lightRaysSettings'
 import RaysTuner from './RaysTuner'
 import { blogPage, postHref, publishedPosts } from '../data/blog'
-import { builder, BUILDER_LOGIN, BUILDER_SIGNUP } from '../data/builder'
+import { builder, BUILDER_SIGNUP } from '../data/builder'
 import { SERVICES_PATH } from '../data/services'
 import { onLinkClick } from '../router'
 import type { Lang } from '../types'
@@ -204,16 +204,9 @@ function BuilderIntro({ lang }: Props) {
         </div>
       </header>
 
-      <div className="bld-intro">
-        <p className="bld-lead">{t.lead[lang]}</p>
-        <p className="bld-note">
-          {t.note[lang]}{' '}
-          <a className="bld-link" href={BUILDER_LOGIN}>
-            {t.hasAccount[lang]}
-          </a>
-        </p>
-      </div>
-
+      {/* Simplified 3 Nov 2026: below the hero only PDF, free plan, FAQ and the closing CTA.
+          The intro, looks grid, steps, fields list and Konkursi block were cut as repeats of the hero;
+          their texts are still in data/builder.ts if any come back. */}
       <section className="bld-pdfs" aria-labelledby="bld-pdfs">
         <div className="bld-pdfs-head">
           <h2 id="bld-pdfs">{t.pdfTitle[lang]}</h2>
@@ -236,53 +229,6 @@ function BuilderIntro({ lang }: Props) {
         </ol>
       </section>
 
-      <section className="bld-looks" aria-labelledby="bld-looks">
-        <div className="bld-pdfs-head">
-          <h2 id="bld-looks">{t.looksTitle[lang]}</h2>
-          <p>{t.looksBody[lang]}</p>
-        </div>
-        <ul className="bld-look-grid">
-          {t.samples.map((s) => (
-            <li key={s.id}>
-              <a href={`/piemeri/${s.id}/`}>
-                <img src={`/builder/${s.id}-site.webp`} width={1920} height={1200} alt={s.siteAlt[lang]} loading="lazy" />
-                <strong>{s.look[lang]}</strong>
-                <span>{s.person}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <p className="bld-note">{t.sampleNote[lang]}</p>
-      </section>
-
-      <section className="svc-section" aria-labelledby="bld-steps">
-        <h2 id="bld-steps">{t.stepsTitle[lang]}</h2>
-        <ol className="bld-steps">
-          {t.steps.map((s) => (
-            <li key={s.title.en}>
-              <h3>{s.title[lang]}</h3>
-              <p>{s.body[lang]}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section className="svc-section" aria-labelledby="bld-fields">
-        <div>
-          <h2 id="bld-fields">{t.fieldsTitle[lang]}</h2>
-          <p className="bld-fields-lead">{t.fieldsLead[lang]}</p>
-        </div>
-        <ul className="bld-field-list">
-          {t.fields.map((f) => (
-            <li key={f.name.en}>
-              <h3>{f.name[lang]}</h3>
-              <p className="bld-caption">{f.caption[lang]}</p>
-              <p className="bld-look">{f.look[lang]}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <section className="svc-section" aria-labelledby="bld-free">
         <h2 id="bld-free">{t.freeTitle[lang]}</h2>
         <ul className="svc-checks bld-free">
@@ -290,16 +236,6 @@ function BuilderIntro({ lang }: Props) {
             <li key={f.en}>{f[lang]}</li>
           ))}
         </ul>
-      </section>
-
-      <section className="svc-section" aria-labelledby="bld-calls">
-        <h2 id="bld-calls">{t.callsTitle[lang]}</h2>
-        <div>
-          <p className="bld-body">{t.callsBody[lang]}</p>
-          <a className="bld-link" href="/konkursi/">
-            {t.callsLink[lang]}
-          </a>
-        </div>
       </section>
 
       <section className="svc-section" aria-labelledby="bld-faq">
@@ -334,6 +270,12 @@ function BuilderIntro({ lang }: Props) {
         <a className="action action-primary svc-cta" href={BUILDER_SIGNUP}>
           {t.cta[lang]}
         </a>
+        <p className="bld-custom">
+          {t.callsTitle[lang]}{' '}
+          <a className="bld-link" href="/konkursi/">
+            {t.callsLink[lang]}
+          </a>
+        </p>
         <p className="bld-custom">
           {t.customLine[lang]}{' '}
           <a className="bld-link" href={SERVICES_PATH} onClick={onLinkClick}>
