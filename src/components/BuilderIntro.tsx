@@ -204,29 +204,45 @@ function BuilderIntro({ lang }: Props) {
         </div>
       </header>
 
-      {/* Simplified 3 Nov 2026: below the hero only PDF, free plan, FAQ and the closing CTA.
+      {/* Simplified 3 Nov 2026: below the hero only the steps (was: PDF strip, until 4 Nov), free plan, FAQ and the closing CTA.
           The intro, looks grid, steps, fields list and Konkursi block were cut as repeats of the hero;
           their texts are still in data/builder.ts if any come back. */}
-      <section className="bld-pdfs" aria-labelledby="bld-pdfs">
-        <div className="bld-pdfs-head">
-          <h2 id="bld-pdfs">{t.pdfTitle[lang]}</h2>
-          <p>{t.pdfBody[lang]}</p>
-          <div className="bld-pdf-facts">
-            <p className="bld-pdf-meta">
-              {sample.pdfFormat} · {sample.pdfPages} {t.pagesWord[lang]} · {sample.pdfSize[lang]}
-            </p>
-            <p className="bld-note">
-              {sample.person}. {t.sampleNote[lang]}
-            </p>
-          </div>
+      <section className="bld-how" aria-labelledby="bld-how">
+        <div className="bld-how-head">
+          <h2 id="bld-how">{t.howTitle[lang]}</h2>
+          <p>{t.howBody[lang]}</p>
         </div>
-        <ol className="bld-pages" key={sample.id} tabIndex={0} aria-label={`${sample.person}, PDF`}>
-          {Array.from({ length: sample.pdfPages }, (_, i) => (
-            <li key={i}>
-              <img src={`/builder/${sample.id}-pdf-${i}.webp`} width={960} height={679} alt="" />
+        <ol className="bld-how-strip" tabIndex={0} aria-label={t.howTitle[lang]}>
+          {t.how.map((step, i) => (
+            <li key={step.img} className="bld-how-step">
+              <figure>
+                <div className="bld-how-frame">
+                  <img src={`/builder/${step.img}.webp`} width={1440} height={900} alt={step.alt[lang]} loading="lazy" decoding="async" />
+                </div>
+                <figcaption>
+                  <span className="bld-how-num" aria-hidden="true">{i + 1}</span>
+                  <strong>{step.title[lang]}</strong>
+                  <span>
+                    {step.body[lang]}
+                    {step.meta && <code className="bld-how-meta">{step.meta}</code>}
+                  </span>
+                </figcaption>
+              </figure>
             </li>
           ))}
+          <li className="bld-how-step bld-how-more">
+            <figure>
+              <div className="bld-how-frame">
+                <img src={`/builder/${t.howMore.img}.webp`} width={1440} height={900} alt={t.howMore.alt[lang]} loading="lazy" decoding="async" />
+              </div>
+              <figcaption>
+                <strong>{t.howMore.title[lang]}</strong>
+                <span>{t.howMore.body[lang]}</span>
+              </figcaption>
+            </figure>
+          </li>
         </ol>
+        <p className="bld-note bld-how-note">{t.howNote[lang]}</p>
       </section>
 
       <section className="svc-section" aria-labelledby="bld-free">

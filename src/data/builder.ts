@@ -101,6 +101,56 @@ export const builder = {
     en: 'Real Protu lapas output. The person is invented and the work is AI-generated.',
   },
   pagesWord: { lv: 'lpp.', en: 'pages' },
+
+  /** Sākumlapas «Trīs soļi»: īsta redaktora ekrānuzņēmumi (public/builder/steps-*.webp, 1440 × 900). */
+  howTitle: { lv: 'Trīs soļi līdz savai lapai', en: 'Three steps to your own site' },
+  howBody: {
+    lv: 'Tas ir pats redaktors, nevis zīmējums. Ieliec bildes, izvēlies izskatu, publicē.',
+    en: 'This is the editor itself, not a mockup. Add pictures, pick a look, publish.',
+  },
+  how: [
+    {
+      img: 'steps-1-add',
+      title: { lv: 'Pievieno darbus', en: 'Add your work' },
+      body: { lv: 'Ievelc bildes. Nosaukumus vari pielikt vēlāk.', en: 'Drop in your pictures. Titles can wait.' },
+      alt: {
+        lv: 'Redaktora solis «Pievieno bildes» ar piecām augšupielādētām gleznām un pogu «Tālāk»',
+        en: 'The editor’s “Add pictures” step with five uploaded paintings and a Next button',
+      },
+    },
+    {
+      img: 'steps-2-look',
+      title: { lv: 'Izvēlies izskatu', en: 'Pick a look' },
+      body: { lv: 'Izskati blakus, jau ar taviem darbiem.', en: 'The looks side by side, already with your work.' },
+      alt: {
+        lv: 'Izskata izvēle: Galerija, Papīrs un Tumsa blakus, labajā pusē lapas priekšskatījums telefonā',
+        en: 'Choosing a look: Galerija, Papīrs and Tumsa side by side, with a phone preview of the site',
+      },
+    },
+    {
+      img: 'steps-3-live',
+      title: { lv: 'Lapa ir tiešsaistē', en: 'Your site is live' },
+      body: { lv: 'Tava adrese, datorā un telefonā.', en: 'Your own address, on a laptop and a phone.' },
+      meta: 'vards.protu.lv',
+      alt: {
+        lv: 'Gatava gleznotājas lapa uz silta papīra toņa: datora skats un tā pati lapa telefonā',
+        en: 'A finished painter’s site on a warm paper tone: the desktop view and the same site on a phone',
+      },
+    },
+  ] as { img: string; title: T; body: T; meta?: string; alt: T }[],
+  howMore: {
+    img: 'steps-4-edit',
+    title: { lv: 'Vajag vairāk? Izskatu var pielāgot vēlāk.', en: 'Need more? You can fine-tune the look later.' },
+    body: { lv: 'Izkārtojums, sākumlapa, burti, krāsas un valodas.', en: 'Layout, home page, type, colours and languages.' },
+    alt: {
+      lv: 'Papildu iestatījumi: izkārtojums, sākumlapa, attēlu izkārtojums un burti, blakus priekšskatījums',
+      en: 'More settings: layout, home page, image layout and typefaces, beside a live preview',
+    },
+  },
+  howNote: {
+    lv: 'Ekrānuzņēmumi no īstā redaktora. Rasa Dzērvīte ir izdomāta persona, gleznas ir ģenerētas ar AI.',
+    en: 'Screenshots of the real editor. Rasa Dzērvīte is an invented person and the paintings are AI-generated.',
+  },
   pdfTitle: { lv: 'Tie paši darbi, gatavi iesniegšanai', en: 'The same work, ready to submit' },
   pdfBody: {
     lv: 'Katram pieteikumam izvēlies darbus un secību. PDF tiek pārbaudīts pēc tā, ko prasa konkrētais pieteikums, arī pēc faila lieluma.',

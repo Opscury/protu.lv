@@ -354,13 +354,13 @@
   text-wrap: pretty;
 }
 
-/* PDF: tās pašas personas lapas rindā. */
-.bld-pdfs {
+/* Trīs soļi: īsta redaktora ekrānuzņēmumi stikla rāmjos; ceturtais ir klusāks. */
+.bld-how {
   padding: clamp(2.25rem, 4.5vw, 3.5rem) 0;
   border-bottom: 1px solid var(--rule);
 }
 
-.bld-pdfs-head {
+.bld-how-head {
   display: grid;
   grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
   align-items: baseline;
@@ -368,7 +368,7 @@
   margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
 }
 
-.bld-pdfs-head h2 {
+.bld-how-head h2 {
   margin: 0;
   font-size: clamp(1.5rem, 2.6vw, 2.25rem);
   font-weight: 700;
@@ -377,7 +377,7 @@
   text-wrap: balance;
 }
 
-.bld-pdfs-head p {
+.bld-how-head p {
   max-width: 60ch;
   margin: 0;
   font-size: 1.0625rem;
@@ -385,25 +385,101 @@
   text-wrap: pretty;
 }
 
-.bld-pdfs-head .bld-pdf-meta {
+.bld-how-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.25rem) clamp(1rem, 1.8vw, 1.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bld-how-strip:focus-visible { outline: 2px solid var(--accent); outline-offset: 0.5rem; border-radius: 0.5rem; }
+
+.bld-how-step figure { margin: 0; }
+
+.bld-how-frame {
+  padding: 0.3rem;
+  border: 1px solid var(--glass);
+  border-radius: 0.75rem;
+  background: rgb(255 255 255 / 0.03);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+  transition: border-color 320ms var(--ease-out), box-shadow 420ms var(--ease-out);
+}
+
+.bld-how-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.bld-how-step:hover .bld-how-frame {
+  border-color: rgb(var(--light) / 0.4);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1.2rem 3rem -1.6rem rgb(var(--light) / 0.45);
+}
+
+.bld-how-step figcaption {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.15rem 0.7rem;
+  margin-top: 0.9rem;
+}
+
+.bld-how-num {
+  grid-row: span 2;
   font-family: var(--mono);
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--accent-ink);
+}
+
+.bld-how-step strong {
+  font-size: 1.1875rem;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.bld-how-step figcaption span:not(.bld-how-num) {
+  font-size: 0.9375rem;
+  line-height: 1.45;
   color: var(--muted);
-  white-space: nowrap;
+  text-wrap: pretty;
 }
 
-.bld-pdf-facts {
-  grid-column: 2;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 1.5rem;
+.bld-how-meta {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--ink);
 }
 
-.bld-pdfs-head .bld-note {
-  font-size: 0.875rem;
-  line-height: 1.4;
+/* Ceturtais: vēlākam, tāpēc mazāks un blāvāks, līdz uz to paskatās. */
+.bld-how-more {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  opacity: 0.62;
+  transition: opacity 320ms var(--ease-out);
 }
+
+.bld-how-more:hover { opacity: 1; }
+
+.bld-how-more figure {
+  display: contents;
+}
+
+.bld-how-more figcaption {
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  margin: 0 0 0 clamp(1rem, 1.8vw, 1.5rem);
+}
+
+.bld-how-more strong { font-size: 1.0625rem; font-weight: 600; }
+
+.bld-how-note { margin: 1.5rem 0 0; }
 
 /* Izskati: četras īstas lapas blakus; darbi te ir vienīgā krāsa. */
 .bld-looks {
@@ -455,28 +531,6 @@
   line-height: 1.05;
   letter-spacing: -0.035em;
   text-wrap: balance;
-}
-
-.bld-pages {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(13rem, 1fr);
-  gap: 0.75rem;
-  margin: 0;
-  padding: 0 0 0.75rem;
-  list-style: none;
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-}
-
-.bld-pages li { scroll-snap-align: start; }
-
-.bld-pages img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: 1px solid var(--rule);
-  border-radius: 0.25rem;
 }
 
 /* Soļi: secību nes lasīšanas virziens. */
@@ -795,9 +849,24 @@
   .lt-reel { --w: min(76vw, 30rem); --step: calc(var(--w) * 0.84 + 0.75rem); }
   .lt-pdf { width: 30%; right: -3%; }
   .lt-protu { font-size: clamp(2.5rem, 11vw, 4rem); }
-  .bld-pdfs-head { grid-template-columns: minmax(0, 1fr); }
-  .bld-pdf-facts { grid-column: 1; }
-  .bld-pages { grid-auto-columns: minmax(14rem, 70%); }
+  .bld-how-head { grid-template-columns: minmax(0, 1fr); }
+  /* Telefonā un šaurā logā: lente, ko pavelk ar pirkstu. */
+  .bld-how-strip {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(16rem, 82%);
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 0.75rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: thin;
+  }
+  .bld-how-step { scroll-snap-align: start; }
+  .bld-how-more { grid-column: auto; display: block; }
+  .bld-how-more figure { display: block; }
+  .bld-how-more figcaption { margin: 0.9rem 0 0; }
 }
 
 @media (max-width: 40rem) {
@@ -811,7 +880,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bld-link, .lt-cta, .site-protu .action-primary, .lt-slide, .lt-frame, .lt-pdf { transition: none; }
+  .bld-link, .lt-cta, .site-protu .action-primary, .lt-slide, .lt-frame, .lt-pdf,
+  .bld-how-frame, .bld-how-more { transition: none; }
   .lt-protu-verb { animation: none; }
   .lt-cone span { display: none; }
 }
