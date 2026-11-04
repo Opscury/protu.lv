@@ -250,7 +250,7 @@ The logo is on the left and the links are **centred** (Protu lapas, Konkursi, Pa
 Widescreen sample sites (16:10) in slim glass frames, with each address above the frame in mono and the verb below. The chosen pair sits in the light, and the neighbours are dimmed and scaled down. It only changes when the visitor clicks, swipes or uses the arrow keys. **No auto-rotation.**
 
 ### Step screenshots
-Real editor screenshots (`public/builder/steps-*.webp`) in glass frames. Steps 1 to 3 are numbered; the 4th is quieter (62% opacity until hover). Re-take them with `scripts/screenshots/`.
+Real editor screenshots (`public/builder/steps-*.webp`) in glass frames on the same three columns as the section head (heading in column 1, body in 2–3). Under each frame a numbered rail (Inter Tight numerals, a 1px white-16% line running through the gaps) ties steps 1 to 3 together; it warms to amber at step 3, and step 3's frame is the one in the light (amber rim and glow), because that is the finished site. The 4th sits below a rule as a quieter row: caption in column 1, a wide 3:1 crop of the screenshot across columns 2–3, dimmed until hover. On phones it all becomes the swipe strip. Re-take them with `scripts/screenshots/`.
 
 ### Links
 Ink text with an amber underline (`--light` at 60%). They turn amber on hover.
@@ -271,7 +271,7 @@ Ink text with an amber underline (`--light` at 60%). They turn amber on hover.
 
 ## Known drift (not part of the system)
 
-- **Mono outside addresses, prices and dates:** the step numbers in the "Trīs soļi" strip (`.bld-how-num`) and the service step numerals (`services.css`, `.svc-steps li::before`) are set in mono.
+- **Mono outside addresses, prices and dates:** the service step numerals (`services.css`, `.svc-steps li::before`) are set in mono.
 - **Verb colour while the shader is on:** the chosen verb becomes an amber gradient (`#ffe2bd → #f7aa58 → #dc8432`) instead of the flat `--accent-ink`. It is still one hue.
 - **Light pages under the dark ones:** `index.css` still defines the light `:root` tokens (`--ground: #e9eaed` and others) for valdis.protu.lv. protu.lv overrides them only once `.site-protu` is in the DOM.
 - **Italic captions:** only upright Inter Tight is loaded, so the browser synthesizes the italics.
