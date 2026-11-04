@@ -1,85 +1,55 @@
 ---
 name: protu.lv
-description: A free portfolio builder for creatives. The visitor completes "Protu ___" with their own skill and sees the site and PDF the product makes for that kind of work. The same codebase also builds valdis.protu.lv, scoped separately below.
+description: A free portfolio builder for creatives, shown as a dark studio where the only light is the work. The same codebase also builds valdis.protu.lv, scoped separately below.
 colors:
-  ground: "#f7f7f5"
-  rule: "#dcdcd8"
-  surface: "#ffffff"
-  frame: "#f7f7f8"
-  frame-edge: "#d9dadf"
-  ink: "#111214"
-  ink-hover: "#2c2d31"
-  muted: "#5b5e66"
-  verb-rest: "#8a8b90"
-  accent: "#e04418"
-  accent-ink: "#b8330c"
-  success: "#13703f"
-  error: "#b42318"
+  ground: "#121318"
+  surface: "#1b1c22"
+  frame: "#202128"
+  rule: "#2b2c33"
+  ink: "#f3eee6"
+  muted: "#a29d95"
+  light: "#f5a04a"
+  light-ink: "#f7b26a"
+  light-hover-ink: "#ffd7a8"
+  glass: "rgb(255 255 255 / 0.12)"
+  success: "#7bd3a0"
+  error: "#ff8a7a"
   valdis-ground: "#e9eaed"
   valdis-rule: "#d3d5db"
   valdis-dot: "#c4c6cd"
   valdis-wire-off: "#a3a6ae"
 typography:
-  display:
+  hero-protu:
     fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
-    fontSize: "clamp(2.5rem, min(5vw, 8.4svh), 4.75rem)"
-    fontWeight: 400
-    lineHeight: 1.03
-    letterSpacing: "-0.04em"
-    fontFeature: "'ss01', 'cv11'"
-  display-protu:
-    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
-    fontSize: "clamp(2.5rem, min(5vw, 8.4svh), 4.75rem)"
-    fontWeight: 700
-    lineHeight: 1.03
-    letterSpacing: "-0.04em"
-  page-title:
-    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
-    fontSize: "clamp(2.75rem, 6vw, 5.25rem)"
-    fontWeight: 700
-    lineHeight: 0.95
-    letterSpacing: "-0.04em"
-  closing:
-    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
-    fontSize: "clamp(2rem, 4.5vw, 3.5rem)"
+    fontSize: "clamp(3rem, min(7.2vw, 10.5svh), 6rem)"
     fontWeight: 700
     lineHeight: 1
     letterSpacing: "-0.04em"
+  hero-title:
+    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
+    fontSize: "clamp(1.125rem, 1.7vw, 1.5rem)"
+    fontWeight: 450
+    lineHeight: 1.3
+    letterSpacing: "-0.015em"
   section:
     fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
     fontSize: "clamp(1.5rem, 2.6vw, 2.25rem)"
     fontWeight: 700
     lineHeight: 1.05
     letterSpacing: "-0.035em"
-  offer:
+  verb:
     fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
-    fontSize: "clamp(1.375rem, 2.1vw, 1.875rem)"
-    fontWeight: 650
-    lineHeight: 1.12
-    letterSpacing: "-0.025em"
-  item-title:
-    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
-    fontSize: "1.1875rem"
-    fontWeight: 650
-    letterSpacing: "-0.02em"
-  body:
+    fontSize: "clamp(1.5rem, 2.6vw, 2.25rem)"
+    fontWeight: 450
+    letterSpacing: "-0.03em"
+  button:
     fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
     fontSize: "1.0625rem"
-    fontWeight: 400
-    lineHeight: 1.5
-  label:
-    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
-    fontSize: "0.9375rem"
-    fontWeight: 400
-  note:
-    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
-    fontSize: "0.875rem"
-    fontWeight: 400
-    lineHeight: 1.4
+    fontWeight: 600
+    letterSpacing: "-0.01em"
   data:
-    fontFamily: "JetBrains Mono Variable, JetBrains Mono, ui-monospace, monospace"
-    fontSize: "0.8125rem"
-    fontWeight: 400
+    fontFamily: "JetBrains Mono Variable, JetBrains Mono, ui-monospace, Cascadia Code, monospace"
+    fontSize: "clamp(0.8125rem, 1vw, 0.9375rem)"
   valdis-display:
     fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
     fontSize: "clamp(3.25rem, min(7.4cqw, 15cqh), 8rem)"
@@ -121,77 +91,34 @@ typography:
     fontWeight: 450
     lineHeight: 1.35
 rounded:
-  focus: "4px"
-  sheet: "0.25rem"
   image: "0.55rem"
-  field: "0.65rem"
   frame: "0.9rem"
-  frame-lg: "1.1rem"
-  panel: "1.25rem"
   pill: "999px"
 spacing:
   gutter: "clamp(1rem, 2.4vw, 2.25rem)"
   bar-height: "3.75rem"
-  container: "92rem"
   section-y: "clamp(2.25rem, 4.5vw, 3.5rem)"
-  column-gap: "clamp(1.5rem, 3vw, 3rem)"
-  hero-column-gap: "clamp(2rem, 5vw, 5rem)"
   touch-target: "2.75rem"
   valdis-frame-inset: "0.4rem"
   valdis-section-top: "clamp(5rem, 10vw, 8.5rem)"
   valdis-row: "clamp(2.5rem, 5vw, 4.5rem)"
 components:
   button-primary:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.surface}"
-    rounded: "{rounded.pill}"
-    padding: "0.85rem 1.4rem"
+    border: "1.5px solid rgb(245 160 74 / 0.9)"
+    background: "rgb(18 19 24 / 0.55)"
+    color: "#f7b26a"
+    rounded: "999px"
+    padding: "0.85rem 1.6rem"
   button-primary-hover:
-    backgroundColor: "{colors.ink-hover}"
-    textColor: "{colors.surface}"
-  bar-cta:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.surface}"
-    rounded: "{rounded.pill}"
-    padding: "0.45rem 0.95rem"
-  bar-cta-hover:
-    backgroundColor: "{colors.ink-hover}"
-    textColor: "{colors.surface}"
-  text-link:
-    textColor: "{colors.ink}"
-  text-link-hover:
-    textColor: "{colors.muted}"
-  verb:
-    backgroundColor: "transparent"
-    textColor: "{colors.verb-rest}"
-    typography: "{typography.display}"
-  verb-hover:
-    textColor: "{colors.ink}"
-  verb-selected:
-    textColor: "{colors.ink}"
-  browser-frame:
-    backgroundColor: "{colors.surface}"
-    rounded: "{rounded.frame}"
-  browser-bar:
-    backgroundColor: "{colors.frame}"
-    textColor: "{colors.muted}"
-    typography: "{typography.data}"
-    padding: "0.5rem 0.9rem"
-  pdf-sheet:
-    backgroundColor: "{colors.surface}"
-    rounded: "{rounded.sheet}"
-  pdf-tag:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.surface}"
-    rounded: "{rounded.sheet}"
-    padding: "0.15rem 0.4rem"
-  look-thumb:
-    rounded: "{rounded.image}"
-  input-field:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.field}"
-    padding: "0.8rem 0.95rem"
+    background: "rgb(245 160 74 / 0.14)"
+    color: "#ffd7a8"
+  glass-frame:
+    border: "1px solid rgb(255 255 255 / 0.12)"
+    background: "rgb(255 255 255 / 0.04)"
+    rounded: "0.9rem"
+  bar-line:
+    height: "1px"
+    background: "amber gradient, brightest (rgb(255 214 168)) at the centre"
   valdis-button-primary-hover:
     backgroundColor: "{colors.accent-ink}"
     textColor: "{colors.surface}"
@@ -238,164 +165,116 @@ components:
 
 # Design System: protu.lv
 
-This codebase ships two sites. The eight canonical sections describe **protu.lv** (the product, the default build), which is the primary system. **valdis.protu.lv** (`VITE_SITE=valdis`) keeps its own world, recorded in the scoped section "valdis.protu.lv: The Live Canvas". Its rules do not apply to protu.lv. Tokens prefixed `valdis-` belong only to that site. The unprefixed tokens surface, frame, frame-edge, ink, muted, accent, accent-ink, success and error are shared; ground and rule are overridden per site.
-
 ## Overview
 
-**Creative North Star: "The Quiet Wall"**
+**Creative North Star: "The Dark Studio"**
 
-protu.lv is a near-white wall that the visitor's kind of work gets hung on. "Protu" stands in bold at display size with four verbs stacked under it. The visitor picks a verb and the wall shows that person's site in a browser frame, with their PDF page overlapping it. Black ink in Inter Tight carries everything the product says. Real builder output carries all the colour.
+protu.lv is a dark room with one warm light, and that light falls on the work. The ground is a cool near-black. Text is warm white ink. There is exactly one colour, an amber light, and it belongs to the light itself: the glowing line under the top bar, the cone that falls from it, the chosen verb, the one main action. Everything else is ink, muted ink and glass.
 
-The system is flat and still. Nothing rotates on its own, the only signature motion is a 320ms crossfade answering the visitor's own choice, and one orange-red underline marks the chosen verb. Sections are separated by hairline rules and read as a long, plain document, with headings at left and content at right. Service, blog and case pages share the same ground, bar and footer but have had no dedicated redesign, so they still carry inherited pooled cards and some accent states (see Known drift).
+The source of truth is `src/builder.css` (the dark tokens on `:root:has(.site-protu)`) and `src/components/BuilderIntro.tsx`. Where this file and the CSS disagree, the CSS wins and this file gets fixed.
 
-**Key Characteristics:**
-- Warm near-white ground with no dot grid, hairline rules and no section backgrounds
-- A verb switcher at display size is the hero's control and its signature
-- One accent mark at rest: the underline on the chosen verb
-- Work is the colour: the chrome is ink, muted grey and white
-- One-row product bar on every width, with a single ink call to action
-- Inter Tight for everything said; JetBrains Mono for web addresses, file data and prices
+Animation and light rules (React Bits + `ogl` for light, `motion` for UI motion, GSAP only for scroll storytelling, no three.js, dev tuning panels, load-after-page, pause off-screen, reduced-motion and no-WebGL fallbacks) live in **`CLAUDE.md` → "Web animation stack"**. They are not repeated here.
+
+**Key characteristics**
+- Near-black ground `#121318`, warm white ink `#f3eee6`, one amber light `#f5a04a`
+- Slim glass frames around every sample: 1px white at 12%, a little inner padding, rounded corners
+- Inter Tight for everything; JetBrains Mono only for addresses, prices and dates (see the exceptions below)
+- One kind of main button: an outlined warm pill, never a solid fill
+- No auto-rotation, nothing that moves on its own except the light and its dust
 
 ## Colors
 
-Ink on a quiet warm-white wall, with one orange-red mark and no other chromatic colour in the chrome.
+All tokens are on `:root:has(.site-protu)` in `src/builder.css`.
 
-### Primary
-- **Signal Orange-Red** (`accent`): the underline on the chosen verb. In a composed protu.lv home at rest, this is its only appearance. It also tints text selection.
-- **Burnt Accent Ink** (`accent-ink`): the sitewide keyboard focus outline. It is a state colour here, never a resting or hover colour on the home page.
+| Token | Value | Use |
+| --- | --- | --- |
+| `--ground` | `#121318` | Page background. Also the first paint, set inline in `index.html` |
+| `--surface` | `#1b1c22` | Raised panels (rare) |
+| `--frame` | `#202128` | Field and panel fills |
+| `--rule` | `#2b2c33` | 1px section rules |
+| `--ink` | `#f3eee6` | All text, warm white |
+| `--muted` | `#a29d95` | Secondary text, notes, captions |
+| `--accent` | `#f5a04a` | The light: bar line, cone, focus rings |
+| `--light` | `245 160 74` | The same amber as RGB channels, for `rgb(var(--light) / a)` glows |
+| `--accent-ink` | `#f7b26a` | Amber **text**: the chosen verb, button label, active language, hovers |
+| `--glass` | `rgb(255 255 255 / 0.12)` | Frame edges |
 
-### Neutral
-- **Quiet Wall** (`ground`): page background, the bar, and the open mobile menu.
-- **Quiet Hairline** (`rule`): section dividers, frame and thumbnail borders, field rows, FAQ rows, footer rules.
-- **White** (`surface`): the browser frame and PDF sheet behind their images, text on ink fills, service cards and inputs.
-- **Frame Mist** (`frame`): the browser frame's address bar.
-- **Frame Edge** (`frame-edge`): borders of service cards, plans and the contact panel.
-- **Near-Black Ink** (`ink`): all headings and body text, the chosen and hovered verb, primary button fill, the rule under the hero, drawn check marks.
-- **Ink Lift** (`ink-hover`): the primary button and bar button on hover. Hover lightens the ink instead of changing hue.
-- **Slate Muted** (`muted`): hints, notes, metadata, secondary look names, text link hover.
-- **Resting Verb Grey** (`verb-rest`): unchosen verbs. It clears contrast only as large text, so it stays at display size.
+Other literal colours in the CSS, all in the same family: `#fff` for the word "Protu" in the hero; `#ffd7a8` for button text on hover; `#fbf6ee` for the hero title while the shader light is on; the verb's lit gradient `#ffe2bd → #f7aa58 → #dc8432`; contact form status `#7bd3a0` (sent) and `#ff8a7a` (failed).
 
-### Status
-- **Sent Green** (`success`) and **Error Red** (`error`): contact form status text and the invalid field border. They appear nowhere else.
-
-### Named Rules
-**The Chosen Verb Rule.** On the protu.lv home the accent makes one resting mark: the underline on the chosen verb (0.06em thick, 0.12em offset). Buttons, links, check marks and hovers stay in ink. The focus outline and selection tint are accessibility states and stay.
-
-**The Work Is The Colour Rule.** All saturated colour comes from the sample screenshots and PDF pages. Thumbnails stay in full colour; nothing is dimmed or tinted to match the chrome.
+### Named rules
+- **One light.** Amber is the only hue. It marks the light and the one thing to do. It is never a section fill, a card tint or a second accent.
+- **Verbs in one colour.** The chosen verb is amber; the others are ink. No per-verb colours.
+- **The work is the colour.** Screenshots and paintings carry all the other colour on the page.
 
 ## Typography
 
-**Display Font:** Inter Tight Variable (with system-ui)
-**Body Font:** Inter Tight Variable (with system-ui)
-**Label/Mono Font:** JetBrains Mono Variable (with ui-monospace, Cascadia Code)
+- **Inter Tight** (`@fontsource-variable/inter-tight`, `--sans`) for everything: headings, body, buttons, verbs.
+- **JetBrains Mono** (`@fontsource-variable/jetbrains-mono`, `--mono`) only for addresses (`marta.protu.lv`, `vards.protu.lv`), prices and dates.
 
-**Character:** One tight grotesk at every size, tracked hard negative at display sizes. Weight alone separates "Protu" from its verbs, while the mono stays small and factual.
-
-### Hierarchy
-- **Display** (`display`, `display-protu`): "Protu" at 700 and verbs at 400. The size is bound to viewport width and height so the stack fits the first screen. At 60rem and below it becomes `clamp(2.125rem, 8vw, 3.5rem)`.
-- **Page title** (`page-title`): the head of service pages.
-- **Closing** (`closing`): the last statement on the home page, above the final button.
-- **Section** (`section`): section headings, in the left column of each row.
-- **Offer** (`offer`): the home page h1, deliberately smaller than the verbs, capped at 22ch.
-- **Item title** (`item-title`): look names; step titles use the same size in bold. Field names and FAQ questions sit just below at 1.0625rem, 600.
-- **Body** (`body`): leads and paragraphs, held to 50 to 62ch, `text-wrap: pretty`.
-- **Label** (`label`): hints, the sign-in link and the look column.
-- **Note** (`note`): the sample note and legal links, muted.
-- **Data** (`data`): the browser address at 0.8125rem, PDF facts at 0.875rem, the PDF tag at 0.75rem and 600.
-
-### Named Rules
-**The Weight Not Size Rule.** "Protu" and its verbs share one size. Bold names the constant and regular names the choice; the chosen verb is marked by ink and underline, never extra weight.
-
-**The Mono Is Fact Rule.** JetBrains Mono sets web addresses and file data on the home page, and prices on service pages. Headings, prose and controls stay in Inter Tight.
-
-**The Sentence Case Rule.** Headings, labels and buttons use sentence case. Size and weight do the work, not uppercase tracking.
+| Role | Size | Weight | Notes |
+| --- | --- | --- | --- |
+| Hero "Protu ___" | `clamp(3rem, min(7.2vw, 10.5svh), 6rem)` | 700 | -0.04em, "Protu" white, verb amber |
+| Hero title | `clamp(1.125rem, 1.7vw, 1.5rem)` | 450 | balanced, max 44ch |
+| Section heading | `clamp(1.5rem, 2.6vw, 2.25rem)` | 700 | -0.035em, line-height 1.05 |
+| Verb in the reel | `clamp(1.5rem, 2.6vw, 2.25rem)` | 450 (600 when chosen) | |
+| Button | 1.0625rem | 600 | |
+| Address / data | `clamp(0.8125rem, 1vw, 0.9375rem)` | mono | |
 
 ## Layout
 
-The hero is a two-column grid, 5fr to 7fr. The left column holds "Protu" and the verbs, then the offer (h1, lead, button, sign-in link, note). The right column holds the stage, which spans both rows: browser frame, a PDF page at 42% width overlapping its lower right corner, then the caption, two links and the sample note. A 1px ink rule closes the hero.
+- Gutter `clamp(1rem, 2.4vw, 2.25rem)`, bar height 3.75rem, section padding `clamp(2.25rem, 4.5vw, 3.5rem)`, touch targets at least 2.75rem.
+- Sections below the hero are split by a 1px `--rule` line, with a 4/8 column head (heading left, short body right) that stacks under 60rem.
+- Horizontal strips (the step screenshots) become swipeable snap strips under 60rem. There are no carousels that move on their own.
 
-At 60rem and below the hero becomes one column in the order verbs, stage, offer. "Protu" takes its own line, the verbs wrap in a row, and each verb is at least 2.75rem tall.
+## Light and depth
 
-Below the hero, content is capped at 92rem inside the fluid gutter. Rows are separated by hairlines at `section-y` vertical padding. Standard rows run 4fr heading to 8fr content and collapse at 56rem. PDF pages sit in a horizontally scrolling strip with proximity snap, and the four looks are in a row above 60rem and two by two below it. Field rows run 4fr name, 6fr sample caption, 2fr look, collapsing to one column at 40rem. Controls have a 2.75rem touch target on narrow screens.
-
-## Elevation & Depth
-
-The page is flat, ruled with hairlines. The only lifted objects on the home page are the two in the hero stage, where the PDF sheet sits above the browser frame with a slightly harder shadow to read as paper on a screen. Everything below the hero is flat.
-
-### Shadow Vocabulary
-- **Browser frame** (`0 1.5rem 3rem -1.75rem rgb(17 18 20 / 0.35)`): the sample site in the hero.
-- **PDF sheet** (`0 1.25rem 2.5rem -1rem rgb(17 18 20 / 0.45)`): the overlapping page in the hero.
-- **Service panel** (`0 30px 60px -36px rgb(17 18 20 / 30%)`): service cards and plans, inherited. The card hover lifts 4px with `0 1px 2px rgb(17 18 20 / 6%), 0 34px 60px -24px rgb(17 18 20 / 36%)`.
-
-### Named Rules
-**The One Stack Rule.** On the home page only the hero's browser and PDF carry a shadow. Look thumbnails and PDF strip pages are held by a 1px hairline alone.
+- **The bar line.** The top bar has no border. Its bottom edge is a 1px amber gradient that is brightest at the centre (`rgb(255 214 168 / 0.95)`) and glows (`box-shadow` in `--light`). Everything else is lit by this line.
+- **The cone.** Light falls from the centre of that line into the hero. A static CSS cone (`.lt-cone`) is shown first and is the fallback. The `ogl` shader (`LightRays`, copied from React Bits) takes over once the page is idle. There is no hanging lamp or fixture: the source is the line.
+- **Dust motes.** Ten small specks drift slowly inside the cone (`.lt-cone span`, opacity at most 0.45). They sit behind the content (`z-index: -1`), so they never cover text. They are hidden for reduced motion.
+- **Shadows** are dark and soft under frames. Amber glows appear only where the light lands: the frame in the beam, its reflection on the floor, and the button rim.
 
 ## Shapes
 
-The geometry follows the object being shown. A browser frame has soft corners (`frame`), a PDF page is nearly square like paper (`sheet`), look thumbnails sit between (`image`), and actions are full pills (`pill`). Rules are 1px: ink closes the hero and hairlines divide everything else. Chevrons and check marks are rotated CSS borders, and the FAQ's plus is two drawn gradient lines.
+- Glass frames: `0.9rem` radius in the hero (`0.75rem` for the step strip), image inside at `0.55rem` (`0.5rem`).
+- Buttons and toggles are pills (`999px`).
 
 ## Components
 
-### Buttons
-- **Shape:** full pill (999px).
-- **Primary:** ink fill, white text, 600 weight, with a drawn chevron pointing right because it leaves for mans.protu.lv.
-- **Hover / Focus:** fill lightens to Ink Lift over 200ms. Focus is a 2px accent-ink outline offset 3px.
-- **Bar button:** the same action at 0.9375rem, smaller padding, no chevron.
+### Main button
+An outlined warm pill: 1.5px amber border, a translucent dark fill, and the label in `--accent-ink`. On hover it fills with amber at 14%, the label warms to `#ffd7a8` and the rim glows. It is never solid. This is the only main action style (`.lt-cta`, `.site-protu .action-primary`).
 
-### Text links
-- **Style:** 600 ink with an underline at 0.2em offset. Hover turns the text muted. They carry secondary actions beside a button: open the sample site, open the PDF, sign in.
+### Top bar
+The logo is on the left and the links are **centred** (Protu lapas, Konkursi, Pakalpojumi). The language switch and a plain "Ieiet" text link are on the right, and there's **no button in the bar**. On phones it folds into a hamburger.
 
-### Navigation
-- **Bar:** sticky, ground fill, hairline bottom rule, 3.75rem tall, one row. "protu.lv" wordmark at 1.5rem/700, centred nav links at 1rem/450 (600 for the current page), `LV / EN` text keys, then a plain sign-in link and the ink pill. Nav hover is muted, and the Konkursi link appears only in Latvian.
-- **Mobile:** at 56rem and below the row is wordmark, pill and a plain "menu" text button. Links, language and sign-in open in a ground-coloured panel below the bar, each row 2.75rem tall. Escape closes it.
-- **Footer:** hairline top rule, name and line at left, links at right, with legal links in their own quiet row below another hairline.
+### Hero reel (signature)
+Widescreen sample sites (16:10) in slim glass frames, with each address above the frame in mono and the verb below. The chosen pair sits in the light, and the neighbours are dimmed and scaled down. It only changes when the visitor clicks, swipes or uses the arrow keys. **No auto-rotation.**
 
-### Inputs / Fields
-- **Style:** white, 1px hairline border, 0.65rem radius, used in the contact form on service pages only.
-- **Focus / Error:** accent border and a 3px 20% accent halo; Error Red border on `:user-invalid`.
+### Step screenshots
+Real editor screenshots (`public/builder/steps-*.webp`) in glass frames. Steps 1 to 3 are numbered; the 4th is quieter (62% opacity until hover). Re-take them with `scripts/screenshots/`.
 
-### Verb switcher (signature)
-Real buttons with `aria-pressed`, at display size and without pills or boxes. Rest is Resting Verb Grey, hover is ink over 200ms, and the chosen verb is ink with the accent underline. A mouse selects after 140ms of hover, so a pointer crossing the stack on its way to the button changes nothing. Tap or keyboard selects at once. There is no auto-rotation.
-
-### Sample stage (signature)
-All sample images are stacked in one grid cell and crossfaded at 320ms expo-out, so the swap never flashes. The browser frame has a mono address bar; the PDF sheet carries a small ink "PDF" tag. The caption below holds an italic work line, two text links and the muted note stating that the person and work are invented. The address, caption, note and full PDF strip all follow the chosen verb. Transitions are removed under `prefers-reduced-motion`.
-
-### Looks
-Four linked screenshots with a hairline border and 0.55rem radius, then the look name and a muted person name. Hover underlines the name; the image does not move.
-
-### Field rows
-A ruled list that shows what a caption looks like per discipline: field name, a sample caption line in italic, then the default look, muted and right-aligned.
-
-### FAQ
-Native disclosure rows ruled with hairlines, at 62ch. Question at 1.0625rem/600 with a drawn muted plus that loses its vertical stroke when open.
+### Links
+Ink text with an amber underline (`--light` at 60%). They turn amber on hover.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** let the visitor's choice drive what changes: selecting a verb swaps the site, PDF, caption, address and PDF strip together.
-- **Do** show real product output in the browser frame and PDF sheet, with the note saying what is invented wherever samples appear.
-- **Do** keep hover on protu.lv controls in the ink family: Ink Lift for fills, muted for text links.
-- **Do** keep the visible accent-ink focus outline on every interactive element.
-- **Do** separate sections with 1px hairlines on the bare ground.
-- **Do** draw chevrons, checks and plus signs with CSS borders or gradients.
+- Keep amber for the light and the one action.
+- Put every sample, screenshot and PDF in a glass frame on the dark ground.
+- Give every effect a static fallback (see `CLAUDE.md`).
 
 ### Don't:
-- **Don't** add a second resting accent mark to the protu.lv home.
-- **Don't** auto-rotate the verbs or the samples.
-- **Don't** bring the dot grid onto protu.lv; it belongs to valdis.protu.lv.
-- **Don't** use Resting Verb Grey below display size.
-- **Don't** add shadows below the hero on the home page, or tint sections and cards to organise them.
-- **Don't** put small uppercase labels above headings.
+- Use solid filled buttons, or a button in the top bar.
+- Fake light with blurred CSS shapes beyond the existing static fallback cone. Light is the shader (`CLAUDE.md`).
+- Add a lamp, a second accent colour, or per-verb colours.
+- Auto-rotate or auto-advance anything.
+- Use mono for headings, body text or labels.
 
 ## Known drift (not part of the system)
 
-These carry over in the build. They are recorded so they are not copied into new surfaces. The first three lists break the Chosen Verb Rule's intent on the shared protu.lv pages.
-
-- **`services.css`:** FAQ question hover and service card button hover turn accent-ink; step numerals rest in accent-ink. The check marks are already corrected to ink for protu.lv.
-- **`App.css`, on protu.lv pages:** footer link hover (including the home page), work row button hover, back and next-work link hover, case link underlines and hover, and the contact email underline and hover use accent colours. The hard-coded Frame Edge border and pooled panels on service pages come from the same inheritance.
-- **`blog.css`:** post title hover, draft label, list markers, the quote border, body link underlines and hover, and the secondary call-to-action hover use accent colours.
-- **Pre-mount and browser colour:** `index.css` and `index.html` still give the Live Canvas ground and `theme-color`, and the scrollbar colour is the cool grey. The quiet ground applies only once `.site-protu` is in the DOM, and the home page content renders in the browser.
-- **Italic captions:** only upright Inter Tight is loaded, so caption italics are synthesized by the browser.
+- **Mono outside addresses, prices and dates:** the step numbers in the "Trīs soļi" strip (`.bld-how-num`) and the service step numerals (`services.css`, `.svc-steps li::before`) are set in mono.
+- **Verb colour while the shader is on:** the chosen verb becomes an amber gradient (`#ffe2bd → #f7aa58 → #dc8432`) instead of the flat `--accent-ink`. It is still one hue.
+- **Light pages under the dark ones:** `index.css` still defines the light `:root` tokens (`--ground: #e9eaed` and others) for valdis.protu.lv. protu.lv overrides them only once `.site-protu` is in the DOM.
+- **Italic captions:** only upright Inter Tight is loaded, so the browser synthesizes the italics.
 
 ## valdis.protu.lv: The Live Canvas
 
