@@ -72,8 +72,10 @@
   font-size: 1rem;
 }
 
+/* Hit area at least 24px: wider padding, with the slash and outer margins pulled in so the text sits where it did. */
 .lang-key {
-  padding: 0.25rem 0.1rem;
+  min-height: 1.75rem;
+  padding: 0.25rem 0.35rem;
   border: 0;
   background: none;
   font: inherit;
@@ -82,9 +84,12 @@
   transition: color 160ms ease;
 }
 
+.lang-key:first-child { margin-left: -0.25rem; }
+.lang-key:last-child { margin-right: -0.25rem; }
+
 .lang-key + .lang-key::before {
   content: '/';
-  margin: 0 0.35rem;
+  margin: 0 0.35rem 0 -0.15rem;
   color: var(--muted);
   font-weight: 400;
 }
@@ -1113,6 +1118,12 @@
 .foot a { color: var(--ink); text-decoration: none; }
 .foot a:hover { color: var(--accent-ink); }
 .foot-nav { display: flex; flex-wrap: wrap; gap: 0.35rem 1.5rem; }
+
+/* Tap targets at least 24px tall; the negative margin keeps the footer's spacing as it was. */
+.foot-nav a {
+  padding-block: 0.15rem;
+  margin-block: -0.15rem;
+}
 
 /* ── Gadījuma izpētes lapa ──────────────────────────── */
 

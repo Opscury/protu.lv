@@ -17,6 +17,7 @@ colors:
   glass: "rgb(255 255 255 / 0.12)"
   success: "#7bd3a0"
   error: "#ff8a7a"
+  valdis-accent-ink: "#b8330c"
   valdis-ground: "#e9eaed"
   valdis-rule: "#d3d5db"
   valdis-dot: "#c4c6cd"
@@ -179,7 +180,7 @@ components:
   pakalpojumi-price-dimmed:
     textColor: "{colors.accent-dim}"
   valdis-button-primary-hover:
-    backgroundColor: "{colors.accent-ink}"
+    backgroundColor: "{colors.valdis-accent-ink}"
     textColor: "{colors.surface}"
   valdis-button-outline:
     backgroundColor: "transparent"
@@ -204,14 +205,14 @@ components:
     rounded: "{rounded.pill}"
     padding: "0.2rem 0.6rem"
   valdis-skill-chip-active:
-    textColor: "{colors.accent-ink}"
+    textColor: "{colors.valdis-accent-ink}"
   valdis-screenshot-frame:
     backgroundColor: "{colors.frame}"
     rounded: "{rounded.frame}"
     padding: "{spacing.valdis-frame-inset}"
   valdis-proof-tag:
     backgroundColor: "{colors.valdis-ground}"
-    textColor: "{colors.accent-ink}"
+    textColor: "{colors.valdis-accent-ink}"
     typography: "{typography.valdis-proof-tag}"
     padding: "0.2rem 0.6rem"
   valdis-status-chip:
@@ -312,7 +313,7 @@ Only on `/pakalpojumi/` (`src/services-overview.css`). Inter Tight unless it say
 ## Light and depth
 
 - **The bar line.** The top bar has no border. Its bottom edge is a 1px amber gradient that is brightest at the centre (`rgb(255 214 168 / 0.95)`) and glows (`box-shadow` in `--light`). Everything else is lit by this line.
-- **The cone.** Light falls from the centre of that line into the hero. A static CSS cone (`.lt-cone`) is shown first and is the fallback. The `ogl` shader (`LightRays`, copied from React Bits) takes over once the page is idle. There is no hanging lamp or fixture: the source is the line.
+- **The cone.** Light falls from the centre of that line into the hero. A static CSS cone (`.lt-cone`) is shown first and is the fallback: a vertical amber gradient shaped by a soft conic-gradient mask whose apex sits above the line, intersected with a horizontal fade (a tighter beam under 40rem). No blur, no clip-path. The `ogl` shader (`LightRays`, copied from React Bits) takes over once the page is idle. There is no hanging lamp or fixture: the source is the line.
 - **Dust motes.** Ten small specks drift slowly inside the cone (`.lt-cone span`, opacity at most 0.45). They sit behind the content (`z-index: -1`), so they never cover text. They are hidden for reduced motion.
 - **The lamp (Pakalpojumi).** A second `ogl` light in the same family: a beam from a 1px head line down to one price row. See "Pakalpojumi: the studio price list".
 - **Shadows** are dark and soft under frames. Amber glows appear only where the light lands: the frame in the beam, its reflection on the floor, and the button rim.
@@ -337,6 +338,9 @@ Widescreen sample sites (16:10) in slim glass frames, with each address above th
 ### Step screenshots
 Real editor screenshots (`public/builder/steps-*.webp`) in glass frames on the same three columns as the section head (heading in column 1, body in 2–3). Under each frame a numbered rail (Inter Tight numerals, a 1px white-16% line running through the gaps) ties steps 1 to 3 together; it warms to amber at step 3, and step 3's frame is the one in the light (amber rim and glow), because that is the finished site. The 4th sits below a rule as a quieter row: caption in column 1, a wide 3:1 crop of the screenshot across columns 2–3, dimmed until hover. On phones it all becomes the swipe strip. Re-take them with `scripts/screenshots/`.
 
+### Hit areas
+Footer links and the language keys get their hit area from padding with an equal negative margin, so nothing visible moves: footer links 26 to 28px tall, language keys at least 24px on desktop and 44 by 44px on phones.
+
 ### Links
 Ink text with an amber underline (`--light` at 60%). They turn amber on hover.
 
@@ -349,7 +353,7 @@ Ink text with an amber underline (`--light` at 60%). They turn amber on hover.
 
 ### Don't:
 - Use solid filled buttons, or a button in the top bar.
-- Fake light with blurred CSS shapes beyond the existing static fallback cone. Light is the shader (`CLAUDE.md`).
+- Fake light with blurred CSS shapes (`filter: blur()` or clip-path cones). Light is the shader (`CLAUDE.md`); static fallbacks and glows are gradients shaped by masks. None remain as of 7 Nov 2026.
 - Add a lamp, a second accent colour, or per-verb colours.
 - Auto-rotate or auto-advance anything.
 - Use mono for headings, body text or labels.
@@ -431,8 +435,6 @@ Three columns under the section head (Inter Tight 650 titles, body in `--ink-sof
 - **Verb colour while the shader is on:** the chosen verb becomes an amber gradient (`#ffe2bd → #f7aa58 → #dc8432`) instead of the flat `--accent-ink`. It is still one hue.
 - **Light pages under the dark ones:** `index.css` still defines the light `:root` tokens (`--ground: #e9eaed` and others) for valdis.protu.lv. protu.lv overrides them only once `.site-protu` is in the DOM.
 - **Italic captions:** only upright Inter Tight is loaded, so the browser synthesizes the italics.
-- **Blurred light on Home's close:** `.bld-end::after` in `builder.css` is a clip-path cone with `filter: blur(22px)`, which the no-blurred-light rule forbids. It predates the Pakalpojumi build and was left alone. (That build removed the matching blurred cone from the Pakalpojumi cards.)
-- **Small footer targets:** footer links are 22–23px tall site-wide, under the 24px minimum.
 - **Phone bezel radius:** the BeforeAfter phone bezel uses 1.75rem (and a literal `#2b2c33` rather than `--rule`), which is outside the 0.55rem / 0.9rem / pill radius set.
 
 ## valdis.protu.lv: The Live Canvas

@@ -119,8 +119,13 @@
     rgb(var(--light) / 0.16) 34%,
     rgb(var(--light) / 0.07) 66%,
     rgb(var(--light) / 0) 100%);
-  clip-path: polygon(33% 0, 67% 0, 96% 100%, 4% 100%);
-  filter: blur(34px);
+  /* Cone shape from a soft-edged conic mask whose apex sits above the bar line: no blurred shape. */
+  /* A horizontal fade intersects it, so the edges stay soft on any box width. */
+  --cone-mask: conic-gradient(from 0deg at 50% -59%, transparent 0deg 151deg, #000 165deg 195deg, transparent 209deg 360deg);
+  -webkit-mask-image: var(--cone-mask), linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--cone-mask), linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  mask-composite: intersect;
 }
 
 .lt-cone::after {
@@ -248,8 +253,7 @@
   right: 8%;
   bottom: -2.25rem;
   height: 2.5rem;
-  background: radial-gradient(50% 50% at 50% 50%, rgb(var(--light) / 0.28), rgb(var(--light) / 0));
-  filter: blur(6px);
+  background: radial-gradient(50% 50% at 50% 50%, rgb(var(--light) / 0.26), rgb(var(--light) / 0.08) 55%, rgb(var(--light) / 0));
 }
 
 .lt-frame > img:first-child {
@@ -755,8 +759,12 @@
   width: min(52rem, 100%);
   height: 100%;
   background: linear-gradient(180deg, rgb(var(--light) / 0.16), rgb(var(--light) / 0) 85%);
-  clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%);
-  filter: blur(22px);
+  /* Soft cone from a conic mask (apex above the line), not a blurred clip-path. */
+  --cone-mask: conic-gradient(from 0deg at 50% -66%, transparent 0deg 140deg, #000 156deg 204deg, transparent 220deg 360deg);
+  -webkit-mask-image: var(--cone-mask), linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--cone-mask), linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  mask-composite: intersect;
 }
 
 .bld-end h2 {
@@ -895,6 +903,10 @@
   .bar-product .lang { grid-column: auto; grid-row: auto; justify-self: stretch; margin-right: 0; }
   .bar-product .lang { min-height: 2.75rem; }
   .bar-product .lang-key { min-height: 2.75rem; padding-inline: 0 0.5rem; }
+  /* 44px wide on phones: LV reaches into the gutter instead of pushing EN along. */
+  .bar-product .lang-key:first-child { padding: 0 0.6rem 0 1rem; margin-left: -1rem; }
+  .bar-product .lang-key + .lang-key::before { margin: 0 0.35rem 0 0.25rem; }
+  .bar-product .lang-key:last-child { padding-right: 0.7rem; }
 }
 
 @media (min-width: 60.01rem) {
@@ -1099,3 +1111,10 @@ html[data-rays="pending"] .lt-cone::after { opacity: 0.45; }
 
 .site-protu .contact-status.succeeded { color: #7bd3a0; }
 .site-protu .contact-status.failed { color: #ff8a7a; }
+
+/* Narrow screens: the cone boxes are narrow, so the same angles would spread across the whole
+   screen. A tighter beam keeps the light falling from the line, with dark gutters either side. */
+@media (max-width: 40rem) {
+  .lt-cone::before { --cone-mask: conic-gradient(from 0deg at 50% -59%, transparent 0deg 166deg, #000 172deg 188deg, transparent 194deg 360deg); }
+  .bld-end::after { --cone-mask: conic-gradient(from 0deg at 50% -66%, transparent 0deg 162deg, #000 170deg 190deg, transparent 198deg 360deg); }
+}

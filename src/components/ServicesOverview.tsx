@@ -221,7 +221,7 @@ function ServicesOverview({ lang }: { lang: Lang }) {
               </thead>
               <tbody>
                 {metrics.rows
-                  .filter((r) => r.label.en !== 'Accessibility')
+                  .filter((r) => r.label.en !== 'Accessibility' && r.label.en !== 'All images')
                   .map((r) => (
                     <tr key={r.label.en}>
                       <th scope="row">{r.label[lang]}</th>
@@ -231,6 +231,7 @@ function ServicesOverview({ lang }: { lang: Lang }) {
                   ))}
               </tbody>
             </table>
+            <p className="svo-case-images">{metrics.imagesLine[lang]}</p>
             <p className="svo-case-note">{silva.status[lang]}</p>
             <ul className="svo-case-links">
               {silvaWork && (
