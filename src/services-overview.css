@@ -1,0 +1,553 @@
+/* ── Pakalpojumu pārskats (/pakalpojumi/): studijas cenrādis zem vienas lampas ── */
+
+.svo {
+  /* Two softer inks and a dimmed amber, used only on this page. */
+  --ink-soft: #d9d3ca;
+  --ink-dim: #bdb7ae;
+  --accent-dim: #c99a68;
+  max-width: 92rem;
+  margin: 0 auto;
+}
+
+.svo-head {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding-top: clamp(2.5rem, 6vw, 5rem);
+  text-align: center;
+}
+
+.svo-title {
+  margin: 0;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.svo-lead {
+  max-width: 52ch;
+  margin: 1.5rem auto 0;
+  font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--ink-soft);
+  text-wrap: balance;
+}
+
+/* Dēlis: augšmala ir gaismas līnija (lampas avots), zem tās rindas. */
+.svo-board {
+  position: relative;
+  isolation: isolate;
+  max-width: 60rem;
+  margin: clamp(2.75rem, 6vw, 4.5rem) auto 0;
+  padding-top: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.svo-board::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgb(var(--light) / 0), rgb(255 214 168 / 0.9) 50%, rgb(var(--light) / 0));
+}
+
+.svo-lamp {
+  position: absolute;
+  z-index: 0;
+  inset: 0 calc(-1 * var(--gutter)) -1.5rem;
+  pointer-events: none;
+}
+
+.svo-lamp canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.svo-list {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.svo-row {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(3rem, 1fr) auto;
+  grid-template-areas:
+    "problem leader price"
+    "scope scope go";
+  align-items: baseline;
+  gap: 0.45rem clamp(0.75rem, 1.6vw, 1.25rem);
+  padding: clamp(1.35rem, 2.6vw, 1.9rem) clamp(0.75rem, 2vw, 1.5rem);
+  border-radius: 0.9rem;
+}
+
+.svo-row + .svo-row {
+  background: linear-gradient(rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.07)) top / 100% 1px no-repeat;
+}
+
+/* Statiskā gaisma: kamēr lampa (WebGL) vēl nav ieslēgta, ja tā nevar strādāt, un samazinātai kustībai. */
+.svo-row::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 70% 120% at 50% 0%, rgb(var(--light) / 0.22), rgb(var(--light) / 0.06) 55%, rgb(var(--light) / 0) 80%);
+  opacity: 0;
+  transition: opacity 420ms var(--ease-out);
+}
+
+.svo-board[data-lamp] .svo-row::before { background: none; }
+
+/* Gaisma pieskaras rindas augšmalai abos režīmos. */
+.svo-row::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -1px;
+  left: 18%;
+  right: 18%;
+  height: 1px;
+  background: linear-gradient(90deg, rgb(255 214 168 / 0), rgb(255 214 168 / 0.45), rgb(255 214 168 / 0));
+  opacity: 0;
+  transition: opacity 420ms var(--ease-out);
+}
+
+.svo-row[data-lit]::before,
+.svo-row[data-lit]::after { opacity: 1; }
+
+.svo-problem {
+  grid-area: problem;
+  margin: 0;
+  font-size: clamp(1.375rem, 2.4vw, 2rem);
+  font-weight: 650;
+  line-height: 1.12;
+  letter-spacing: -0.032em;
+  text-wrap: balance;
+  color: var(--ink);
+  transition: color 420ms var(--ease-out);
+}
+
+.svo-problem a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Visa rinda ir saite. */
+.svo-problem a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0.9rem;
+}
+
+.svo .svo-problem a:focus-visible { outline: none; }
+
+.svo-row:has(a:focus-visible) {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
+}
+
+/* Cena un punktotā līnija sēž uz virsraksta pēdējās rindas, kā cenrādī. */
+.svo-problem,
+.svo-price { align-self: last baseline; }
+
+/* Punktotā līnija sēž uz teksta bāzes līnijas: tukšam elementam tā ir apakšmala. */
+.svo-leader {
+  grid-area: leader;
+  align-self: last baseline;
+  height: 0;
+  border-bottom: 1px dotted rgb(243 238 230 / 0.26);
+  translate: 0 -0.3rem;
+}
+
+.svo-price {
+  grid-area: price;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: clamp(0.9375rem, 1.2vw, 1.0625rem);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.svo-price-word { color: var(--muted); white-space: pre; }
+
+.svo-price-num {
+  color: var(--accent-ink);
+  transition: color 420ms var(--ease-out);
+}
+
+.svo-scope {
+  grid-area: scope;
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* Bultiņa parādās tikai rindai gaismā. */
+.svo-go {
+  grid-area: go;
+  justify-self: end;
+  align-self: center;
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-right: 0.2rem;
+  border-top: 1.5px solid var(--accent-ink);
+  border-right: 1.5px solid var(--accent-ink);
+  rotate: 45deg;
+  opacity: 0;
+  translate: -0.35rem 0;
+  transition: opacity 320ms var(--ease-out), translate 420ms var(--ease-out);
+}
+
+.svo-row[data-lit] .svo-go { opacity: 1; translate: 0 0; }
+
+/* Pārējās rindas mazliet atkāpjas, bet nekas nelec. */
+.svo-board[data-active] .svo-row:not([data-lit]) .svo-problem { color: var(--ink-dim); }
+.svo-board[data-active] .svo-row:not([data-lit]) .svo-price-num { color: var(--accent-dim); }
+
+/* Hostings: to ņem kopā ar kādu no augšējiem, tāpēc klusāka rinda pēc atstarpes. */
+.svo-row.svo-row-after {
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+  background: linear-gradient(var(--rule), var(--rule)) top / 100% 1px no-repeat;
+}
+
+.svo-row-after .svo-problem {
+  font-size: clamp(1.125rem, 1.7vw, 1.375rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.svo-row-after .svo-price { font-size: 0.9375rem; }
+
+/* Sadaļu galva: virsraksts pirmajā kolonnā, teksts otrajā un trešajā (kā sākumlapā). */
+.svo-sec-head {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: 0.75rem clamp(1rem, 1.8vw, 1.5rem);
+  padding-bottom: clamp(1.25rem, 2.4vw, 1.75rem);
+  border-bottom: 1px solid var(--rule);
+}
+
+.svo-sec-head h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.svo-sec-head p {
+  grid-column: 2 / -1;
+  max-width: 52ch;
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* Darbi */
+
+.svo-work { margin-top: clamp(5.5rem, 11vw, 9rem); }
+
+.svo-case {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: clamp(1.75rem, 4vw, 3.5rem);
+  align-items: start;
+  padding: clamp(2.25rem, 4.5vw, 3.5rem) 0;
+}
+
+.svo-case-second { border-top: 1px solid var(--rule); }
+
+.svo-case-text h3 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.2vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.svo-case-meta {
+  margin: 0.6rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.svo-case-meta time { font-family: var(--mono); font-size: 0.875rem; }
+
+.svo-case-summary {
+  max-width: 52ch;
+  margin: 1.25rem 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.svo-metrics {
+  width: 100%;
+  max-width: 28rem;
+  margin-top: 1.75rem;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.svo-metrics caption {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+  text-align: left;
+}
+
+.svo-metrics th,
+.svo-metrics td {
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--rule);
+  font-weight: 400;
+  text-align: left;
+}
+
+.svo-metrics thead th {
+  border-top: 0;
+  padding-top: 0;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.svo-metrics td,
+.svo-metrics thead th:not(:first-child) { text-align: right; padding-left: 1rem; }
+
+.svo-metrics td { color: var(--muted); }
+.svo-metrics td:last-child { color: var(--ink); font-weight: 600; }
+
+.svo-case-note {
+  margin: 1.5rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.svo-case-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.svo-case-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--light) / 0.6);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition: color 220ms var(--ease-out), text-decoration-color 220ms var(--ease-out);
+}
+
+.svo-case-links a:hover { color: var(--accent-ink); text-decoration-color: currentColor; }
+.svo-case-links .svo-addr { font-family: var(--mono); font-size: 0.9375rem; }
+
+.svo-frame {
+  display: block;
+  padding: 0.4rem;
+  border: 1px solid var(--glass);
+  border-radius: 0.9rem;
+  background: rgb(255 255 255 / 0.03);
+  box-shadow: 0 1.5rem 3rem -1.75rem rgb(0 0 0 / 0.8);
+}
+
+.svo-case-media { margin: 0; }
+
+.svo-case-media figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.svo-frame .compare {
+  border: 0;
+  border-radius: 0.55rem;
+  background: var(--frame);
+}
+
+/* Telefonā salīdzina telefona ekrānus: rāmis ir pats telefons. */
+.svo-case-media[data-device='mobile'] .svo-frame {
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.svo-case-media[data-device='mobile'] .compare {
+  width: min(100%, 17.5rem);
+  border: 6px solid #2b2c33;
+  border-radius: 1.75rem;
+}
+
+.svo-case-media[data-device='mobile'] figcaption { text-align: center; }
+
+.svo .compare-tag {
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  background: rgb(18 19 24 / 0.8);
+  font-family: var(--sans);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.svo .compare-grip { background: var(--accent); color: #121318; border-color: #fff; }
+.svo .compare-handle:focus-visible .compare-grip { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+
+/* Same column edges as the Silva frame above, left and right. */
+.svo-case-second .svo-case-media { width: 100%; }
+
+.svo-case-second img,
+.svo-img-wait {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  border-radius: 0.55rem;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* Kā es strādāju */
+
+.svo-ways { margin-top: clamp(3.5rem, 7vw, 5.5rem); }
+
+.svo-ways ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.4vw, 2rem) clamp(1rem, 1.8vw, 1.5rem);
+  margin: clamp(1.5rem, 3vw, 2.25rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.svo-ways h3 {
+  margin: 0;
+  font-size: clamp(1.125rem, 1.6vw, 1.25rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.svo-ways p {
+  max-width: 36ch;
+  margin: 0.5rem 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* Beigas: viens skaidrs ceļš, e-pasts. */
+.svo-close {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  margin-top: clamp(5rem, 10vw, 8rem);
+  padding: clamp(4rem, 8vw, 6rem) 0 clamp(3.5rem, 7vw, 5.5rem);
+  text-align: center;
+}
+
+.svo-close::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(48rem, 90%);
+  height: 1px;
+  translate: -50% 0;
+  background: linear-gradient(90deg, rgb(var(--light) / 0), rgb(255 214 168 / 0.9), rgb(var(--light) / 0));
+}
+
+.svo-close h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.svo-close p {
+  max-width: 40ch;
+  margin: 0;
+  font-size: 1.0625rem;
+  color: var(--muted);
+  text-wrap: balance;
+}
+
+.svo-email {
+  margin-top: 0.75rem;
+  font-size: clamp(1.75rem, 5vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--light) / 0.6);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color 220ms var(--ease-out), text-decoration-color 220ms var(--ease-out);
+}
+
+.svo-email:hover { color: var(--accent-ink); text-decoration-color: currentColor; }
+
+.svo a:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (max-width: 56rem) {
+  .svo-sec-head,
+  .svo-case { grid-template-columns: minmax(0, 1fr); }
+
+  .svo-sec-head p { grid-column: auto; }
+  .svo-ways ul { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Šaurā ekrānā cena zem apraksta, punktotās līnijas nav. */
+@media (max-width: 40rem) {
+  .svo-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "problem problem"
+      "scope scope"
+      "price go";
+    padding: 1.35rem 0.75rem;
+  }
+
+  .svo-leader { display: none; }
+  .svo-price { margin-top: 0.35rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svo-row::before,
+  .svo-row::after,
+  .svo-problem,
+  .svo-price-num,
+  .svo-go { transition: none; }
+}

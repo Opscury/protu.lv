@@ -8,6 +8,9 @@ colors:
   rule: "#2b2c33"
   ink: "#f3eee6"
   muted: "#a29d95"
+  ink-soft: "#d9d3ca"
+  ink-dim: "#bdb7ae"
+  accent-dim: "#c99a68"
   light: "#f5a04a"
   light-ink: "#f7b26a"
   light-hover-ink: "#ffd7a8"
@@ -50,6 +53,49 @@ typography:
   data:
     fontFamily: "JetBrains Mono Variable, JetBrains Mono, ui-monospace, Cascadia Code, monospace"
     fontSize: "clamp(0.8125rem, 1vw, 0.9375rem)"
+  pakalpojumi-title:
+    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
+    fontSize: "clamp(3rem, 7vw, 6rem)"
+    fontWeight: 700
+    lineHeight: 0.95
+    letterSpacing: "-0.04em"
+  pakalpojumi-section:
+    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
+    fontSize: "clamp(2rem, 3.6vw, 3rem)"
+    fontWeight: 700
+    lineHeight: 1.05
+    letterSpacing: "-0.035em"
+  pakalpojumi-problem:
+    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
+    fontSize: "clamp(1.375rem, 2.4vw, 2rem)"
+    fontWeight: 650
+    lineHeight: 1.12
+    letterSpacing: "-0.032em"
+  pakalpojumi-follow-on:
+    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
+    fontSize: "clamp(1.125rem, 1.7vw, 1.375rem)"
+    fontWeight: 600
+    letterSpacing: "-0.02em"
+  pakalpojumi-price:
+    fontFamily: "JetBrains Mono Variable, JetBrains Mono, ui-monospace, Cascadia Code, monospace"
+    fontSize: "clamp(0.9375rem, 1.2vw, 1.0625rem)"
+    fontFeature: "tnum"
+  pakalpojumi-scope:
+    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
+    fontSize: "1rem"
+    fontWeight: 400
+    lineHeight: 1.5
+  pakalpojumi-close:
+    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
+    fontSize: "clamp(2rem, 4.5vw, 3.5rem)"
+    fontWeight: 700
+    lineHeight: 1
+    letterSpacing: "-0.04em"
+  pakalpojumi-email:
+    fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
+    fontSize: "clamp(1.75rem, 5vw, 3.5rem)"
+    fontWeight: 600
+    letterSpacing: "-0.03em"
   valdis-display:
     fontFamily: "Inter Tight Variable, Inter Tight, system-ui, sans-serif"
     fontSize: "clamp(3.25rem, min(7.4cqw, 15cqh), 8rem)"
@@ -119,6 +165,19 @@ components:
   bar-line:
     height: "1px"
     background: "amber gradient, brightest (rgb(255 214 168)) at the centre"
+  pakalpojumi-row:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink}"
+    typography: "{typography.pakalpojumi-problem}"
+    rounded: "{rounded.frame}"
+    padding: "clamp(1.35rem, 2.6vw, 1.9rem) clamp(0.75rem, 2vw, 1.5rem)"
+  pakalpojumi-row-dimmed:
+    textColor: "{colors.ink-dim}"
+  pakalpojumi-price:
+    textColor: "{colors.light-ink}"
+    typography: "{typography.pakalpojumi-price}"
+  pakalpojumi-price-dimmed:
+    textColor: "{colors.accent-dim}"
   valdis-button-primary-hover:
     backgroundColor: "{colors.accent-ink}"
     textColor: "{colors.surface}"
@@ -182,6 +241,7 @@ Animation and light rules (React Bits + `ogl` for light, `motion` for UI motion,
 - One kind of main button: an outlined warm pill, never a solid fill
 - No auto-rotation, nothing that moves on its own except the light and its dust
 - On Konkursi the same light means time: what closes soonest sits in it (see "Konkursi: the deadline board")
+- On Pakalpojumi the same light is a lamp over a price list, and it lands on the row the visitor is on (see "Pakalpojumi: the studio price list")
 
 ## Colors
 
@@ -199,6 +259,11 @@ All tokens are on `:root:has(.site-protu)` in `src/builder.css`.
 | `--light` | `245 160 74` | The same amber as RGB channels, for `rgb(var(--light) / a)` glows |
 | `--accent-ink` | `#f7b26a` | Amber **text**: the chosen verb, button label, active language, hovers |
 | `--glass` | `rgb(255 255 255 / 0.12)` | Frame edges |
+| `--ink-soft` | `#d9d3ca` | **Pakalpojumi only.** Soft body ink: the lead, case summaries, the "Kā es strādāju" text |
+| `--ink-dim` | `#bdb7ae` | **Pakalpojumi only.** Problem headings of the rows that are not in the light |
+| `--accent-dim` | `#c99a68` | **Pakalpojumi only.** Price numbers of the rows that are not in the light |
+
+The three Pakalpojumi tokens are declared on `.svo` in `src/services-overview.css`, not on `:root`. Move them to `builder.css` before using them on another page.
 
 Other literal colours in the CSS, all in the same family: `#fff` for the word "Protu" in the hero; `#ffd7a8` for button text on hover; `#fbf6ee` for the hero title while the shader light is on; the verb's lit gradient `#ffe2bd → #f7aa58 → #dc8432`; contact form status `#7bd3a0` (sent) and `#ff8a7a` (failed).
 
@@ -221,6 +286,23 @@ Other literal colours in the CSS, all in the same family: `#fff` for the word "P
 | Button | 1.0625rem | 600 | |
 | Address / data | `clamp(0.8125rem, 1vw, 0.9375rem)` | mono | |
 
+### Pakalpojumi ladder
+
+Only on `/pakalpojumi/` (`src/services-overview.css`). Inter Tight unless it says mono. Body copy there is 1.0625rem at 1.5–1.55; the lead is `clamp(1.0625rem, 1.5vw, 1.25rem)`.
+
+| Role | Size | Weight | Notes |
+| --- | --- | --- | --- |
+| Page title | `clamp(3rem, 7vw, 6rem)` | 700 | line-height 0.95, -0.04em, centred |
+| Section heading (Darbi, Kā es strādāju) | `clamp(2rem, 3.6vw, 3rem)` | 700 | 1.05, -0.035em |
+| Problem row | `clamp(1.375rem, 2.4vw, 2rem)` | 650 | 1.12, -0.032em, balanced |
+| Follow-on row (hosting) | `clamp(1.125rem, 1.7vw, 1.375rem)` | 600 | -0.02em |
+| Price | `clamp(0.9375rem, 1.2vw, 1.0625rem)` | mono | tabular; 0.9375rem on the follow-on row |
+| Scope line | 1rem | 400 | muted, 1.5, max 52ch |
+| Case title | `clamp(1.5rem, 2.2vw, 1.75rem)` | 700 | line-height 1, -0.035em |
+| Principle title | `clamp(1.125rem, 1.6vw, 1.25rem)` | 650 | -0.02em |
+| Close heading | `clamp(2rem, 4.5vw, 3.5rem)` | 700 | 1, -0.04em (same as Home's close) |
+| Email | `clamp(1.75rem, 5vw, 3.5rem)` | 600 | -0.03em, amber underline |
+
 ## Layout
 
 - Gutter `clamp(1rem, 2.4vw, 2.25rem)`, bar height 3.75rem, section padding `clamp(2.25rem, 4.5vw, 3.5rem)`, touch targets at least 2.75rem.
@@ -232,12 +314,14 @@ Other literal colours in the CSS, all in the same family: `#fff` for the word "P
 - **The bar line.** The top bar has no border. Its bottom edge is a 1px amber gradient that is brightest at the centre (`rgb(255 214 168 / 0.95)`) and glows (`box-shadow` in `--light`). Everything else is lit by this line.
 - **The cone.** Light falls from the centre of that line into the hero. A static CSS cone (`.lt-cone`) is shown first and is the fallback. The `ogl` shader (`LightRays`, copied from React Bits) takes over once the page is idle. There is no hanging lamp or fixture: the source is the line.
 - **Dust motes.** Ten small specks drift slowly inside the cone (`.lt-cone span`, opacity at most 0.45). They sit behind the content (`z-index: -1`), so they never cover text. They are hidden for reduced motion.
+- **The lamp (Pakalpojumi).** A second `ogl` light in the same family: a beam from a 1px head line down to one price row. See "Pakalpojumi: the studio price list".
 - **Shadows** are dark and soft under frames. Amber glows appear only where the light lands: the frame in the beam, its reflection on the floor, and the button rim.
 
 ## Shapes
 
 - Glass frames: `0.9rem` radius in the hero (`0.75rem` for the step strip), image inside at `0.55rem` (`0.5rem`).
 - Buttons and toggles are pills (`999px`).
+- Pakalpojumi rows take the frame radius (`0.9rem`). It shows only in the focus outline and the fallback pool, because the rows have no border or fill.
 
 ## Components
 
@@ -296,12 +380,60 @@ The archive is the same board with one Joma select and closed cards ("noslēdzā
 - Every control is 44px on phones, and every heat level is said in words.
 - No effect needs WebGL here, so there's no tuning panel. If one is ever added, the `CLAUDE.md` rules apply.
 
+## Pakalpojumi: the studio price list
+
+`protu.lv/pakalpojumi/` is `src/components/ServicesOverview.tsx` with `src/services-overview.css`. The lamp is `src/components/ServiceLamp.tsx` with `src/serviceLampSettings.ts`. It uses the same tokens, bar, footer and fonts as above, plus three page tokens on `.svo` (`--ink-soft`, `--ink-dim`, `--accent-dim`). The single service pages (`/pakalpojumi/<slug>/`, `services.css`) are not covered here.
+
+**North star: "a quiet studio price card under one lamp."** It refuses the SaaS row of equal tier cards with a lit "recommended" plan. There are no cards and no recommended plan. At rest the room is dark and every row is equal. The light lands on whichever row the visitor is on.
+
+### The price list
+- **Head.** A centred 56rem column: the title, then a balanced lead in `--ink-soft` (max 52ch).
+- **The head line is the lamp's source.** The list board (max 60rem, centred) opens with a 1px amber gradient line across its width, brightest at the centre (`rgb(255 214 168 / 0.9)`), like the bar line. The beam leaves its centre.
+- **A row reads like a price list.** Problem heading (Inter Tight), then a 1px dotted leader (`rgb(243 238 230 / 0.26)`, at least 3rem, sitting on the heading's last baseline), then the price in JetBrains Mono. The leader and price align to the heading's last line, so a two-line heading still reads like a menu. The scope line (muted, 1rem) sits under it. Rows are split by a 1px white-7% hairline. The whole row is the link, and a small CSS-border chevron appears on the right only on the lit row.
+- **Name each service by the problem**, in the visitor's words ("Uzņēmums ir tikai Facebook"), from `problem` in `src/data/services.ts`. The `scope` field says what I actually do, in one line. Prices come only from `services.ts` (`cardPrice`) and always read "no €X" plus that one-line scope.
+- **Price.** "no"/"from", "+" and "/mēn" are `--muted`. Each number is `--accent-ink`, tabular, and never wraps.
+- **Hosting is a follow-on**, not a fourth tier (`FOLLOW_ON = 'hostings'`). It comes last, after a gap and a 1px `--rule` line, at the smaller follow-on size, with its price at 0.9375rem.
+- Under 40rem the leader goes away and the price drops under the scope line, with the chevron on its right.
+
+### The lamp (signature)
+- **What it is.** An `ogl` fragment shader in the React Bits LightRays family. One beam leaves the centre of the head line, widens toward the lit row, and ends in a soft pool on that row. The light is warm white near the source and amber where it lands, with faint drifting rays and light grain. The beam's target eases from row to row (`follow`), so the light travels instead of jumping.
+- **Idle is 0, so the room is dark at rest.** With no row lit there's no beam and no glow.
+- **The rest step back.** When a row is lit, the other problems go to `--ink-dim` and their price numbers to `--accent-dim`. Nothing moves, scales or shifts.
+- **What lights a row:** mouse hover; keyboard focus, which also draws a 2px `--accent-ink` outline around the whole row (offset 2px); and on phones (`hover: none`), the row nearest the middle of the viewport (an IntersectionObserver band inset 42% from top and bottom). When the mouse leaves the list the room goes dark, unless focus is still inside.
+- **Cost.** The lamp mounts when the page is idle (`requestIdleCallback`, 1.2s timeout, 600ms timer where that's missing). It stops drawing when the board is off-screen or the tab is hidden, and renders at dpr 1 on phones (48rem and below) and at most 1.5 elsewhere.
+- **Fallback.** It covers reduced motion (the shader never mounts), no WebGL (`onFail`), and the moment before the shader starts. In those cases the lit row shows a static radial pool (amber 22% to 6% to 0, from its top edge). In every mode the lit row also gets a 1px warm hairline across the middle of its top edge. These are gradients, not blurred shapes. Transitions are off for reduced motion.
+- **Tuning.** In dev, `LampTuner.tsx` gives live sliders and keeps the values in localStorage (`protu-lamp-tuner-v1`). Production always uses `LAMP_DEFAULTS` in `src/serviceLampSettings.ts`; paste tuned values there.
+- **Check.** `scripts/check-service-lamp.mjs` runs normal, reduced-motion and no-WebGL, each at desktop and phone size, with hover, focus and phone scroll. It reports which row is lit and whether the shader runs, and saves screenshots to `.impeccable/review/lamp`.
+
+### Proof: Darbi
+- **Section head** works like Home's: the heading in column 1 and the body in columns 2–3 of three, over a 1px `--rule`. It stacks under 56rem.
+- **Silva case** on a 4/8 grid. The text is on the left: title, muted meta with a mono year, summary in `--ink-soft`, the measured table, a status note, links. The comparison is on the right.
+- **Measured table.** Tabular figures, 1px `--rule` row lines. The column heads are the two addresses (`bistro.lv`, `silva.protu.lv`) in mono 0.8125rem muted. Old values are muted; new values are ink at 600.
+- **Before/after** in a glass frame: 0.4rem inset, 0.9rem radius, white 3% fill, dark soft shadow, image at 0.55rem. On desktop the divider rests at 34% (`BeforeAfter`'s `rest` prop), so the new site gets most of the frame; the one-time intro sweep returns to that rest. The labels are sentence-case sans pills on dark glass, and the grip is solid amber with a white edge. Under 40rem it compares the phone screenshots in a phone bezel (6px, max 17.5rem wide) instead of the frame, resting at 50%.
+- **Images load late.** Screenshots mount only once the section is within 600px of the viewport, and only one set (phone or desktop) is fetched. Until then a placeholder of the same size holds the space.
+- **Anda** is the second case, below a rule, on the same 4/8 columns and edges: text on the left, a 16:10 screenshot in the same glass frame on the right.
+
+### Kā es strādāju
+Three columns under the section head (Inter Tight 650 titles, body in `--ink-soft`, max 36ch), one column under 56rem. It sits between the proof and the email because it answers who owns the site and who runs it.
+
+### Close
+**Email only on the overview.** First a 1px amber gradient line (like the head line, max 48rem), then the close heading and a muted lead, then `valdis@protu.lv` large in ink with a 1px amber underline (`--light` at 60%) that turns amber on hover. There's no form and no button here. The single service pages keep their contact form.
+
+### Pakalpojumi rules
+- **The lamp is the only light.** No blurred CSS shapes, and the static fallback uses gradients only. The old blurred cone on the Pakalpojumi cards (`services.css`) was removed in this build (7 Nov 2026), along with the cards.
+- **No recommended plan.** Never pre-light a row or mark one as recommended. The light follows the visitor.
+- **Amber is the numbers and the light.** Price words stay muted and headings stay ink.
+- **Dim, don't move.** Unlit rows change colour only.
+
 ## Known drift (not part of the system)
 
 - **Mono outside addresses, prices and dates:** the service step numerals (`services.css`, `.svc-steps li::before`) are set in mono.
 - **Verb colour while the shader is on:** the chosen verb becomes an amber gradient (`#ffe2bd → #f7aa58 → #dc8432`) instead of the flat `--accent-ink`. It is still one hue.
 - **Light pages under the dark ones:** `index.css` still defines the light `:root` tokens (`--ground: #e9eaed` and others) for valdis.protu.lv. protu.lv overrides them only once `.site-protu` is in the DOM.
 - **Italic captions:** only upright Inter Tight is loaded, so the browser synthesizes the italics.
+- **Blurred light on Home's close:** `.bld-end::after` in `builder.css` is a clip-path cone with `filter: blur(22px)`, which the no-blurred-light rule forbids. It predates the Pakalpojumi build and was left alone. (That build removed the matching blurred cone from the Pakalpojumi cards.)
+- **Small footer targets:** footer links are 22–23px tall site-wide, under the 24px minimum.
+- **Phone bezel radius:** the BeforeAfter phone bezel uses 1.75rem (and a literal `#2b2c33` rather than `--rule`), which is outside the 0.55rem / 0.9rem / pill radius set.
 
 ## valdis.protu.lv: The Live Canvas
 

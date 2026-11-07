@@ -30,7 +30,11 @@ export type Faq = { q: Localized; a: Localized }
 export type Service = {
   slug: string
   name: Localized
-  /** Viena rinda pārskata kartītei. */
+  /** Pārskata virsraksts: problēma, ko pakalpojums atrisina. */
+  problem: Localized
+  /** Pārskatā zem problēmas: ko tieši daru, vienā rindā. */
+  scope: Localized
+  /** Viena rinda (sākumlapas teaser un meklētāju apraksti). */
   pitch: Localized
   /** Cena pārskata kartītē. */
   cardPrice: Price
@@ -48,6 +52,9 @@ export type Service = {
   faqs: Faq[]
 }
 
+/** Pārskatā šis nāk pēc projektiem, klusākā rindā: to ņem kopā ar kādu no tiem. */
+export const FOLLOW_ON = 'hostings'
+
 export const SERVICES_PATH = '/pakalpojumi/'
 export const serviceHref = (slug: string) => `${SERVICES_PATH}${slug}/`
 
@@ -55,6 +62,11 @@ export const services: Service[] = [
   {
     slug: 'majaslapa',
     name: { lv: 'Jauna mājaslapa', en: 'New website' },
+    problem: { lv: 'Uzņēmums ir tikai Facebook', en: 'Your business is only on Facebook' },
+    scope: {
+      lv: 'Jauna mājaslapa uz tava domēna, gatava 2⁠–⁠4 nedēļās',
+      en: 'A new website on your own domain, ready in 2⁠–⁠4 weeks',
+    },
     pitch: {
       lv: 'Ātra, skaidra mājaslapa mazam uzņēmumam Jelgavā un Zemgalē.',
       en: 'A fast, clear website for a small business in Jelgava and Zemgale.',
@@ -251,6 +263,11 @@ export const services: Service[] = [
   {
     slug: 'parcelsana',
     name: { lv: 'Pārcelšana no Wix vai Tilda', en: 'Move from Wix or Tilda' },
+    problem: { lv: 'Maksā Wix vai Tilda, bet lapa nav tava', en: 'Paying Wix or Tilda for a site that isn’t yours' },
+    scope: {
+      lv: 'Uzbūvēju to pašu lapu no jauna uz tava domēna',
+      en: 'I rebuild the same site on your own domain',
+    },
     pitch: {
       lv: 'Maksā platformai katru mēnesi, bet lapa tev nepieder? Pārceļu to pie tevis.',
       en: 'Paying a platform every month and still don’t own your site? I’ll move it to you.',
@@ -428,6 +445,11 @@ export const services: Service[] = [
   {
     slug: 'hostings',
     name: { lv: 'Hostings un uzturēšana', en: 'Hosting and maintenance' },
+    problem: { lv: 'Nav, kas lapu pieskata', en: 'Nobody looks after the site' },
+    scope: {
+      lv: 'Mans serveris ES, ikdienas rezerves kopijas, uzraudzība',
+      en: 'My EU server, daily backups, uptime monitoring',
+    },
     pitch: {
       lv: 'Tava lapa uz mana servera ES. Es rūpējos, lai tā strādā.',
       en: 'Your site on my server in the EU. I make sure it keeps running.',
@@ -620,11 +642,16 @@ export const services: Service[] = [
   {
     slug: 'portfolio',
     name: { lv: 'Portfolio lapa pēc pasūtījuma', en: 'Custom-made portfolio site' },
+    problem: { lv: 'Darbi izkaisīti pa Instagram un mapēm', en: 'Your work is scattered across Instagram and folders' },
+    scope: {
+      lv: 'Salieku tos vienā lapā adresē vārds.protu.lv',
+      en: 'I put it on one page at yourname.protu.lv',
+    },
     pitch: {
       lv: 'Negribi pats? Salieku tavus darbus un uztaisu lapu ar dizainu tieši tev, adresē vārds.protu.lv.',
       en: 'Rather not do it yourself? I set up your work and design the site just for you, at yourname.protu.lv.',
     },
-    cardPrice: { parts: [{ amount: 79 }, { amount: 5, monthly: true }] },
+    cardPrice: { from: true, parts: [{ amount: 79 }, { amount: 5, monthly: true }] },
     seoTitle: {
       lv: 'Portfolio lapa pēc pasūtījuma māksliniekiem un dizaineriem · no €79',
       en: 'Custom-made portfolio website for artists and designers · from €79',

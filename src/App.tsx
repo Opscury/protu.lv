@@ -123,7 +123,8 @@ function App() {
     </section>
   )
   // protu.lv sākumlapa ir veidotāja vitrīna: kontaktforma tur, kur kāds nolīgst Valdi.
-  const showContact = isPersonal || Boolean(route || caseId)
+  // Pakalpojumu pārskats beidzas ar e-pastu (viens skaidrs ceļš); forma ir pakalpojumu un darbu lapās.
+  const showContact = isPersonal || Boolean(service || caseId)
 
   return (
     <>
@@ -225,10 +226,7 @@ function App() {
                 onRequest={(id) => setPicked({ path, plan: id })}
               />
             ) : (
-              <>
-                <ServicesOverview lang={lang} />
-                {worksSection}
-              </>
+              <ServicesOverview lang={lang} />
             )}
           </main>
         ) : caseId ? (

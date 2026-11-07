@@ -10,6 +10,8 @@ type Props = {
   afterAlt: string
   sliderLabel: string
   device: 'desktop' | 'mobile'
+  /** Where the divider rests, in % from the left (default 50). */
+  rest?: number
 }
 
 let introPlayed = false
@@ -35,8 +37,9 @@ function BeforeAfter({
   afterAlt,
   sliderLabel,
   device,
+  rest = 50,
 }: Props) {
-  const [pos, setPos] = useState(50)
+  const [pos, setPos] = useState(rest)
   const frame = useRef<HTMLDivElement>(null)
   const dragging = useRef(false)
   const touched = useRef(false)
@@ -53,7 +56,7 @@ function BeforeAfter({
         if (!entry.isIntersecting || introPlayed) return
         introPlayed = true
         io.disconnect()
-        const keys = [50, 78, 24, 50]
+        const keys = [rest, 78, 24, rest]
         const segment = 520
         const start = performance.now() + 250
         const tick = (now: number) => {
@@ -74,7 +77,7 @@ function BeforeAfter({
       io.disconnect()
       cancelAnimationFrame(raf)
     }
-  }, [])
+  }, [rest])
 
   function moveTo(clientX: number) {
     const box = frame.current?.getBoundingClientRect()
