@@ -181,6 +181,7 @@ Animation and light rules (React Bits + `ogl` for light, `motion` for UI motion,
 - Inter Tight for everything; JetBrains Mono only for addresses, prices and dates (see the exceptions below)
 - One kind of main button: an outlined warm pill, never a solid fill
 - No auto-rotation, nothing that moves on its own except the light and its dust
+- On Konkursi the same light means time: what closes soonest sits in it (see "Konkursi: the deadline board")
 
 ## Colors
 
@@ -268,6 +269,32 @@ Ink text with an amber underline (`--light` at 60%). They turn amber on hover.
 - Add a lamp, a second accent colour, or per-verb colours.
 - Auto-rotate or auto-advance anything.
 - Use mono for headings, body text or labels.
+
+## Konkursi: the deadline board
+
+`protu.lv/konkursi/` is a separate Django app (repo `protu-admin`, `konkursi/templates/konkursi/public/`, one stylesheet `konkursi/static/konkursi/konkursi.css`, no build step, no React). It uses the same tokens, bar, footer, buttons and fonts as above, copied by value into that stylesheet. Where the two disagree, the home page's `builder.css` wins and `konkursi.css` gets fixed.
+
+**North star: "the light falls on what closes soonest."** On the home page the amber light falls on the work. On Konkursi it means **time**. The page has one job: a painter, photographer or designer finds the two or three calls that fit them in under a minute and sees how long they have.
+
+### List page
+- **One list, sorted by deadline**, soonest first. No featured blocks, no quick-link pills, no "today" strip, no repeated sections. After the list there's one quiet "Katru pirmdienu e-pastā" row with the subscribe pill and plain links (calendar, news feed, archive).
+- **One search box and three filters**: Meklēt, Joma, Kam, Veids, plus a "Rādīt" pill. Every other filter (termiņš, kur, novads, paraugi, darba apjoms, kas var pieteikties, vecums, valoda, the three switches) still works as a URL parameter and sits under a closed "Vairāk atlases" disclosure. It opens only when one of those filters is on, and then says how many ("ieslēgtas 2"). With JS, picking a value submits straight away and empty fields stay out of the URL. Without JS it's a plain GET form.
+- **Filter rules** (`konkursi/filters.py`): search folds case and Latvian diacritics. Picking a visual field (glezniecība, tēlniecība, ilustrācija, komikss, fotogrāfija, tekstils, keramika) also includes calls tagged with the umbrella "vizuālā māksla". Film, animation and new media never come in through that door, so a painter doesn't scroll past producer funding. Kam has five values: studentiem, jaunajiem māksliniekiem, profesionāļiem, **organizācijām** (an audience row since migration 0008, with the organisation-only calls tagged), and **skolēniem un bērniem**. Children's and school contests stay out of every list unless that value (or their own type page) is picked. An individual Kam also includes calls for "visiem" and calls with no audience stated, but never organisation-only ones.
+- **The time rail (signature).** A 1px vertical line runs down the left of the list in four bands: **Līdz 3 dienām** (hot), **Līdz 2 nedēļām** (warm), **Vēlāk**, **Bez noteikta termiņa**. In the hot band the rail is bright `rgb(255 214 168)` with a glow. It cools to amber at 16% through the warm band, fades into `--rule` early in "Vēlāk", and is dashed for undated calls. Each card has a stop on the rail: filled and glowing when hot, an amber ring when warm, a dim ring when far off, dashed when undated. Hot cards sit in a faint amber wash that starts at the rail and fades within the card. Warm and hot titles are white, far-off titles step back to `#d6d1c9`, and days left is amber only when the call is warm or hot. The band heading and the days-left words always state the same fact, so colour never carries it alone.
+- **A card shows only** days left plus date (mono), title (the only link; its `::after` covers the card), organiser, money (the reward, then the fee in the call page's words "Dalības maksa: 25 €"), and the summary's first sentence (one line wide, two on phones). Effort, types, requirements and fields live on the call page. The "jauns" and "termiņš pagarināts" tags sit after the organiser behind a visually hidden " · ", outside the link, so screen readers and copy-paste never glue them to the title.
+- Phone: the rail and card stack into one column, time first. Wide (52rem and up): a three-column row (time | title, organiser, summary | money).
+
+### Call page
+The deadline comes first (days left in mono, amber when warm or hot, then date and clock), then the white title, organiser and types, and right under them the one action ("Nolikums un pieteikšanās" pill) with plain links (official page, calendars, reminder). The rule under the header takes the call's heat: bright when hot, amber when warm, white at 16% otherwise. Below that, two columns from 64rem: the text (Par konkursu, Kas var pieteikties, a checklist of what to submit, Kā iesniegt, rules worth noticing) on the left, and a sticky glass "Īsumā" panel on the right (money, fee, Kam, age, where, dates, language, effort, covers, fields), then "Termiņi" for tiered calls and "Pārbaudīts … / Ziņot par kļūdu". On phones Īsumā comes before the text. Reminder and share use the heading-left section layout. Related calls are rail cards, soonest first, and leave out children's contests unless the call is one.
+
+### Archive, subscribe, submit, settings
+The archive is the same board with one Joma select and closed cards ("noslēdzās", newest first, no "jauns" tag). The forms are a glass panel (`1px` white 12%, `1.1rem` radius, white 3% fill) on the dark ground. Choices are pills: a chosen pill gets a brighter white edge and a tick, not amber. Fields are 44px tall and turn amber only on focus.
+
+### Konkursi rules
+- Amber means urgency, the one action, or focus. A chosen filter or pill brightens in white, never amber.
+- No blurred light shapes. The bar line and the rail are the only light sources, and both are 1px lines. The old `main::before` blur cone was removed on 7 Nov 2026.
+- Every control is 44px on phones, and every heat level is said in words.
+- No effect needs WebGL here, so there's no tuning panel. If one is ever added, the `CLAUDE.md` rules apply.
 
 ## Known drift (not part of the system)
 
