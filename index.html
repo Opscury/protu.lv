@@ -21,9 +21,43 @@
           document.documentElement.setAttribute('data-rays', 'pending')
         }
       } catch (e) {}
+      // index.html doubles as the fallback for paths that were not prerendered (e.g. /darbi/silva):
+      // then its prerendered Home must not show; React draws the right page (App removes the class).
+      try {
+        var built = document.head.getAttribute('data-path')
+        var trim = function (p) { return p.length > 1 && p.charAt(p.length - 1) === '/' ? p.slice(0, -1) : p }
+        if (built && trim(built) !== trim(location.pathname)) document.documentElement.classList.add('spa-fallback')
+      } catch (e) {}
+      // Home is prerendered in Latvian. A visitor who will see English gets its images at once, but the
+      // Latvian text stays invisible until React switches to English (App removes the class). Home only:
+      // on text-led pages (Pakalpojumi, services) hiding the text would delay their main content.
+      try {
+        if (location.pathname === '/' && document.head.getAttribute('data-path') === '/') {
+          var q = new URLSearchParams(location.search).get('lang')
+          var saved = null
+          try { saved = localStorage.getItem('protu-lang') } catch (e) {}
+          var lang = q === 'lv' || q === 'en' ? q : saved === 'lv' || saved === 'en' ? saved
+            : navigator.language.toLowerCase().indexOf('lv') === 0 ? 'lv' : 'en'
+          if (lang !== 'lv') document.documentElement.classList.add('lang-swap')
+        }
+      } catch (e) {}
+      // Failsafe: if the app can't run (a script fails to load, or a very slow or broken network),
+      // show the prerendered page as it is rather than leaving its text or content hidden.
+      (function () {
+        var release = function () { document.documentElement.classList.remove('lang-swap', 'spa-fallback') }
+        // Only the app's own scripts (/assets/), not e.g. an ad-blocked analytics script.
+        window.addEventListener('error', function (e) {
+          var t = e.target
+          if (t && t.tagName === 'SCRIPT' && (t.getAttribute('src') || '').indexOf('/assets/') !== -1) release()
+        }, true)
+        setTimeout(release, 10000)
+      })()
     </script>
+    <script nomodule>document.documentElement.classList.remove('lang-swap', 'spa-fallback')</script>
     <style>
       html:not(.site-valdis) { background: #121318; color: #f3eee6; color-scheme: dark; }
+      html.spa-fallback #root { visibility: hidden; }
+      html.lang-swap #root * { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; }
     </style>
     <title>Valdis Viška · protu.lv</title>
     <meta

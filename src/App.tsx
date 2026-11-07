@@ -31,6 +31,7 @@ import { inBrowser, navigate, onLinkClick, restoreScroll, usePath } from './rout
 import { isPersonal, PROTU_URL, VALDIS_URL } from './site'
 import { applyMeta, pageMeta } from './seo'
 import type { Lang } from './types'
+import { hydration } from './hydration'
 import './App.css'
 
 const EMAIL = 'valdis@protu.lv'
@@ -52,7 +53,17 @@ function initialLang(): Lang {
 }
 
 function App() {
-  const [lang, setLang] = useState<Lang>(initialLang)
+  // Hydrating the Latvian prerender: the first render must be Latvian too; the effect below switches.
+  const [lang, setLang] = useState<Lang>(() => (hydration.active ? 'lv' : initialLang()))
+
+  // After hydration: the visitor's own language. Only text nodes change, so images are not redrawn.
+  useEffect(() => {
+    if (!hydration.active) return
+    hydration.active = false
+    const wanted = initialLang()
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- must run after hydration, not during it
+    if (wanted !== 'lv') setLang(wanted)
+  }, [])
   // Ierakstītā prasme pirmajā skatā — darbu sarakstā iekrāso tās pierādījumu.
   const [skillId, setSkillId] = useState<string | null>(null)
   const path = usePath()
@@ -83,6 +94,9 @@ function App() {
       // Nav kur saglabāt — nekas slikts, nākamreiz atkal noteiks no pārlūka.
     }
     document.documentElement.lang = pageLang
+    // index.html hid the prerendered Latvian text for a visitor who sees English: show it once it is English.
+    if (pageLang !== 'lv') document.documentElement.classList.remove('lang-swap')
+    document.documentElement.classList.remove('spa-fallback')
     const url = new URL(window.location.href)
     if (pageLang === 'en') url.searchParams.set('lang', 'en')
     else url.searchParams.delete('lang')

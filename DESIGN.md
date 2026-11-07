@@ -256,9 +256,9 @@ All tokens are on `:root:has(.site-protu)` in `src/builder.css`.
 | `--rule` | `#2b2c33` | 1px section rules |
 | `--ink` | `#f3eee6` | All text, warm white |
 | `--muted` | `#a29d95` | Secondary text, notes, captions |
-| `--accent` | `#f5a04a` | The light: bar line, cone, focus rings |
+| `--accent` | `#f5a04a` | The light: bar line, cone, focus rings, and the chosen verb |
 | `--light` | `245 160 74` | The same amber as RGB channels, for `rgb(var(--light) / a)` glows |
-| `--accent-ink` | `#f7b26a` | Amber **text**: the chosen verb, button label, active language, hovers |
+| `--accent-ink` | `#f7b26a` | Amber **text**: button label, active language, hovers (the chosen verb uses `--accent`) |
 | `--glass` | `rgb(255 255 255 / 0.12)` | Frame edges |
 | `--ink-soft` | `#d9d3ca` | **Pakalpojumi only.** Soft body ink: the lead, case summaries, the "Kā es strādāju" text |
 | `--ink-dim` | `#bdb7ae` | **Pakalpojumi only.** Problem headings of the rows that are not in the light |
@@ -266,11 +266,11 @@ All tokens are on `:root:has(.site-protu)` in `src/builder.css`.
 
 The three Pakalpojumi tokens are declared on `.svo` in `src/services-overview.css`, not on `:root`. Move them to `builder.css` before using them on another page.
 
-Other literal colours in the CSS, all in the same family: `#fff` for the word "Protu" in the hero; `#ffd7a8` for button text on hover; `#fbf6ee` for the hero title while the shader light is on; the verb's lit gradient `#ffe2bd → #f7aa58 → #dc8432`; contact form status `#7bd3a0` (sent) and `#ff8a7a` (failed).
+Other literal colours in the CSS, all in the same family: `#fff` for the word "Protu" in the hero; `#ffd7a8` for button text on hover; `#fbf6ee` for the hero title while the shader light is on; contact form status `#7bd3a0` (sent) and `#ff8a7a` (failed).
 
 ### Named rules
 - **One light.** Amber is the only hue. It marks the light and the one thing to do. It is never a section fill, a card tint or a second accent.
-- **Verbs in one colour.** The chosen verb is amber; the others are ink. No per-verb colours.
+- **Verbs in one colour.** The chosen verb is solid amber `#f5a04a` (`--accent`), in the headline and under the lit sample frame, before and after the shader starts; the others are ink. No per-verb colours and no gradient text.
 - **The work is the colour.** Screenshots and paintings carry all the other colour on the page.
 
 ## Typography
@@ -432,7 +432,6 @@ Three columns under the section head (Inter Tight 650 titles, body in `--ink-sof
 ## Known drift (not part of the system)
 
 - **Mono outside addresses, prices and dates:** the service step numerals (`services.css`, `.svc-steps li::before`) are set in mono.
-- **Verb colour while the shader is on:** the chosen verb becomes an amber gradient (`#ffe2bd → #f7aa58 → #dc8432`) instead of the flat `--accent-ink`. It is still one hue.
 - **Light pages under the dark ones:** `index.css` still defines the light `:root` tokens (`--ground: #e9eaed` and others) for valdis.protu.lv. protu.lv overrides them only once `.site-protu` is in the DOM.
 - **Italic captions:** only upright Inter Tight is loaded, so the browser synthesizes the italics.
 - **Phone bezel radius:** the BeforeAfter phone bezel uses 1.75rem (and a literal `#2b2c33` rather than `--rule`), which is outside the 0.55rem / 0.9rem / pill radius set.

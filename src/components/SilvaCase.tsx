@@ -140,7 +140,8 @@ function SilvaCase({ lang }: Props) {
               </tr>
             </thead>
             <tbody>
-              {metrics.rows.map((r) => (
+              {/* Attēli ir visas vietnes kopsumma, nevis sākumlapas svars: tie ir zem tabulas. */}
+              {metrics.rows.filter((r) => r.label.en !== 'All images').map((r) => (
                 <tr key={r.label.en}>
                   <th scope="row">{r.label[lang]}</th>
                   <td>{r.old}</td>
@@ -149,6 +150,7 @@ function SilvaCase({ lang }: Props) {
               ))}
             </tbody>
           </table>
+          <p className="silva-images">{metrics.imagesLine[lang]}</p>
           <p>{metrics.note[lang]}</p>
         </aside>
       </div>

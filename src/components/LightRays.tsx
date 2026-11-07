@@ -295,6 +295,8 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
 
     let raf = 0
     let frame = 0
+    let lastSway = ''
+    let lastPulse = ''
     let visible = true
     let ready = false
     let color = live.current.color
@@ -346,8 +348,11 @@ function LightRays({ settings, target, onReady, onFail }: Props) {
       const host = target.current
       if (host && frame++ % 2 === 0) {
         // Scaled by the sway setting, so with sway 0 the shadows and highlights hold still too.
-        host.style.setProperty('--ray-sway', (sway * Math.min(1, s.sway / 0.14)).toFixed(3))
-        host.style.setProperty('--ray-pulse', (1 - s.flicker + s.flicker * pulse).toFixed(3))
+        // Written only when the value changes: every write restyles the hero.
+        const nextSway = (sway * Math.min(1, s.sway / 0.14)).toFixed(3)
+        const nextPulse = (1 - s.flicker + s.flicker * pulse).toFixed(2)
+        if (nextSway !== lastSway) host.style.setProperty('--ray-sway', (lastSway = nextSway))
+        if (nextPulse !== lastPulse) host.style.setProperty('--ray-pulse', (lastPulse = nextPulse))
       }
       if (!ready) {
         ready = true

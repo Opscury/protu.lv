@@ -140,7 +140,7 @@ export const metrics = {
     { label: { lv: 'Pieejamība', en: 'Accessibility' }, old: '93', new: '96' },
     { label: { lv: 'Visi attēli kopā', en: 'All images' }, old: '202 MB', new: '31 MB' },
   ],
-  /** Pakalpojumu pārskatā zem tabulas: attēli ir visas vietnes kopsumma, nevis vienas lapas svars. */
+  /** Zem abām tabulām (pārskatā un gadījuma lapā): attēli ir visas vietnes kopsumma, nevis vienas lapas svars. */
   imagesLine: {
     lv: 'Visi 317 vietnes attēli kopā: 202 MB → 31 MB',
     en: 'All 317 images across the site: 202 MB → 31 MB',

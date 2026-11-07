@@ -332,7 +332,15 @@ export function renderHead(template: string, meta: PageMeta, lang: Lang) {
 /** Lapas, ko būvēšanā pārvērš statiskā HTML. Melnraksti arī, lai tos var apskatīt pa tiešo adresi. */
 export const prerenderPaths = isPersonal
   ? []
-  : [SERVICES_PATH, ...services.map((s) => serviceHref(s.slug)), BLOG_PATH, ...allPosts.map((p) => postHref(p.slug))]
+  : [
+      SERVICES_PATH,
+      ...services.map((s) => serviceHref(s.slug)),
+      BLOG_PATH,
+      ...allPosts.map((p) => postHref(p.slug)),
+    ]
+
+/** protu.lv sākumlapa ir iepriekšrenderēta (pirmā skata attēls ir HTML no pirmā baita); valdis.protu.lv nav. */
+export const prerenderHome = !isPersonal
 
 /** sitemap.xml: abas valodas katrai adresei, blogs tikai latviski.
  *  valdis.protu.lv: sākumlapa + savi darbi (klientu darbi ir protu.lv sitemap). */

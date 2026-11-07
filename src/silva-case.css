@@ -280,6 +280,11 @@
 .silva-metrics td { color: var(--exhibit-soft); padding-left: 0.75rem; }
 .silva-metrics td.silva-better { color: var(--exhibit); font-weight: 600; }
 
+.silva-metrics .silva-images {
+  color: var(--exhibit);
+  font-variant-numeric: tabular-nums;
+}
+
 .silva-metrics p {
   margin: 0.75rem 0 0;
   font-family: var(--utility);

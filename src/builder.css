@@ -157,9 +157,10 @@
   text-shadow: 0 0 2.5rem rgb(var(--light) / 0.25);
 }
 
+/* The verb is one amber (#f5a04a) before and after the shader starts, so nothing shifts. */
 .lt-protu-verb {
   display: inline-block;
-  color: var(--accent-ink);
+  color: var(--accent);
   text-shadow: 0 0 2rem rgb(var(--light) / 0.45);
   animation: lt-verb-in 560ms var(--ease-out);
 }
@@ -295,8 +296,9 @@
   cursor: pointer;
 }
 
+/* Same amber as the headline verb: the two light up together. */
 .lt-slide[data-active] .lt-verb {
-  color: var(--accent-ink);
+  color: var(--accent);
   font-weight: 600;
   text-shadow: 0 0 1.5rem rgb(var(--light) / 0.45);
 }
@@ -996,17 +998,11 @@ html[data-rays="pending"] .lt-cone::after { opacity: 0.45; }
   opacity: calc(0.55 + var(--ray-pulse) * 0.45);
 }
 
-/* Headline as a solid object standing in the beam: lit from above (bright top, deeper base),
-   with a tight contact shadow. Its letters also block the shader light (see LightRays occluders),
-   so the haze darkens behind and below the words instead of washing over them.
-   The padding gives descenders (g, j) room inside the clipped background; the negative margin keeps layout. */
+/* Headline as a solid object standing in the beam, with a tight contact shadow. Its letters also
+   block the shader light (see LightRays occluders), so the haze darkens behind and below the words
+   instead of washing over them. Solid colours only: "Protu" white, the verb amber. */
 .lt-hero[data-rays] .lt-protu {
-  padding-block: 0.06em 0.16em;
-  margin-block: -0.06em -0.16em;
-  background: linear-gradient(180deg, #fff 30%, #e6dccf 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #fff;
   text-shadow: none;
   filter:
     drop-shadow(0 0.03em 0.02em rgb(0 0 0 / 0.55))
@@ -1014,12 +1010,7 @@ html[data-rays="pending"] .lt-cone::after { opacity: 0.45; }
 }
 
 .lt-hero[data-rays] .lt-protu-verb {
-  padding-block: 0.06em 0.16em;
-  margin-block: -0.06em -0.16em;
-  background: linear-gradient(180deg, #ffe2bd 0%, #f7aa58 46%, #dc8432 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent);
   text-shadow: none;
 }
 

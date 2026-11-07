@@ -12,7 +12,7 @@ const outDir = process.argv[2] ?? 'dist'
 const dist = join(root, outDir)
 const ssr = join(root, `${outDir}-ssr`)
 
-const { render, renderHomeHead, prerenderPaths, sitemapXml, SITE } = await import(
+const { render, renderHomeHead, prerenderHome, prerenderPaths, sitemapXml, SITE } = await import(
   pathToFileURL(join(ssr, 'entry-server.js')).href
 )
 const template = await readFile(join(dist, 'index.html'), 'utf8')
@@ -24,9 +24,15 @@ for (const path of prerenderPaths) {
   console.log(`prerendered ${path}`)
 }
 
-// Sākumlapas galva (un visu nezināmo ceļu SPA rezerve) ar šīs vietnes virsrakstu un adresēm.
-await writeFile(join(dist, 'index.html'), renderHomeHead(template))
-console.log('wrote home head')
+// Sākumlapa (un visu nezināmo ceļu SPA rezerve). protu.lv: pilns HTML, lai pirmā skata attēls ir
+// lapā no pirmā baita; valdis.protu.lv: tikai galva ar šīs vietnes virsrakstu un adresēm.
+if (prerenderHome) {
+  await writeFile(join(dist, 'index.html'), render('/', template))
+  console.log('prerendered /')
+} else {
+  await writeFile(join(dist, 'index.html'), renderHomeHead(template))
+  console.log('wrote home head')
+}
 
 await writeFile(join(dist, 'sitemap.xml'), sitemapXml())
 console.log('wrote sitemap.xml')

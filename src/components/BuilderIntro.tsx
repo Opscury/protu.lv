@@ -26,6 +26,9 @@ const MOTES = [
 ]
 
 /** Attālums no izvēlētā parauga lentē, apļveidā: -1 pa kreisi, 1 pa labi, 0 gaismā. */
+/** Placeholder for images that wait (invisible or below the fold): a 1×1 transparent GIF, no request. */
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+
 function offsetOf(i: number, picked: number, n: number) {
   let o = (((i - picked) % n) + n) % n
   if (o > n / 2) o -= n
@@ -52,20 +55,62 @@ function BuilderIntro({ lang }: Props) {
     mq.addEventListener('change', update)
     return () => mq.removeEventListener('change', update)
   }, [])
+  // Images nobody can see yet (the far slide, the PDF cards of slides not in the light, the step
+  // screenshots below the fold) wait until the page has loaded, so the first screenshot gets the bandwidth.
+  const [warm, setWarm] = useState(false)
+  const [howNear, setHowNear] = useState(false)
+  const howRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    let idle = 0
+    let timer = 0
+    const go = () => {
+      if (typeof window.requestIdleCallback === 'function') idle = window.requestIdleCallback(() => setWarm(true), { timeout: 1500 })
+      else timer = window.setTimeout(() => setWarm(true), 300)
+    }
+    if (document.readyState === 'complete') go()
+    else window.addEventListener('load', go, { once: true })
+    return () => {
+      window.removeEventListener('load', go)
+      if (idle) window.cancelIdleCallback(idle)
+      window.clearTimeout(timer)
+    }
+  }, [])
+  useEffect(() => {
+    const el = howRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        setHowNear(true)
+        io.disconnect()
+      },
+      { rootMargin: '800px 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
   const [raysOn, setRaysOn] = useState(false)
   const [raysLive, setRaysLive] = useState(false)
 
   // Light rays start once the page has loaded; reduced motion keeps the static cone.
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    // Start once the page is idle (not after every image has loaded), so the beam switches on quickly.
+    // Start after the page has loaded and the browser is idle, so the first view paints without it.
     const start = () => setRaysOn(true)
-    if (typeof window.requestIdleCallback === 'function') {
-      const id = window.requestIdleCallback(start, { timeout: 400 })
-      return () => window.cancelIdleCallback(id)
+    let idle = 0
+    let timer = 0
+    const go = () => {
+      if (typeof window.requestIdleCallback === 'function') idle = window.requestIdleCallback(start, { timeout: 600 })
+      else timer = window.setTimeout(start, 120)
     }
-    const timer = window.setTimeout(start, 120)
-    return () => window.clearTimeout(timer)
+    if (document.readyState === 'complete') go()
+    else window.addEventListener('load', go, { once: true })
+    return () => {
+      window.removeEventListener('load', go)
+      if (idle) window.cancelIdleCallback(idle)
+      window.clearTimeout(timer)
+    }
   }, [])
   // Paraugs, kas lentē pārlec no viena gala uz otru, nedrīkst slīdēt pāri gaismai.
   const offsets = t.samples.map((_, i) => offsetOf(i, pickedIndex, n))
@@ -74,6 +119,7 @@ function BuilderIntro({ lang }: Props) {
   const pick = (i: number, focus = false) => {
     const next = ((i % n) + n) % n
     setPick({ pickedIndex: next, prevIndex: pickedIndex })
+    setWarm(true)
     if (focus) verbRefs.current[next]?.focus()
   }
 
@@ -156,15 +202,22 @@ function BuilderIntro({ lang }: Props) {
                 </p>
                 <div className="lt-frame" onClick={() => !active && pick(i)}>
                   <img
-                    src={`/builder/${s.id}-site.webp`}
+                    src={active || warm || Math.abs(o) <= 1 ? `/builder/${s.id}-site.webp` : BLANK}
+                    srcSet={
+                      active || warm || Math.abs(o) <= 1
+                        ? `/builder/${s.id}-site-960.webp 960w, /builder/${s.id}-site.webp 1920w`
+                        : undefined
+                    }
+                    sizes="(max-width: 48rem) 80vw, 40rem"
                     width={1920}
                     height={1200}
                     alt={active ? s.siteAlt[lang] : ''}
                     draggable={false}
+                    fetchPriority={active ? 'high' : 'low'}
                   />
                   <img
                     className="lt-pdf"
-                    src={`/builder/${s.id}-pdf-${HERO_PDF_PAGE[s.id] ?? 1}.webp`}
+                    src={active || warm ? `/builder/${s.id}-pdf-${HERO_PDF_PAGE[s.id] ?? 1}.webp` : BLANK}
                     width={960}
                     height={679}
                     alt={active ? s.pdfAlt[lang] : ''}
@@ -207,7 +260,7 @@ function BuilderIntro({ lang }: Props) {
       {/* Simplified 3 Nov 2026: below the hero only the steps (was: PDF strip, until 4 Nov), free plan, FAQ and the closing CTA.
           The intro, looks grid, steps, fields list and Konkursi block were cut as repeats of the hero;
           their texts are still in data/builder.ts if any come back. */}
-      <section className="bld-how" aria-labelledby="bld-how">
+      <section ref={howRef} className="bld-how" aria-labelledby="bld-how">
         <div className="bld-how-head">
           <h2 id="bld-how">{t.howTitle[lang]}</h2>
           <p>{t.howBody[lang]}</p>
@@ -217,7 +270,7 @@ function BuilderIntro({ lang }: Props) {
             <li key={step.img} className="bld-how-step">
               <figure>
                 <div className="bld-how-frame">
-                  <img src={`/builder/${step.img}.webp`} width={1440} height={900} alt={step.alt[lang]} loading="lazy" decoding="async" />
+                  <img src={howNear ? `/builder/${step.img}.webp` : BLANK} width={1440} height={900} alt={step.alt[lang]} loading="lazy" decoding="async" />
                 </div>
                 <figcaption>
                   <span className="bld-how-num" aria-hidden="true">{i + 1}</span>
@@ -233,7 +286,7 @@ function BuilderIntro({ lang }: Props) {
           <li className="bld-how-step bld-how-more">
             <figure>
               <div className="bld-how-frame">
-                <img src={`/builder/${t.howMore.img}.webp`} width={1440} height={900} alt={t.howMore.alt[lang]} loading="lazy" decoding="async" />
+                <img src={howNear ? `/builder/${t.howMore.img}.webp` : BLANK} width={1440} height={900} alt={t.howMore.alt[lang]} loading="lazy" decoding="async" />
               </div>
               <figcaption>
                 <strong>{t.howMore.title[lang]}</strong>
