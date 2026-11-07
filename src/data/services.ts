@@ -447,8 +447,8 @@ export const services: Service[] = [
     name: { lv: 'Hostings un uzturēšana', en: 'Hosting and maintenance' },
     problem: { lv: 'Nav, kas lapu pieskata', en: 'Nobody looks after the site' },
     scope: {
-      lv: 'Mans serveris ES, ikdienas rezerves kopijas, uzraudzība',
-      en: 'My EU server, daily backups, uptime monitoring',
+      lv: 'Pēc palaišanas: mans serveris ES, ikdienas rezerves kopijas, uzraudzība',
+      en: 'After launch: my EU server, daily backups, uptime monitoring',
     },
     pitch: {
       lv: 'Tava lapa uz mana servera ES. Es rūpējos, lai tā strādā.',
