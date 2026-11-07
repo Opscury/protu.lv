@@ -75,8 +75,10 @@ function BuilderIntro({ lang }: Props) {
       window.clearTimeout(timer)
     }
   }, [])
+  // The step screenshots start ~100px below a phone's first screen: they load with the other waiting
+  // images after load + idle, or at once if the strip scrolls into view before that.
   useEffect(() => {
-    const el = howRef.current
+    const el = howRef.current?.querySelector('.bld-how-strip')
     if (!el) return
     const io = new IntersectionObserver(
       ([entry]) => {
@@ -84,11 +86,12 @@ function BuilderIntro({ lang }: Props) {
         setHowNear(true)
         io.disconnect()
       },
-      { rootMargin: '800px 0px' },
+      { rootMargin: '0px' },
     )
     io.observe(el)
     return () => io.disconnect()
   }, [])
+  const howShown = howNear || warm
 
   const [raysOn, setRaysOn] = useState(false)
   const [raysLive, setRaysLive] = useState(false)
@@ -270,7 +273,7 @@ function BuilderIntro({ lang }: Props) {
             <li key={step.img} className="bld-how-step">
               <figure>
                 <div className="bld-how-frame">
-                  <img src={howNear ? `/builder/${step.img}.webp` : BLANK} width={1440} height={900} alt={step.alt[lang]} loading="lazy" decoding="async" />
+                  <img src={howShown ? `/builder/${step.img}.webp` : BLANK} width={1440} height={900} alt={step.alt[lang]} loading="lazy" decoding="async" />
                 </div>
                 <figcaption>
                   <span className="bld-how-num" aria-hidden="true">{i + 1}</span>
@@ -286,7 +289,7 @@ function BuilderIntro({ lang }: Props) {
           <li className="bld-how-step bld-how-more">
             <figure>
               <div className="bld-how-frame">
-                <img src={howNear ? `/builder/${t.howMore.img}.webp` : BLANK} width={1440} height={900} alt={t.howMore.alt[lang]} loading="lazy" decoding="async" />
+                <img src={howShown ? `/builder/${t.howMore.img}.webp` : BLANK} width={1440} height={900} alt={t.howMore.alt[lang]} loading="lazy" decoding="async" />
               </div>
               <figcaption>
                 <strong>{t.howMore.title[lang]}</strong>
