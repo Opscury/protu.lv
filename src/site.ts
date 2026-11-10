@@ -19,3 +19,10 @@ export const PERSON_ID = `${VALDIS_URL}/#valdis`
 
 /** Klientu gadījuma izpētes ir biznesa pierādījums: kanoniski uz protu.lv. */
 export const CLIENT_CASES = ['anda', 'silva']
+
+/** Share image (og:image). protu.lv has a PNG, because Facebook, WhatsApp and LinkedIn do not show SVG;
+ *  it is drawn by scripts/make-og.py. valdis.protu.lv still has the old SVG card. */
+export const OG_IMAGE = isPersonal ? `${VALDIS_URL}/og-image.svg` : `${PROTU_URL}/og-protu.png`
+export const OG_IMAGE_ALT = isPersonal
+  ? 'protu.lv, the portfolio of Valdis Viška, web developer'
+  : 'protu.lv: portfolio lapa un pieteikuma PDF, bez maksas'

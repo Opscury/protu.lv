@@ -15,7 +15,7 @@ import type { Lang } from './types'
 /** Virsraksts, apraksts, kanoniskā adrese un JSON-LD katrai lapai.
  *  To pašu lieto pārlūkā (applyMeta) un būvēšanā (renderHead, sitemap). */
 
-import { CLIENT_CASES, isPersonal, PERSON_ID, PROTU_URL, SITE, VALDIS_URL } from './site'
+import { CLIENT_CASES, isPersonal, OG_IMAGE, OG_IMAGE_ALT, PERSON_ID, PROTU_URL, SITE, VALDIS_URL } from './site'
 
 export { SITE }
 
@@ -135,7 +135,7 @@ function postJsonLd(post: Post) {
       mainEntityOfPage: url,
       author,
       publisher: author,
-      image: `${SITE}/og-image.svg`,
+      image: OG_IMAGE,
       isPartOf: { '@type': 'Blog', '@id': `${SITE}${BLOG_PATH}#blog` },
     },
     {
@@ -307,6 +307,9 @@ export function renderHead(template: string, meta: PageMeta, lang: Lang) {
     content('property', 'og:type', meta.ogType ?? 'website'),
     content('name', 'twitter:title', meta.title),
     content('name', 'twitter:description', meta.description),
+    content('property', 'og:image', OG_IMAGE),
+    content('property', 'og:image:alt', OG_IMAGE_ALT),
+    content('name', 'twitter:image', OG_IMAGE),
     href('rel="canonical"', url),
     href('rel="alternate" hreflang="lv"', pageUrl(meta.path, 'lv', meta.base)),
     href('rel="alternate" hreflang="en"', pageUrl(meta.path, 'en', meta.base)),
