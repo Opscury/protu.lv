@@ -134,7 +134,18 @@
         ]
       }
     </script>
-    <script defer src="https://stats.protu.lv/script.js" data-website-id="63809845-9018-41cb-9562-4ac6e0dd6018"></script>
+    <!-- Umami: protu.lv and valdis.protu.lv share this file but count separately (admin.protu.lv shows both). -->
+    <script>
+      (function () {
+        var s = document.createElement('script')
+        s.defer = true
+        s.src = 'https://stats.protu.lv/script.js'
+        s.setAttribute('data-website-id', location.hostname.indexOf('valdis.') === 0
+          ? 'a0de5ae5-8164-4d33-b342-db0bf0aeb693'
+          : '63809845-9018-41cb-9562-4ac6e0dd6018')
+        document.head.appendChild(s)
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
