@@ -47,9 +47,11 @@ function initialLang(): Lang {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved === 'lv' || saved === 'en') return saved
   } catch {
-    // Privātais režīms vai bloķēta krātuve — paliek pie pārlūka valodas.
+    // Privātais režīms vai bloķēta krātuve — paliek latviski.
   }
-  return navigator.language.toLowerCase().startsWith('lv') ? 'lv' : 'en'
+  // Adrese bez ?lang vienmēr ir latviska. Pārlūka valodu NEskatāmies: Googlebot ir en-US,
+  // un tad Google redzēja angļu tekstu un canonical uz ?lang=en, nevis latvisko lapu.
+  return 'lv'
 }
 
 function App() {

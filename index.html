@@ -36,8 +36,8 @@
           var q = new URLSearchParams(location.search).get('lang')
           var saved = null
           try { saved = localStorage.getItem('protu-lang') } catch (e) {}
-          var lang = q === 'lv' || q === 'en' ? q : saved === 'lv' || saved === 'en' ? saved
-            : navigator.language.toLowerCase().indexOf('lv') === 0 ? 'lv' : 'en'
+          // Same rule as App.tsx initialLang: no ?lang and no saved choice = Latvian (never browser language).
+          var lang = q === 'lv' || q === 'en' ? q : saved === 'lv' || saved === 'en' ? saved : 'lv'
           if (lang !== 'lv') document.documentElement.classList.add('lang-swap')
         }
       } catch (e) {}

@@ -103,9 +103,10 @@ export const ui: Record<Lang, Strings> = {
     konkursi: 'Konkursi',
     aboutMe: 'Par mani',
     clientWorksLead: 'Vietnes, ko esmu uztaisījis klientiem, ar visu procesu no sākuma līdz beigām.',
+    // Ar šo virsrakstu protu.lv ir #1 Google "bezmaksas portfolio lapa" (14.11.2026) — nemainīt bez iemesla.
     protuTitle: 'protu.lv · bezmaksas portfolio lapa radošajiem',
     protuDescription:
-      'Bezmaksas portfolio lapa vārds.protu.lv un pieteikuma PDF konkursiem un rezidencēm. Arī mājaslapas un hostings Latvijā.',
+      'Izveido savu portfolio mājaslapu bez maksas: vārds.protu.lv adrese un pieteikuma PDF konkursiem un rezidencēm. Latviski, veidots Latvijā.',
     footNav: 'Saites',
     footRun: 'Veido un uztur Valdis Viška, Jelgavā.',
     footLegal: 'Noteikumi un privātums',
